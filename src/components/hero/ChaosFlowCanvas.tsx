@@ -59,34 +59,32 @@ function getFlowPoint(
   let baseY: number;
   let amplitude: number;
 
-  if (xNorm < 0.25) {
-    // Left entry zone: lines flow in from their entry positions, slight convergence
-    const progress = smoothstep(xNorm / 0.25);
-    baseY = lerp(line.entryY, focalY, progress * 0.6);
-    amplitude = 5 + line.z * 10; // mild waviness
+  if (xNorm < 0.2) {
+    // Left zone: wide spread, mild waviness flowing toward center
+    const progress = smoothstep(xNorm / 0.2);
+    baseY = lerp(line.entryY, lerp(line.entryY, focalY, 0.3), progress);
+    amplitude = 8 + line.z * 12;
   } else if (xNorm < 0.55) {
-    // Central chaos vortex: all lines converge to focal point with HIGH noise
-    const toCenter = (xNorm - 0.25) / 0.30;
-    const centerDist = Math.abs(toCenter - 0.5) * 2; // 1 at edges, 0 at dead center
-    // Lines pull toward focal Y
-    const convergence = smoothstep(Math.min(toCenter * 2, 1)); // converge in first half
-    const spread = smoothstep(Math.max((toCenter - 0.5) * 2, 0)); // spread in second half
+    // Chaos vortex: lines pulled toward focal, HIGH noise
+    const toCenter = (xNorm - 0.2) / 0.35;
+    const centerDist = Math.abs(toCenter - 0.5) * 2;
+    // Converge strongly toward focal Y
+    const convergence = smoothstep(toCenter);
     baseY = lerp(
-      lerp(line.entryY, focalY, 0.6 + convergence * 0.4),
-      lerp(focalY, line.exitY, spread),
-      toCenter
+      lerp(line.entryY, focalY, 0.3),
+      focalY,
+      convergence
     );
-    // Noise peaks at the center of the vortex
-    amplitude = (80 + line.z * 60) * (1 - centerDist * 0.5);
-  } else if (xNorm < 0.70) {
-    // Right transition: emerging from vortex, noise dies down
-    const progress = smoothstep((xNorm - 0.55) / 0.15);
-    baseY = lerp(focalY, line.exitY, 0.3 + progress * 0.7);
-    amplitude = lerp(40 + line.z * 30, 3, progress);
+    amplitude = (70 + line.z * 50) * (1 - centerDist * 0.4);
+  } else if (xNorm < 0.72) {
+    // Right transition: emerging from vortex, converging to exit
+    const progress = smoothstep((xNorm - 0.55) / 0.17);
+    baseY = lerp(focalY, line.exitY, progress);
+    amplitude = lerp(50 + line.z * 30, 2, progress);
   } else {
-    // Right order zone: smooth parallel flow
+    // Right order zone: tight, smooth parallel flow
     baseY = line.exitY;
-    amplitude = 1 + line.z * 2;
+    amplitude = 1 + line.z * 1.5;
   }
 
   const noiseVal = noise2D(
@@ -136,17 +134,16 @@ export function ChaosFlowCanvas() {
     for (let i = 0; i < config.lineCount; i++) {
       const t = i / (config.lineCount - 1); // 0–1 distribution
 
-      // Entry: lines from left are moderately spread, converging toward focal
-      const entryY = focalY + (t - 0.5) * h * 0.85;
+      // Entry (LEFT): WIDE spread across full height
+      const entryY = h * 0.03 + t * h * 0.94;
 
-      // Exit: lines fan out FROM the focal point in a cone (~45% of height)
-      // Fan angle proportional to entry position (preserves some order)
-      const exitSpread = (t - 0.5) * h * 0.45;
+      // Exit (RIGHT): TIGHT convergence into narrow band (~25% of height)
+      const exitSpread = (t - 0.5) * h * 0.25;
       const exitY = focalY + exitSpread;
 
       lines.push({
-        entryY: entryY + (Math.random() - 0.5) * 10,
-        exitY: exitY + (Math.random() - 0.5) * 4,
+        entryY: entryY + (Math.random() - 0.5) * 8,
+        exitY: exitY + (Math.random() - 0.5) * 3,
         z: Math.random(),
         seed: Math.random() * 1000,
       });
