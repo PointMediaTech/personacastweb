@@ -131,21 +131,22 @@ export function ChaosFlowCanvas() {
     }
 
     const lines: FlowLine[] = [];
+    const focalY = h * FOCAL_Y;
 
     for (let i = 0; i < config.lineCount; i++) {
       const t = i / (config.lineCount - 1); // 0–1 distribution
 
-      // Entry: lines are spread across the left edge (full height)
-      const entryY = h * 0.05 + t * h * 0.9;
+      // Entry: lines from left are moderately spread, converging toward focal
+      const entryY = focalY + (t - 0.5) * h * 0.85;
 
-      // Exit: lines spread out on the right but in a tighter, more ordered band
-      // Slight shuffling so entry and exit don't perfectly correspond
-      const exitT = (t + (Math.random() - 0.5) * 0.15);
-      const exitY = h * 0.1 + Math.max(0, Math.min(1, exitT)) * h * 0.8;
+      // Exit: lines fan out FROM the focal point in a cone (~45% of height)
+      // Fan angle proportional to entry position (preserves some order)
+      const exitSpread = (t - 0.5) * h * 0.45;
+      const exitY = focalY + exitSpread;
 
       lines.push({
-        entryY: entryY + (Math.random() - 0.5) * 15,
-        exitY: exitY + (Math.random() - 0.5) * 5,
+        entryY: entryY + (Math.random() - 0.5) * 10,
+        exitY: exitY + (Math.random() - 0.5) * 4,
         z: Math.random(),
         seed: Math.random() * 1000,
       });
@@ -227,7 +228,7 @@ export function ChaosFlowCanvas() {
 
       for (const line of lines) {
         const lineWidth = 0.5 + line.z * 2.5;
-        const opacity = 0.1 + line.z * 0.4;
+        const baseOpacity = 0.1 + line.z * 0.4;
 
         const points: { x: number; y: number }[] = [];
         for (let cp = 0; cp <= cpCount; cp++) {
@@ -235,31 +236,37 @@ export function ChaosFlowCanvas() {
           points.push(getFlowPoint(line, xNorm, w, h, noise2D, timeOffset, mouse.x, mouse.y));
         }
 
-        ctx.beginPath();
-        ctx.moveTo(points[0].x, points[0].y);
-        for (let i = 1; i < points.length; i++) {
-          const prev = points[i - 1];
-          const curr = points[i];
-          const cpx = (prev.x + curr.x) / 2;
-          const cpy = (prev.y + curr.y) / 2;
-          ctx.quadraticCurveTo(prev.x, prev.y, cpx, cpy);
-        }
-        ctx.strokeStyle = `rgba(${CYAN.r},${CYAN.g},${CYAN.b},${opacity * 0.04})`;
-        ctx.lineWidth = lineWidth * 3;
-        ctx.stroke();
+        // Draw line in segments with varying opacity (bright at vortex, fade at edges)
+        for (let seg = 1; seg < points.length; seg++) {
+          const segXNorm = seg / points.length;
+          // Opacity peaks at vortex center (0.35-0.55), fades toward edges
+          const distFromVortex = Math.abs(segXNorm - FOCAL_X);
+          const vortexBoost = Math.max(0, 1 - distFromVortex * 2.5);
+          // Fade out at far right
+          const rightFade = segXNorm > 0.8 ? 1 - (segXNorm - 0.8) / 0.2 : 1;
+          const opacity = baseOpacity * (0.5 + vortexBoost * 0.8) * rightFade;
 
-        ctx.beginPath();
-        ctx.moveTo(points[0].x, points[0].y);
-        for (let i = 1; i < points.length; i++) {
-          const prev = points[i - 1];
-          const curr = points[i];
+          const prev = points[seg - 1];
+          const curr = points[seg];
           const cpx = (prev.x + curr.x) / 2;
           const cpy = (prev.y + curr.y) / 2;
+
+          // Glow pass
+          ctx.beginPath();
+          ctx.moveTo(prev.x, prev.y);
           ctx.quadraticCurveTo(prev.x, prev.y, cpx, cpy);
+          ctx.strokeStyle = `rgba(${CYAN.r},${CYAN.g},${CYAN.b},${opacity * 0.05})`;
+          ctx.lineWidth = lineWidth * 4;
+          ctx.stroke();
+
+          // Core pass
+          ctx.beginPath();
+          ctx.moveTo(prev.x, prev.y);
+          ctx.quadraticCurveTo(prev.x, prev.y, cpx, cpy);
+          ctx.strokeStyle = `rgba(${CYAN.r},${CYAN.g},${CYAN.b},${opacity})`;
+          ctx.lineWidth = lineWidth;
+          ctx.stroke();
         }
-        ctx.strokeStyle = `rgba(${CYAN.r},${CYAN.g},${CYAN.b},${opacity})`;
-        ctx.lineWidth = lineWidth;
-        ctx.stroke();
       }
 
       if (!reducedMotion) {
