@@ -1,16 +1,14 @@
-import { motion } from 'framer-motion';
 import { Navbar } from './Navbar';
-import { NeuralCanvas } from './NeuralCanvas';
 import { HeroContent } from './HeroContent';
-import { AgentDossiers } from './AgentDossier';
 import { LiveBadge } from './LiveBadge';
-
-const EASE = [0.22, 1, 0.36, 1] as const;
+import { ChaosFlowCanvas } from './ChaosFlowCanvas';
+import { DataRainCanvas } from './DataRainCanvas';
+import { DataCards } from './DataCards';
 
 export function HeroSection() {
   return (
     <section className="relative h-screen bg-deep-space overflow-hidden">
-      {/* Atmospheric glow */}
+      {/* Atmospheric glow — z-0 */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
@@ -21,19 +19,13 @@ export function HeroSection() {
         }}
       />
 
-      {/* Dynamic Neural Canvas — right 62% */}
-      <motion.div
-        className="absolute top-0 right-0 bottom-0 z-[1] hidden lg:block"
-        style={{ width: '62vw' }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 2, delay: 0.3, ease: EASE }}
-      >
-        <NeuralCanvas />
-        <AgentDossiers />
-      </motion.div>
+      {/* DataRain — z-1, left 40% background texture */}
+      <DataRainCanvas />
 
-      {/* Left scrim */}
+      {/* ChaosFlow — z-2, full-width flow lines */}
+      <ChaosFlowCanvas />
+
+      {/* Left scrim — z-[2], same z as ChaosFlow but renders on top via DOM order */}
       <div
         className="absolute inset-0 z-[2] pointer-events-none"
         style={{
@@ -41,7 +33,7 @@ export function HeroSection() {
         }}
       />
 
-      {/* Text content — INLINE paddingLeft to guarantee spacing */}
+      {/* Text content — z-10 */}
       <div
         className="relative z-10 h-screen flex items-center"
         style={{ paddingLeft: 'clamp(2.5rem, 8vw, 10rem)', paddingRight: '1.5rem' }}
@@ -50,6 +42,9 @@ export function HeroSection() {
           <HeroContent />
         </div>
       </div>
+
+      {/* DataCards — z-15, floating glassmorphism cards */}
+      <DataCards />
 
       <LiveBadge />
       <Navbar />
