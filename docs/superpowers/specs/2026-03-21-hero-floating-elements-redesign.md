@@ -62,7 +62,7 @@ Note: Names and roles are retained to give a human feel. The abstract status tex
 
 The `AgentCards` component must render a container div matching the current `DataCards` pattern:
 ```tsx
-<div className="absolute inset-0 z-[15] hidden md:block" style={{ pointerEvents: 'none' }}>
+<div className="absolute inset-0 z-[15] hidden md:block" style={{ pointerEvents: 'none' }} aria-hidden="true">
   {/* Card 1, Card 2 inside */}
 </div>
 ```
@@ -85,8 +85,8 @@ Cards use absolute positioning within the container. Values applied as inline st
 
 | Device | Tailwind classes | Behavior |
 |--------|-----------------|----------|
-| Desktop (>1280px) | Container: `hidden md:block`; Card 2: `hidden lg:block` | Both cards visible |
-| Tablet (768–1280px) | Container visible; Card 2 hidden | Card 1 (Pro) only |
+| Desktop (≥1024px) | Container: `hidden md:block`; Card 2: `hidden lg:block` | Both cards visible |
+| Tablet (768–1023px) | Container visible; Card 2 hidden | Card 1 (Pro) only |
 | Mobile (<768px) | Container hidden | Hidden |
 
 ### 2. Bottom Status Bar
