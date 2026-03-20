@@ -17,8 +17,10 @@ const TIER_CONFIG = {
 } as const;
 
 interface FlowLine {
-  entryY: number;   // Y where line enters from left (spread)
-  exitY: number;    // Y where line exits to right (spread, ordered)
+  entryY: number;   // Y at left endpoint (spread)
+  exitY: number;    // Y at right endpoint (spread, ordered)
+  leftExtent: number;  // how far left this line reaches (0–1 normalized)
+  rightExtent: number; // how far right this line reaches (0–1 normalized)
   z: number;        // 0–1 depth for visual layering
   seed: number;     // unique noise seed
 }
@@ -39,9 +41,9 @@ function smoothstep(t: number) {
   return t * t * (3 - 2 * t);
 }
 
-// Focal point: where all lines converge into the chaos vortex
-const FOCAL_X = 0.45; // 45% from left (shifted right of center since left has text)
-const FOCAL_Y = 0.45; // 45% from top
+// Focal point: the vortex center where all lines converge
+const FOCAL_X = 0.80; // 80% from left
+const FOCAL_Y = 0.42; // 42% from top (slightly above center)
 
 function getFlowPoint(
   line: FlowLine,
@@ -59,32 +61,70 @@ function getFlowPoint(
   let baseY: number;
   let amplitude: number;
 
-  if (xNorm < 0.2) {
-    // Left zone: wide spread, mild waviness flowing toward center
-    const progress = smoothstep(xNorm / 0.2);
-    baseY = lerp(line.entryY, lerp(line.entryY, focalY, 0.3), progress);
-    amplitude = 8 + line.z * 12;
-  } else if (xNorm < 0.55) {
-    // Chaos vortex: lines pulled toward focal, HIGH noise
-    const toCenter = (xNorm - 0.2) / 0.35;
-    const centerDist = Math.abs(toCenter - 0.5) * 2;
-    // Converge strongly toward focal Y
-    const convergence = smoothstep(toCenter);
-    baseY = lerp(
-      lerp(line.entryY, focalY, 0.3),
-      focalY,
-      convergence
-    );
-    amplitude = (70 + line.z * 50) * (1 - centerDist * 0.4);
-  } else if (xNorm < 0.72) {
-    // Right transition: emerging from vortex, converging to exit
-    const progress = smoothstep((xNorm - 0.55) / 0.17);
+  // Lines radiate from vortex center outward in both directions
+  // Each line only exists between its leftExtent and rightExtent
+
+  // Normalize xNorm relative to this line's own range
+  const lineLeft = line.leftExtent;
+  const lineRight = line.rightExtent;
+
+  // Outside this line's range — no point
+  if (xNorm < lineLeft || xNorm > lineRight) {
+    return { x, y: focalY, skip: true };
+  }
+
+  // Map position relative to focal point
+  if (xNorm < FOCAL_X - 0.03) {
+    // Left side: spreading outward from vortex, chaos in mid-region
+    const leftRange = FOCAL_X - 0.03 - lineLeft;
+    const progress = leftRange > 0 ? (FOCAL_X - 0.03 - xNorm) / leftRange : 0; // 0 at vortex edge, 1 at far left
+    baseY = lerp(focalY, line.entryY, smoothstep(progress));
+    // Tangling peaks in the middle zone (not at the core)
+    const midChaos = Math.sin(progress * Math.PI); // peaks at progress=0.5
+    amplitude = lerp(3 + line.z * 4, 5 + line.z * 6, progress) + midChaos * (80 + line.z * 50);
+  } else if (xNorm < FOCAL_X + 0.03) {
+    // Vortex core: TIGHTEST point — minimal noise, all lines pinch together
+    const distFromCenter = Math.abs(xNorm - FOCAL_X) / 0.03;
+    baseY = focalY;
+    amplitude = 2 + distFromCenter * 5;
+  } else if (xNorm < 0.82) {
+    // Right emergence: converge from focal toward tight exitY band
+    const rightRange = 0.82 - (FOCAL_X + 0.03);
+    const progress = rightRange > 0 ? smoothstep((xNorm - FOCAL_X - 0.03) / rightRange) : 1;
     baseY = lerp(focalY, line.exitY, progress);
-    amplitude = lerp(50 + line.z * 30, 2, progress);
+    amplitude = lerp(4 + line.z * 2, 0.5 + line.z * 0.5, progress);
   } else {
-    // Right order zone: tight, smooth parallel flow
-    baseY = line.exitY;
-    amplitude = 1 + line.z * 1.5;
+    // Right fan zone: 90% tight band, 5% slight diverge, 5% irregular curves
+    const fanProgress = (xNorm - 0.82) / 0.18;
+    const strayHash = (line.seed % 1000) / 1000;
+
+    if (strayHash < 0.05) {
+      // Tier 2 (~5%): irregular curves — each line has unique angle, curvature, direction
+      // Use seed to derive per-line randomness for angle, bend frequency, bend strength
+      const seedA = Math.sin(line.seed * 127.1) * 43758.5453 % 1; // pseudo-random 0–1
+      const seedB = Math.sin(line.seed * 269.5) * 17623.1327 % 1;
+      const seedC = Math.sin(line.seed * 419.2) * 91225.8741 % 1;
+      const divergeAngle = (seedA - 0.5) * 2; // -1 to 1, unique direction per line
+      const bendFreq = 1.5 + seedB * 4; // how many wiggles — varies per line
+      const bendAmp = 20 + seedC * 40; // how wide the bends are
+      const curvature = Math.sin(fanProgress * Math.PI * bendFreq + line.seed) * bendAmp * fanProgress;
+      const drift = divergeAngle * fanProgress * h * 0.10;
+      baseY = line.exitY + drift + curvature;
+      amplitude = 2 + line.z * 2;
+    } else if (strayHash < 0.10) {
+      // Tier 1 (~5%): slight divergence — each line drifts at its own unique angle
+      const seedD = Math.sin(line.seed * 331.7) * 28411.9237 % 1;
+      const divergeAngle = (seedD - 0.5) * 2; // unique angle per line
+      const mildBend = Math.sin(fanProgress * Math.PI * (1 + seedD * 2) + line.seed) * 8 * fanProgress;
+      const extraDiverge = divergeAngle * fanProgress * h * 0.035;
+      baseY = line.exitY + extraDiverge + mildBend;
+      amplitude = 1 + line.z * 1.2;
+    } else {
+      // Main bundle (90%): very tight parallel band
+      const gentleDiverge = (line.exitY - focalY) * fanProgress * 0.05;
+      baseY = line.exitY + gentleDiverge;
+      amplitude = 0.4 + line.z * 0.4;
+    }
   }
 
   const noiseVal = noise2D(
@@ -102,7 +142,7 @@ function getFlowPoint(
     y += (dy / dist) * force;
   }
 
-  return { x, y };
+  return { x, y, skip: false };
 }
 
 export function ChaosFlowCanvas() {
@@ -134,16 +174,24 @@ export function ChaosFlowCanvas() {
     for (let i = 0; i < config.lineCount; i++) {
       const t = i / (config.lineCount - 1); // 0–1 distribution
 
-      // Entry (LEFT): WIDE spread across full height
-      const entryY = h * 0.03 + t * h * 0.94;
+      // Entry Y (LEFT endpoint): spread outward from focal center
+      const spread = (t - 0.5) * 2; // -1 to 1
+      const biasedSpread = Math.sign(spread) * Math.pow(Math.abs(spread), 0.7);
+      const entryY = focalY + biasedSpread * h * 0.48;
 
-      // Exit (RIGHT): TIGHT convergence into narrow band (~25% of height)
-      const exitSpread = (t - 0.5) * h * 0.25;
-      const exitY = focalY + exitSpread;
+      // Exit Y (RIGHT endpoint): very tight band from focal center
+      const exitY = focalY + (t - 0.5) * h * 0.025;
+
+      // How far left/right each line extends from the vortex center
+      // Lines radiate different distances — some short, some long
+      const leftExtent = FOCAL_X - 0.15 - Math.random() * 0.55; // reach 15-70% left of focal
+      const rightExtent = FOCAL_X + 0.08 + Math.random() * 0.38; // reach 8-46% right of focal
 
       lines.push({
-        entryY: entryY + (Math.random() - 0.5) * 8,
-        exitY: exitY + (Math.random() - 0.5) * 3,
+        entryY: entryY + (Math.random() - 0.5) * 10,
+        exitY: exitY + (Math.random() - 0.5) * 4,
+        leftExtent: Math.max(0.05, leftExtent),
+        rightExtent: Math.min(1.0, rightExtent),
         z: Math.random(),
         seed: Math.random() * 1000,
       });
@@ -215,6 +263,17 @@ export function ChaosFlowCanvas() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
 
+      // Convergence point glow — radial gradient at the vortex center
+      const glowX = w * FOCAL_X;
+      const glowY = h * FOCAL_Y;
+      const glowRadius = Math.min(w, h) * 0.18;
+      const glow = ctx.createRadialGradient(glowX, glowY, 0, glowX, glowY, glowRadius);
+      glow.addColorStop(0, `rgba(${CYAN.r},${CYAN.g},${CYAN.b},0.12)`);
+      glow.addColorStop(0.4, `rgba(${CYAN.r},${CYAN.g},${CYAN.b},0.04)`);
+      glow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = glow;
+      ctx.fillRect(glowX - glowRadius, glowY - glowRadius, glowRadius * 2, glowRadius * 2);
+
       if (!reducedMotion) {
         timeOffsetRef.current += 0.003;
       }
@@ -224,18 +283,37 @@ export function ChaosFlowCanvas() {
       const cpCount = TIER_CONFIG[tier].controlPoints;
 
       for (const line of lines) {
-        const lineWidth = 0.5 + line.z * 2.5;
-        const baseOpacity = 0.1 + line.z * 0.4;
+        const strayHash = (line.seed % 1000) / 1000;
+        const isTier2 = strayHash < 0.05;
+        const isTier1 = strayHash >= 0.05 && strayHash < 0.10;
+        const lineWidth = isTier2 ? (1.2 + line.z * 1.8) : isTier1 ? (0.8 + line.z * 2) : (0.5 + line.z * 2.5);
+        const baseOpacity = isTier2 ? (0.18 + line.z * 0.3) : isTier1 ? (0.14 + line.z * 0.35) : (0.1 + line.z * 0.4);
 
+        // Collect control points: exact endpoints + uniform grid in between
         const points: { x: number; y: number }[] = [];
-        for (let cp = 0; cp <= cpCount; cp++) {
+        const SNAP_THRESHOLD = 0.5 / cpCount; // skip grid points too close to endpoints
+
+        // First point: exact leftExtent
+        const ptFirst = getFlowPoint(line, line.leftExtent, w, h, noise2D, timeOffset, mouse.x, mouse.y);
+        if (!ptFirst.skip) points.push({ x: ptFirst.x, y: ptFirst.y });
+
+        // Middle points: uniform grid, only those within (leftExtent, rightExtent)
+        for (let cp = 1; cp < cpCount; cp++) {
           const xNorm = cp / cpCount;
-          points.push(getFlowPoint(line, xNorm, w, h, noise2D, timeOffset, mouse.x, mouse.y));
+          if (xNorm <= line.leftExtent + SNAP_THRESHOLD || xNorm >= line.rightExtent - SNAP_THRESHOLD) continue;
+          const pt = getFlowPoint(line, xNorm, w, h, noise2D, timeOffset, mouse.x, mouse.y);
+          if (!pt.skip) points.push({ x: pt.x, y: pt.y });
         }
+
+        // Last point: exact rightExtent
+        const ptLast = getFlowPoint(line, line.rightExtent, w, h, noise2D, timeOffset, mouse.x, mouse.y);
+        if (!ptLast.skip) points.push({ x: ptLast.x, y: ptLast.y });
+
+        if (points.length < 2) continue;
 
         const opacity = baseOpacity;
 
-        // Glow pass — single continuous path
+        // Glow pass
         ctx.beginPath();
         ctx.moveTo(points[0].x, points[0].y);
         for (let i = 1; i < points.length; i++) {
@@ -247,7 +325,7 @@ export function ChaosFlowCanvas() {
         ctx.lineWidth = lineWidth * 3;
         ctx.stroke();
 
-        // Core pass — single continuous path
+        // Core pass
         ctx.beginPath();
         ctx.moveTo(points[0].x, points[0].y);
         for (let i = 1; i < points.length; i++) {
@@ -269,7 +347,11 @@ export function ChaosFlowCanvas() {
           }
 
           const line = lines[p.lineIndex];
-          const pt = getFlowPoint(line, p.t, w, h, noise2D, timeOffset, mouse.x, mouse.y);
+          // Map particle t to the line's actual extent range
+          const mappedT = lerp(line.leftExtent, line.rightExtent, p.t);
+          const pt = getFlowPoint(line, mappedT, w, h, noise2D, timeOffset, mouse.x, mouse.y);
+
+          if (pt.skip) continue;
 
           ctx.beginPath();
           ctx.arc(pt.x, pt.y, p.radius + 3, 0, Math.PI * 2);
