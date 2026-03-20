@@ -236,37 +236,31 @@ export function ChaosFlowCanvas() {
           points.push(getFlowPoint(line, xNorm, w, h, noise2D, timeOffset, mouse.x, mouse.y));
         }
 
-        // Draw line in segments with varying opacity (bright at vortex, fade at edges)
-        for (let seg = 1; seg < points.length; seg++) {
-          const segXNorm = seg / points.length;
-          // Opacity peaks at vortex center (0.35-0.55), fades toward edges
-          const distFromVortex = Math.abs(segXNorm - FOCAL_X);
-          const vortexBoost = Math.max(0, 1 - distFromVortex * 2.5);
-          // Fade out at far right
-          const rightFade = segXNorm > 0.8 ? 1 - (segXNorm - 0.8) / 0.2 : 1;
-          const opacity = baseOpacity * (0.5 + vortexBoost * 0.8) * rightFade;
+        const opacity = baseOpacity;
 
-          const prev = points[seg - 1];
-          const curr = points[seg];
-          const cpx = (prev.x + curr.x) / 2;
-          const cpy = (prev.y + curr.y) / 2;
-
-          // Glow pass
-          ctx.beginPath();
-          ctx.moveTo(prev.x, prev.y);
-          ctx.quadraticCurveTo(prev.x, prev.y, cpx, cpy);
-          ctx.strokeStyle = `rgba(${CYAN.r},${CYAN.g},${CYAN.b},${opacity * 0.05})`;
-          ctx.lineWidth = lineWidth * 4;
-          ctx.stroke();
-
-          // Core pass
-          ctx.beginPath();
-          ctx.moveTo(prev.x, prev.y);
-          ctx.quadraticCurveTo(prev.x, prev.y, cpx, cpy);
-          ctx.strokeStyle = `rgba(${CYAN.r},${CYAN.g},${CYAN.b},${opacity})`;
-          ctx.lineWidth = lineWidth;
-          ctx.stroke();
+        // Glow pass — single continuous path
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, points[0].y);
+        for (let i = 1; i < points.length; i++) {
+          const prev = points[i - 1];
+          const curr = points[i];
+          ctx.quadraticCurveTo(prev.x, prev.y, (prev.x + curr.x) / 2, (prev.y + curr.y) / 2);
         }
+        ctx.strokeStyle = `rgba(${CYAN.r},${CYAN.g},${CYAN.b},${opacity * 0.05})`;
+        ctx.lineWidth = lineWidth * 3;
+        ctx.stroke();
+
+        // Core pass — single continuous path
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, points[0].y);
+        for (let i = 1; i < points.length; i++) {
+          const prev = points[i - 1];
+          const curr = points[i];
+          ctx.quadraticCurveTo(prev.x, prev.y, (prev.x + curr.x) / 2, (prev.y + curr.y) / 2);
+        }
+        ctx.strokeStyle = `rgba(${CYAN.r},${CYAN.g},${CYAN.b},${opacity})`;
+        ctx.lineWidth = lineWidth;
+        ctx.stroke();
       }
 
       if (!reducedMotion) {
