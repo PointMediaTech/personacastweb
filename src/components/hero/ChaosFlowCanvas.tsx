@@ -21,6 +21,7 @@ interface FlowLine {
   z: number;
   seed: number;
   bundleIndex: number;
+  bundleCenterY: number; // convergence target in order zone
 }
 
 interface GoldParticle {
@@ -45,25 +46,35 @@ function getFlowPoint(
   mouseY: number,
 ) {
   const x = xNorm * w;
-  const baseY = line.baseY;
 
+  // Y-position convergence: lines converge from spread baseY toward bundle center
+  let currentBaseY: number;
   let amplitude: number;
-  if (xNorm < 0.4) {
-    amplitude = 50 + line.z * 30;
+
+  if (xNorm < 0.35) {
+    // Chaos zone: full spread, high noise
+    currentBaseY = line.baseY;
+    amplitude = 60 + line.z * 40; // 60-100px for more tangling
   } else if (xNorm < 0.6) {
-    const progress = (xNorm - 0.4) / 0.2;
-    const chaosAmp = 50 + line.z * 30;
-    amplitude = lerp(chaosAmp, 3, progress);
+    // Transition zone: converge Y toward bundle center, reduce noise
+    const progress = (xNorm - 0.35) / 0.25;
+    const eased = progress * progress; // ease-in for smooth convergence
+    currentBaseY = lerp(line.baseY, line.bundleCenterY, eased);
+    const chaosAmp = 60 + line.z * 40;
+    amplitude = lerp(chaosAmp, 2, eased);
   } else {
-    amplitude = 2 + line.z * 3;
+    // Order zone: fully converged to bundle center, minimal noise
+    currentBaseY = line.bundleCenterY;
+    amplitude = 1 + line.z * 2;
   }
 
   const noiseVal = noise2D(
     x * 0.005 + timeOffset,
-    baseY * 0.005 + line.seed,
+    line.baseY * 0.005 + line.seed,
   );
-  let y = baseY + noiseVal * amplitude;
+  let y = currentBaseY + noiseVal * amplitude;
 
+  // Mouse repulsion
   const dx = x - mouseX;
   const dy = y - mouseY;
   const dist = Math.sqrt(dx * dx + dy * dy);
@@ -102,14 +113,24 @@ export function ChaosFlowCanvas() {
     const linesPerBundle = Math.ceil(config.lineCount / bundleCount);
     const lines: FlowLine[] = [];
 
+    // Convergence targets: bundles converge to fewer Y positions on the right
+    // 10 bundles on left → 5 convergence streams on right
+    const convergenceCount = 5;
+
     for (let b = 0; b < bundleCount; b++) {
-      const bundleCenterY = (h * 0.1) + (b / (bundleCount - 1)) * (h * 0.8);
+      // Wide spread on left (chaos)
+      const bundleStartY = (h * 0.05) + (b / (bundleCount - 1)) * (h * 0.9);
+      // Converge to fewer streams on right (order)
+      const convergenceIdx = Math.floor(b / (bundleCount / convergenceCount));
+      const convergenceY = (h * 0.2) + (convergenceIdx / (convergenceCount - 1)) * (h * 0.6);
+
       for (let i = 0; i < linesPerBundle && lines.length < config.lineCount; i++) {
         lines.push({
-          baseY: bundleCenterY + (Math.random() - 0.5) * (h * 0.08),
+          baseY: bundleStartY + (Math.random() - 0.5) * (h * 0.15), // wider chaos spread
           z: Math.random(),
           seed: Math.random() * 1000,
           bundleIndex: b,
+          bundleCenterY: convergenceY + (Math.random() - 0.5) * 8, // tight convergence
         });
       }
     }
