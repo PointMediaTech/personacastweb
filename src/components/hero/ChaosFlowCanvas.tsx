@@ -17,11 +17,10 @@ const TIER_CONFIG = {
 } as const;
 
 interface FlowLine {
-  baseY: number;
-  z: number;
-  seed: number;
-  bundleIndex: number;
-  bundleCenterY: number; // convergence target in order zone
+  entryY: number;   // Y where line enters from left (spread)
+  exitY: number;    // Y where line exits to right (spread, ordered)
+  z: number;        // 0–1 depth for visual layering
+  seed: number;     // unique noise seed
 }
 
 interface GoldParticle {
@@ -35,6 +34,15 @@ function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
 
+// Smooth step for natural transitions
+function smoothstep(t: number) {
+  return t * t * (3 - 2 * t);
+}
+
+// Focal point: where all lines converge into the chaos vortex
+const FOCAL_X = 0.45; // 45% from left (shifted right of center since left has text)
+const FOCAL_Y = 0.45; // 45% from top
+
 function getFlowPoint(
   line: FlowLine,
   xNorm: number,
@@ -46,33 +54,46 @@ function getFlowPoint(
   mouseY: number,
 ) {
   const x = xNorm * w;
+  const focalY = h * FOCAL_Y;
 
-  // Y-position convergence: lines converge from spread baseY toward bundle center
-  let currentBaseY: number;
+  let baseY: number;
   let amplitude: number;
 
-  if (xNorm < 0.35) {
-    // Chaos zone: full spread, high noise
-    currentBaseY = line.baseY;
-    amplitude = 60 + line.z * 40; // 60-100px for more tangling
-  } else if (xNorm < 0.6) {
-    // Transition zone: converge Y toward bundle center, reduce noise
-    const progress = (xNorm - 0.35) / 0.25;
-    const eased = progress * progress; // ease-in for smooth convergence
-    currentBaseY = lerp(line.baseY, line.bundleCenterY, eased);
-    const chaosAmp = 60 + line.z * 40;
-    amplitude = lerp(chaosAmp, 2, eased);
+  if (xNorm < 0.25) {
+    // Left entry zone: lines flow in from their entry positions, slight convergence
+    const progress = smoothstep(xNorm / 0.25);
+    baseY = lerp(line.entryY, focalY, progress * 0.6);
+    amplitude = 5 + line.z * 10; // mild waviness
+  } else if (xNorm < 0.55) {
+    // Central chaos vortex: all lines converge to focal point with HIGH noise
+    const toCenter = (xNorm - 0.25) / 0.30;
+    const centerDist = Math.abs(toCenter - 0.5) * 2; // 1 at edges, 0 at dead center
+    // Lines pull toward focal Y
+    const convergence = smoothstep(Math.min(toCenter * 2, 1)); // converge in first half
+    const spread = smoothstep(Math.max((toCenter - 0.5) * 2, 0)); // spread in second half
+    baseY = lerp(
+      lerp(line.entryY, focalY, 0.6 + convergence * 0.4),
+      lerp(focalY, line.exitY, spread),
+      toCenter
+    );
+    // Noise peaks at the center of the vortex
+    amplitude = (80 + line.z * 60) * (1 - centerDist * 0.5);
+  } else if (xNorm < 0.70) {
+    // Right transition: emerging from vortex, noise dies down
+    const progress = smoothstep((xNorm - 0.55) / 0.15);
+    baseY = lerp(focalY, line.exitY, 0.3 + progress * 0.7);
+    amplitude = lerp(40 + line.z * 30, 3, progress);
   } else {
-    // Order zone: fully converged to bundle center, minimal noise
-    currentBaseY = line.bundleCenterY;
+    // Right order zone: smooth parallel flow
+    baseY = line.exitY;
     amplitude = 1 + line.z * 2;
   }
 
   const noiseVal = noise2D(
-    x * 0.005 + timeOffset,
-    line.baseY * 0.005 + line.seed,
+    x * 0.004 + timeOffset,
+    line.entryY * 0.003 + line.seed,
   );
-  let y = currentBaseY + noiseVal * amplitude;
+  let y = baseY + noiseVal * amplitude;
 
   // Mouse repulsion
   const dx = x - mouseX;
@@ -109,30 +130,25 @@ export function ChaosFlowCanvas() {
       noise2DRef.current = createNoise2D();
     }
 
-    const bundleCount = 10;
-    const linesPerBundle = Math.ceil(config.lineCount / bundleCount);
     const lines: FlowLine[] = [];
 
-    // Convergence targets: bundles converge to fewer Y positions on the right
-    // 10 bundles on left → 5 convergence streams on right
-    const convergenceCount = 5;
+    for (let i = 0; i < config.lineCount; i++) {
+      const t = i / (config.lineCount - 1); // 0–1 distribution
 
-    for (let b = 0; b < bundleCount; b++) {
-      // Wide spread on left (chaos)
-      const bundleStartY = (h * 0.05) + (b / (bundleCount - 1)) * (h * 0.9);
-      // Converge to fewer streams on right (order)
-      const convergenceIdx = Math.floor(b / (bundleCount / convergenceCount));
-      const convergenceY = (h * 0.2) + (convergenceIdx / (convergenceCount - 1)) * (h * 0.6);
+      // Entry: lines are spread across the left edge (full height)
+      const entryY = h * 0.05 + t * h * 0.9;
 
-      for (let i = 0; i < linesPerBundle && lines.length < config.lineCount; i++) {
-        lines.push({
-          baseY: bundleStartY + (Math.random() - 0.5) * (h * 0.15), // wider chaos spread
-          z: Math.random(),
-          seed: Math.random() * 1000,
-          bundleIndex: b,
-          bundleCenterY: convergenceY + (Math.random() - 0.5) * 8, // tight convergence
-        });
-      }
+      // Exit: lines spread out on the right but in a tighter, more ordered band
+      // Slight shuffling so entry and exit don't perfectly correspond
+      const exitT = (t + (Math.random() - 0.5) * 0.15);
+      const exitY = h * 0.1 + Math.max(0, Math.min(1, exitT)) * h * 0.8;
+
+      lines.push({
+        entryY: entryY + (Math.random() - 0.5) * 15,
+        exitY: exitY + (Math.random() - 0.5) * 5,
+        z: Math.random(),
+        seed: Math.random() * 1000,
+      });
     }
 
     lines.sort((a, b) => a.z - b.z);
