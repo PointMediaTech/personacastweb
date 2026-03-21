@@ -1,5 +1,6 @@
 import { useRef, useEffect, useCallback } from 'react';
 import { createNoise2D } from 'simplex-noise';
+import type { DecisionKey } from './theaterData';
 
 const CYAN = { r: 100, g: 200, b: 255 };
 const GOLD = { r: 255, g: 184, b: 0 };
@@ -14,6 +15,18 @@ const TIER_CONFIG = {
   desktop: { lineCount: 350, controlPoints: 20, particles: 50 },
   tablet: { lineCount: 150, controlPoints: 14, particles: 20 },
   mobile: { lineCount: 0, controlPoints: 0, particles: 0 },
+} as const;
+
+const DIVERGENCE_CONFIG = {
+  A: { ratio: 0.1, maxOffset: 5 },
+  B: { ratio: 0.5, maxOffset: 30 },
+  C: { ratio: 0.8, maxOffset: 80 },
+} as const;
+
+const DECISION_COLORS = {
+  A: { r: 100, g: 220, b: 255 },
+  B: { r: 200, g: 192, b: 100 },
+  C: { r: 181, g: 125, b: 125 },
 } as const;
 
 interface FlowLine {
@@ -145,7 +158,15 @@ function getFlowPoint(
   return { x, y, skip: false };
 }
 
-export function ChaosFlowCanvas() {
+interface ChaosFlowCanvasProps {
+  simulationActive?: boolean;
+  selectedDecision?: DecisionKey | null;
+}
+
+export function ChaosFlowCanvas({
+  simulationActive = false,
+  selectedDecision = null,
+}: ChaosFlowCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const linesRef = useRef<FlowLine[]>([]);
   const particlesRef = useRef<GoldParticle[]>([]);
@@ -154,6 +175,11 @@ export function ChaosFlowCanvas() {
   const timeOffsetRef = useRef(0);
   const noise2DRef = useRef<ReturnType<typeof createNoise2D> | null>(null);
   const lastFrameRef = useRef(0);
+  const simulationActiveRef = useRef(simulationActive);
+  const selectedDecisionRef = useRef(selectedDecision);
+  const brightnessRef = useRef(1.0);
+  const divergenceRef = useRef(0);
+  const colorBlendRef = useRef(0);
 
   const init = useCallback((w: number, h: number) => {
     const tier = getDeviceTier(w);
@@ -213,6 +239,11 @@ export function ChaosFlowCanvas() {
   }, []);
 
   useEffect(() => {
+    simulationActiveRef.current = simulationActive;
+    selectedDecisionRef.current = selectedDecision;
+  }, [simulationActive, selectedDecision]);
+
+  useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -263,6 +294,22 @@ export function ChaosFlowCanvas() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
 
+      // Lerp brightness toward target
+      const targetBrightness = simulationActiveRef.current ? 1.25 : 1.0;
+      brightnessRef.current += (targetBrightness - brightnessRef.current) * 0.05;
+      const brightness = brightnessRef.current;
+
+      // Lerp divergence toward target
+      const decision = selectedDecisionRef.current;
+      const targetDivergence = decision ? 1.0 : 0.0;
+      divergenceRef.current += (targetDivergence - divergenceRef.current) * 0.05;
+      const divergence = divergenceRef.current;
+
+      // Lerp color blend
+      const targetColorBlend = decision ? 1.0 : 0.0;
+      colorBlendRef.current += (targetColorBlend - colorBlendRef.current) * 0.05;
+      const colorBlend = colorBlendRef.current;
+
       // Convergence point glow — radial gradient at the vortex center
       const glowX = w * FOCAL_X;
       const glowY = h * FOCAL_Y;
@@ -282,12 +329,26 @@ export function ChaosFlowCanvas() {
       const tier = getDeviceTier(w);
       const cpCount = TIER_CONFIG[tier].controlPoints;
 
+      // Dynamic particle count
+      const baseParticleCount = TIER_CONFIG[tier].particles;
+      const desiredCount = simulationActiveRef.current ? baseParticleCount * 2 : baseParticleCount;
+
+      while (particles.length < desiredCount) {
+        particles.push({
+          lineIndex: Math.floor(Math.random() * lines.length),
+          t: Math.random(),
+          speed: 0.001 + Math.random() * 0.002,
+          radius: 1.5 + Math.random() * 1.5,
+        });
+      }
+
       for (const line of lines) {
         const strayHash = (line.seed % 1000) / 1000;
         const isTier2 = strayHash < 0.05;
         const isTier1 = strayHash >= 0.05 && strayHash < 0.10;
         const lineWidth = isTier2 ? (1.2 + line.z * 1.8) : isTier1 ? (0.8 + line.z * 2) : (0.5 + line.z * 2.5);
-        const baseOpacity = isTier2 ? (0.18 + line.z * 0.3) : isTier1 ? (0.14 + line.z * 0.35) : (0.1 + line.z * 0.4);
+        const rawOpacity = isTier2 ? (0.18 + line.z * 0.3) : isTier1 ? (0.14 + line.z * 0.35) : (0.1 + line.z * 0.4);
+        const baseOpacity = Math.min(rawOpacity * brightness, 0.85);
 
         // Collect control points: exact endpoints + uniform grid in between
         const points: { x: number; y: number }[] = [];
@@ -311,6 +372,36 @@ export function ChaosFlowCanvas() {
 
         if (points.length < 2) continue;
 
+        // Apply divergence offset to right-side points
+        if (divergence > 0.01 && decision) {
+          const dvConfig = DIVERGENCE_CONFIG[decision];
+          const strayHash = (line.seed % 1000) / 1000;
+          const shouldDiverge = strayHash < dvConfig.ratio;
+
+          if (shouldDiverge) {
+            for (const pt of points) {
+              const xNorm = pt.x / w;
+              if (xNorm > 0.75) {
+                const progress = (xNorm - 0.75) / 0.25;
+                const seedOffset = Math.sin(line.seed * 127.1) * 2 - 1;
+                pt.y += seedOffset * dvConfig.maxOffset * progress * divergence;
+              }
+            }
+          }
+        }
+
+        // Color interpolation for decision-dependent right-zone tint
+        let drawR = CYAN.r, drawG = CYAN.g, drawB = CYAN.b;
+        if (colorBlend > 0.01 && decision) {
+          const dc = DECISION_COLORS[decision];
+          const rightmost = points[points.length - 1];
+          if (rightmost && rightmost.x / w > 0.7) {
+            drawR = Math.round(lerp(CYAN.r, dc.r, colorBlend));
+            drawG = Math.round(lerp(CYAN.g, dc.g, colorBlend));
+            drawB = Math.round(lerp(CYAN.b, dc.b, colorBlend));
+          }
+        }
+
         const opacity = baseOpacity;
 
         // Glow pass
@@ -321,7 +412,7 @@ export function ChaosFlowCanvas() {
           const curr = points[i];
           ctx.quadraticCurveTo(prev.x, prev.y, (prev.x + curr.x) / 2, (prev.y + curr.y) / 2);
         }
-        ctx.strokeStyle = `rgba(${CYAN.r},${CYAN.g},${CYAN.b},${opacity * 0.05})`;
+        ctx.strokeStyle = `rgba(${drawR},${drawG},${drawB},${opacity * 0.05})`;
         ctx.lineWidth = lineWidth * 3;
         ctx.stroke();
 
@@ -333,24 +424,29 @@ export function ChaosFlowCanvas() {
           const curr = points[i];
           ctx.quadraticCurveTo(prev.x, prev.y, (prev.x + curr.x) / 2, (prev.y + curr.y) / 2);
         }
-        ctx.strokeStyle = `rgba(${CYAN.r},${CYAN.g},${CYAN.b},${opacity})`;
+        ctx.strokeStyle = `rgba(${drawR},${drawG},${drawB},${opacity})`;
         ctx.lineWidth = lineWidth;
         ctx.stroke();
       }
 
       if (!reducedMotion) {
-        for (const p of particles) {
-          p.t += p.speed;
+        const speedMult = simulationActiveRef.current ? 1.2 : 1.0;
+
+        for (let pi = particles.length - 1; pi >= 0; pi--) {
+          const p = particles[pi];
+          p.t += p.speed * speedMult;
           if (p.t >= 1) {
+            if (particles.length > desiredCount) {
+              particles.splice(pi, 1);
+              continue;
+            }
             p.t = 0;
             p.lineIndex = Math.floor(Math.random() * lines.length);
           }
 
           const line = lines[p.lineIndex];
-          // Map particle t to the line's actual extent range
           const mappedT = lerp(line.leftExtent, line.rightExtent, p.t);
           const pt = getFlowPoint(line, mappedT, w, h, noise2D, timeOffset, mouse.x, mouse.y);
-
           if (pt.skip) continue;
 
           ctx.beginPath();
