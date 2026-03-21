@@ -25,6 +25,26 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
   // Label 3: ✓ pulse — handled via Framer Motion animate prop on the ✓ character
   const hasCheckmark = config.text.includes('✓');
 
+  // Typewriter reveal via CSS clip-path
+  // JS state needed only to synchronize Framer Motion checkmark pulse with CSS animation end
+  const fullText = hasCheckmark
+    ? config.text.replace(' ✓', '') + ' ✓'
+    : config.value
+      ? config.text + ' ' + config.value
+      : config.text;
+  const typewriterDuration = fullText.length * 0.04; // 40ms per character
+  const typewriterDelay = delay + 0.8; // starts after fade-in completes (0.8s = fade-in duration)
+
+  const [typewriterDone, setTypewriterDone] = useState(reduced ? true : false);
+
+  useEffect(() => {
+    if (reduced) return;
+    const timeout = setTimeout(() => {
+      setTypewriterDone(true);
+    }, (typewriterDelay + typewriterDuration) * 1000);
+    return () => clearTimeout(timeout);
+  }, [typewriterDelay, typewriterDuration, reduced]);
+
   return (
     <motion.div
       className={`absolute ${config.hideBelow === 'lg' ? 'hidden lg:block' : ''}`}
@@ -51,13 +71,17 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
             style={{
               letterSpacing: '0.15em',
               color: 'rgba(100,200,255,0.78)',
+              ...(reduced ? {} : {
+                clipPath: 'inset(0 0 0 0)',
+                animation: `hudTypewriter ${typewriterDuration}s steps(${fullText.length}) ${typewriterDelay}s both`,
+              }),
             }}
           >
             {hasCheckmark ? (
               <>
                 {config.text.replace(' ✓', '')}{' '}
                 <motion.span
-                  animate={reduced ? {} : { opacity: [0.5, 1, 0.5] }}
+                  animate={reduced ? {} : typewriterDone ? { opacity: [0.5, 1, 0.5] } : { opacity: 1 }}
                   transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                   style={{ color: config.accentColor }}
                 >
