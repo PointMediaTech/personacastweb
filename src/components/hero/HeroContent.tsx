@@ -36,11 +36,11 @@ export function HeroContent({ theaterActive, onToggleTheater, selectedDecision }
 
   return (
     <>
-      <div className="flex flex-col">
+      <div className="flex flex-col justify-center">
         {/* Eyebrow */}
         <motion.div {...slideLeft(0.1, reduced)} className="flex items-center gap-3 mb-8">
           <div className="h-[1px] w-10 bg-strategic-blue/40" />
-          <span className="font-mono text-[13px] tracking-[0.25em] text-strategic-blue/60 uppercase">
+          <span className="font-mono text-[10px] tracking-[0.25em] text-strategic-blue/60 uppercase">
             AI-Powered Simulation
           </span>
         </motion.div>
@@ -72,12 +72,12 @@ export function HeroContent({ theaterActive, onToggleTheater, selectedDecision }
         {/* Subtitle — #CBD5E1 */}
         <motion.p
           {...slideLeft(0.4, reduced)}
-          className="text-base md:text-lg leading-relaxed max-w-lg"
-          style={{ color: '#CBD5E1', marginBottom: '2rem' }}
+          className="text-base md:text-lg leading-relaxed max-w-lg mb-10"
+          style={{ color: '#CBD5E1' }}
         >
-          領先{' '}
+          在危機發生前{' '}
           <span className="font-mono text-insight-gold font-bold">72</span>{' '}
-          小時的 AI 戰略預演，讓每個決策都有數據撐腰。
+          小時，透過 AI 智能體模擬百萬種輿論路徑，讓未知的風險成為可控的數據資產。
         </motion.p>
 
         {/* CTAs — Primary: Strategic Blue toggle (see spec) */}
@@ -99,7 +99,7 @@ export function HeroContent({ theaterActive, onToggleTheater, selectedDecision }
                   animate={{ opacity: [1, 0.3, 1] }}
                   transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
                 />
-                SIMULATION ACTIVE
+                推演運行中
               </>
             ) : (
               <>
