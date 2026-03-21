@@ -70,7 +70,6 @@ export function SimulationTheater({
           <HUDLabel
             config={label}
             delay={1.8 + i * 0.3}
-            visible={!theaterActive}
           />
         </motion.div>
       ))}

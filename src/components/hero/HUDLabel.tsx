@@ -5,7 +5,6 @@ import { EASE, type HUDLabelConfig } from './theaterData';
 interface HUDLabelProps {
   readonly config: HUDLabelConfig;
   readonly delay: number;
-  readonly visible?: boolean;
 }
 
 export function HUDLabel({ config, delay }: HUDLabelProps) {
@@ -31,24 +30,27 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
       className={`absolute ${config.hideBelow === 'lg' ? 'hidden lg:block' : ''}`}
       style={{
         ...config.position,
-        maxWidth: '200px',
+        maxWidth: '240px',
       }}
-      initial={reduced ? { opacity: 0.7 } : { opacity: 0, x: 20 }}
-      animate={{ opacity: 0.7, x: 0 }}
+      initial={reduced ? { opacity: 1 } : { opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.8, delay, ease: EASE }}
     >
-      <div className="flex items-start gap-2">
+      <div
+        className="flex items-start gap-2 rounded-md border border-white/[0.06] px-3 py-2 backdrop-blur-sm"
+        style={{ backgroundColor: 'rgba(2,6,23,0.55)' }}
+      >
         {/* Accent bar */}
         <div
-          className="w-1 h-5 rounded-full flex-shrink-0 mt-0.5"
+          className="w-1 self-stretch rounded-full flex-shrink-0"
           style={{ backgroundColor: config.accentColor }}
         />
         <div>
           <span
-            className="font-mono text-[10px] uppercase leading-tight block"
+            className="font-mono text-[11px] uppercase leading-tight block"
             style={{
               letterSpacing: '0.15em',
-              color: 'rgba(100,200,255,0.5)',
+              color: 'rgba(100,200,255,0.78)',
             }}
           >
             {hasCheckmark ? (
@@ -65,7 +67,7 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
             ) : config.value ? (
               <>
                 {config.text}{' '}
-                <span style={{ color: 'rgba(100,200,255,0.7)' }}>
+                <span style={{ color: 'rgba(100,200,255,0.85)' }}>
                   {dynamicValue}
                 </span>
               </>
