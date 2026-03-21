@@ -80,7 +80,8 @@ body {
 }
 
 .nav-link:focus-visible {
-  outline: none;
+  outline: 2px solid var(--color-aurora-cyan);
+  outline-offset: 4px;
 }
 
 .nav-bar::after {

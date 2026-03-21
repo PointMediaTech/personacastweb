@@ -1,9 +1,9 @@
-const NAV_LINKS = ['Workflows', 'Persona Lab', 'Strategy Reports', 'Pricing'] as const;
+const NAV_LINKS = ['核心推演', '應用場景', '技術深度', '實戰案例', '資源中心'] as const;
 
 export function Navbar() {
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-10"
+      className="nav-bar fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-10"
       style={{
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
@@ -23,7 +23,7 @@ export function Navbar() {
           <li key={link}>
             <a
               href="#"
-              className="text-mist-blue-gray text-sm transition-colors duration-200 hover:text-white"
+              className="nav-link text-mist-blue-gray text-base tracking-[0.08em] transition-all duration-200"
             >
               {link}
             </a>
@@ -35,15 +35,9 @@ export function Navbar() {
       <div className="hidden md:flex items-center gap-3">
         <button
           type="button"
-          className="rounded-lg border border-mist-blue-gray px-4 py-2 text-sm text-mist-blue-gray transition-colors duration-200 hover:border-white hover:text-white"
+          className="cta-breathing rounded-lg bg-strategic-blue px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:shadow-[0_0_16px_2px_rgba(255,184,0,0.3)] hover:brightness-110"
         >
-          Login
-        </button>
-        <button
-          type="button"
-          className="rounded-lg bg-strategic-blue px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:shadow-[0_0_16px_2px_rgba(255,184,0,0.3)] hover:brightness-110"
-        >
-          Request Demo
+          預約專屬演示
         </button>
       </div>
     </nav>
