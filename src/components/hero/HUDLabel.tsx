@@ -35,10 +35,10 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
   const typewriterDuration = fullText.length * 0.04; // 40ms per character
   const typewriterDelay = delay + 0.8; // starts after fade-in completes (0.8s = fade-in duration)
 
-  const [typewriterDone, setTypewriterDone] = useState(reduced ? true : false);
+  const [typewriterDone, setTypewriterDone] = useState(reduced === true);
 
   useEffect(() => {
-    if (reduced) return;
+    if (reduced === true) return;
     const timeout = setTimeout(() => {
       setTypewriterDone(true);
     }, (typewriterDelay + typewriterDuration) * 1000);
