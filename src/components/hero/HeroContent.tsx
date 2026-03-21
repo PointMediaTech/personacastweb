@@ -142,10 +142,10 @@ export function HeroContent({ theaterActive, onToggleTheater, selectedDecision }
             </span>
           </div>
           <span className="font-mono text-[12px] text-mist-blue-gray tracking-[0.12em] uppercase">
-            Simulation: <span className="text-strategic-blue">T+56H</span>
+            Crisis Window: <span className="text-strategic-blue">T-56H</span>
           </span>
           <span className="font-mono text-[12px] text-mist-blue-gray tracking-[0.12em] uppercase">
-            Conflict:{' '}
+            Sentiment:{' '}
             <motion.span
               key={conflictDisplay}
               className={conflictColor ? '' : 'text-insight-gold'}
@@ -158,7 +158,7 @@ export function HeroContent({ theaterActive, onToggleTheater, selectedDecision }
             </motion.span>
           </span>
           <span className="font-mono text-[12px] text-mist-blue-gray tracking-[0.12em] uppercase">
-            Paths Analyzed: <span className="text-white">3.4M+</span>
+            Scenarios: <span className="text-white">3.4M+</span>
           </span>
         </div>
       </motion.div>
