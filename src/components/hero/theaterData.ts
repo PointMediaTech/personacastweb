@@ -40,7 +40,7 @@ export const HUD_LABELS: HUDLabelConfig[] = [
     text: 'RISK VECTORS: DIVERGING',
     accentColor: '#B57D7D',
     position: { top: '20%', left: '52%' },
-    cardPosition: { top: '18%', right: '38%' },
+    cardPosition: { top: '18%', right: '40%' },
     hideBelow: 'lg',
   },
   {
@@ -49,14 +49,14 @@ export const HUD_LABELS: HUDLabelConfig[] = [
     value: '2.1M PATHS',
     accentColor: '#769EDB',
     position: { top: '38%', right: '28%' },
-    cardPosition: { top: '36%', right: '26%' },
+    cardPosition: { top: '36%', right: '28%' },
   },
   {
     id: 3,
     text: 'OUTCOME: CONTROLLED ✓',
     accentColor: '#4ADE80',
     position: { top: '55%', right: '12%' },
-    cardPosition: { top: '54%', right: '14%' },
+    cardPosition: { top: '54%', right: '16%' },
   },
 ];
 
