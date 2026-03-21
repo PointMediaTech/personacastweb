@@ -85,7 +85,8 @@ export function HeroContent({ theaterActive, onToggleTheater, selectedDecision }
           <button
             type="button"
             onClick={onToggleTheater}
-            className={`group inline-flex items-center gap-3 rounded-sm px-10 py-4 text-[15px] font-bold tracking-wide transition-all duration-400 ${
+            aria-pressed={theaterActive}
+            className={`group inline-flex items-center gap-3 rounded-sm px-10 py-4 text-[15px] font-bold tracking-wide transition-all duration-400 focus-visible:ring-2 focus-visible:ring-strategic-blue/60 focus-visible:ring-offset-2 focus-visible:ring-offset-deep-space ${
               theaterActive
                 ? 'border border-[rgba(255,184,0,0.3)] hover:border-[rgba(255,184,0,0.5)]'
                 : 'bg-[#769EDB] hover:shadow-[0_0_30px_6px_rgba(118,158,219,0.25)]'
