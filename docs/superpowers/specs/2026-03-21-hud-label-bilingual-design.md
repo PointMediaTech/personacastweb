@@ -27,7 +27,7 @@ Each HUD label becomes a two-line element:
 | # | Chinese (primary, new) | English (secondary, existing) |
 |---|---|---|
 | 1 | `風險向量：擴散中` | `RISK VECTORS: DIVERGING` |
-| 2 | `情境鎖定：2.0M 路徑` | `SCENARIO LOCK: 2.0M PATHS` |
+| 2 | `情境鎖定：2.1M 路徑` (dynamic) | `SCENARIO LOCK: 2.1M PATHS` (dynamic) |
 | 3 | `結果：已控制 ✓` | `OUTCOME: CONTROLLED ✓` |
 
 ## Data Structure Changes (`theaterData.ts`)
@@ -77,11 +77,15 @@ Each HUD label becomes a two-line element:
 ### Animation
 
 - Typewriter animation applies to the Chinese line only
-- English subtitle fades in (`opacity 0 → 1`, 0.4s) after the typewriter animation completes
-- Label 2 dynamic value fluctuation (`2.0M / 2.1M / 2.2M`) displays in Chinese line as `X.XM 路徑`, English line shows `X.XM PATHS` in sync
+- Chinese `fullText` is constructed as `textZh` (or `textZh + ' ' + valueZh` for Label 2) — same logic as the existing English construction
+- Per-character duration stays at 40ms; Chinese text is shorter so the animation is naturally faster, which feels appropriate for the denser glyphs
+- English subtitle fades in (`opacity 0 → 1`, 0.4s) after the typewriter completes, triggered by the existing `typewriterDone` state boolean
+- Label 2 dynamic value fluctuation uses a single state variable; Chinese variants: `['2.0M 路徑', '2.1M 路徑', '2.2M 路徑']`, English variants: `['2.0M PATHS', '2.1M PATHS', '2.2M PATHS']` — both lines update from the same random index
 - Label 3 checkmark pulse animation stays on the Chinese line
+- When `prefers-reduced-motion` is enabled, both Chinese and English lines render immediately at full opacity with no typewriter or fade-in
 
 ## Files to Modify
 
 1. `src/components/hero/theaterData.ts` — add `textZh`, `valueZh` fields to interface and data
 2. `src/components/hero/HUDLabel.tsx` — render bilingual two-line layout with animation adjustments
+3. `src/index.css` — verify `hudTypewriter` keyframe still works with the two-line layout (likely no change needed)
