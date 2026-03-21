@@ -35,7 +35,8 @@ export function Navbar() {
       <div className="hidden md:flex items-center gap-3">
         <button
           type="button"
-          className="cta-breathing rounded-lg bg-strategic-blue px-4 py-2 text-sm font-medium text-white transition-all duration-200"
+          className="cta-ghost rounded-full px-6 py-2.5 text-base font-medium text-white tracking-[0.08em]"
+          title="預約 AI 智能體模擬演示"
         >
           預約專屬演示
         </button>
