@@ -3,7 +3,7 @@ const NAV_LINKS = ['核心推演', '應用場景', '技術深度', '實戰案例
 export function Navbar() {
   return (
     <nav
-      className="nav-bar fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-10"
+      className="nav-bar fixed top-0 left-0 right-0 z-50 flex items-center justify-between"
       style={{
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
@@ -35,7 +35,7 @@ export function Navbar() {
       <div className="hidden md:flex items-center gap-3">
         <button
           type="button"
-          className="cta-ghost rounded-full px-6 py-2.5 text-base font-medium text-white tracking-[0.08em]"
+          className="cta-ghost rounded-full text-base font-medium text-white tracking-[0.08em]"
           title="預約 AI 智能體模擬演示"
         >
           預約專屬演示

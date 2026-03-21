@@ -12,13 +12,16 @@ export function HeroSection() {
   const [selectedDecision, setSelectedDecision] = useState<DecisionKey | null>(null);
 
   const handleToggleTheater = useCallback(() => {
+    console.log('[Theater] Button clicked! Current state:', theaterActive);
     setTheaterActive((prev) => {
-      if (prev) setSelectedDecision(null); // reset decision when deactivating
+      console.log('[Theater] Toggling from', prev, 'to', !prev);
+      if (prev) setSelectedDecision(null);
       return !prev;
     });
-  }, []);
+  }, [theaterActive]);
 
   return (
+    <>
     <section className="relative h-screen bg-deep-space overflow-hidden">
       {/* Atmospheric glow — z-0 */}
       <div
@@ -50,7 +53,7 @@ export function HeroSection() {
 
       {/* Text content — z-10 */}
       <div
-        className="relative z-10 h-screen flex items-center"
+        className="relative z-20 h-screen flex items-center"
         style={{ paddingLeft: 'clamp(2.5rem, 8vw, 10rem)', paddingRight: '1.5rem' }}
       >
         <div className="w-full max-w-xl">
@@ -70,7 +73,8 @@ export function HeroSection() {
       />
 
       <LiveBadge />
-      <Navbar />
     </section>
+    <Navbar />
+    </>
   );
 }
