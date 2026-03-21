@@ -27,8 +27,6 @@ Each HUD label detects a problem; the corresponding Decision Card (same position
 |---|---|---|
 | text | `RISK VECTORS: DIVERGING` | `PUBLIC SENTIMENT: SPREADING` |
 | textZh | `風險向量：擴散中` | `公眾情緒：負面擴散中` |
-| value | _(none)_ | _(no change)_ |
-| valueZh | _(none)_ | _(no change)_ |
 | accentColor | `#B57D7D` | `#B57D7D` _(no change)_ |
 
 #### HUD_LABELS[1] (maps to Decision B: 法規防禦部署 / LEGAL WAR)
@@ -66,8 +64,12 @@ Each HUD label detects a problem; the corresponding Decision Card (same position
 - **ChaosFlowCanvas** — no changes
 - **SimulationTheater** — no logic changes
 - **HUDLabel component** — generic renderer, consumes config, no changes needed
+- **HUDLabelConfig interface** — `value` and `valueZh` are already optional, no type changes needed
 - **Positions, animations, morph transitions** — all untouched
 - **SimulationResult** — no changes
+- **HUD / Decision Card accent colors** — intentionally kept different between detection and strategy phases; the color shift during morph reinforces the transition from "monitoring" to "acting"
+- **Data field names** (`conflictValue`, `conflictColor` in `DecisionResult`) — kept as-is to limit scope; the display label changes from "Conflict" to "Sentiment" but the underlying field names remain unchanged
+- **Status bar styling** — `text-strategic-blue` on the time value is retained for the countdown display
 
 ## Files Affected
 
