@@ -67,7 +67,7 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
         />
         <div>
           <span
-            className="font-mono text-[13px] uppercase leading-tight block"
+            className="font-mono text-[14px] uppercase leading-tight block"
             style={{
               letterSpacing: '0.15em',
               color: 'rgba(100,200,255,0.78)',
