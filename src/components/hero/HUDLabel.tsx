@@ -10,30 +10,29 @@ interface HUDLabelProps {
 export function HUDLabel({ config, delay }: HUDLabelProps) {
   const reduced = useReducedMotion();
 
-  // Label 2: fluctuating number
-  const [dynamicValue, setDynamicValue] = useState(config.value);
+  // Label 2: fluctuating number — use index to keep zh/en in sync
+  const ZH_VARIANTS = ['2.0M 路徑', '2.1M 路徑', '2.2M 路徑'];
+  const EN_VARIANTS = ['2.0M PATHS', '2.1M PATHS', '2.2M PATHS'];
+  const [variantIndex, setVariantIndex] = useState(1); // default index=1 → "2.1M"
 
   useEffect(() => {
     if (!config.value || reduced) return;
     const interval = setInterval(() => {
-      const variants = ['2.0M PATHS', '2.1M PATHS', '2.2M PATHS'];
-      setDynamicValue(variants[Math.floor(Math.random() * variants.length)]);
+      setVariantIndex(Math.floor(Math.random() * ZH_VARIANTS.length));
     }, 3000);
     return () => clearInterval(interval);
   }, [config.value, reduced]);
 
-  // Label 3: ✓ pulse — handled via Framer Motion animate prop on the ✓ character
-  const hasCheckmark = config.text.includes('✓');
+  const hasCheckmark = config.textZh.includes('✓');
 
-  // Typewriter reveal via CSS clip-path
-  // JS state needed only to synchronize Framer Motion checkmark pulse with CSS animation end
-  const fullText = hasCheckmark
-    ? config.text.replace(' ✓', '') + ' ✓'
-    : config.value
-      ? config.text + ' ' + config.value
-      : config.text;
-  const typewriterDuration = fullText.length * 0.04; // 40ms per character
-  const typewriterDelay = delay + 0.8; // starts after fade-in completes (0.8s = fade-in duration)
+  // Chinese typewriter text
+  const fullTextZh = hasCheckmark
+    ? config.textZh.replace(' ✓', '') + ' ✓'
+    : config.valueZh
+      ? config.textZh + ' ' + config.valueZh
+      : config.textZh;
+  const typewriterDuration = fullTextZh.length * 0.04;
+  const typewriterDelay = delay + 0.8;
 
   const [typewriterDone, setTypewriterDone] = useState(reduced === true);
 
@@ -50,7 +49,7 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
       className={`absolute ${config.hideBelow === 'lg' ? 'hidden lg:block' : ''}`}
       style={{
         ...config.position,
-        maxWidth: '240px',
+        maxWidth: '260px',
       }}
       initial={reduced ? { opacity: 1 } : { opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
@@ -65,21 +64,22 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
           className="w-1 self-stretch rounded-full flex-shrink-0"
           style={{ backgroundColor: config.accentColor }}
         />
-        <div>
+        <div className="flex flex-col gap-0.5">
+          {/* Line 1: Chinese primary text with typewriter */}
           <span
-            className="font-mono text-[14px] uppercase leading-tight block"
+            className="font-mono text-[14px] leading-tight block"
             style={{
-              letterSpacing: '0.15em',
+              letterSpacing: '0.08em',
               color: 'rgba(100,200,255,0.78)',
               ...(reduced ? {} : {
                 clipPath: 'inset(0 0 0 0)',
-                animation: `hudTypewriter ${typewriterDuration}s steps(${fullText.length}) ${typewriterDelay}s both`,
+                animation: `hudTypewriter ${typewriterDuration}s steps(${fullTextZh.length}) ${typewriterDelay}s both`,
               }),
             }}
           >
             {hasCheckmark ? (
               <>
-                {config.text.replace(' ✓', '')}{' '}
+                {config.textZh.replace(' ✓', '')}{' '}
                 <motion.span
                   animate={reduced ? {} : typewriterDone ? { opacity: [0.5, 1, 0.5] } : { opacity: 1 }}
                   transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
@@ -88,17 +88,45 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
                   ✓
                 </motion.span>
               </>
+            ) : config.valueZh ? (
+              <>
+                {config.textZh}{' '}
+                <span style={{ color: 'rgba(100,200,255,0.85)' }}>
+                  {ZH_VARIANTS[variantIndex]}
+                </span>
+              </>
+            ) : (
+              config.textZh
+            )}
+          </span>
+
+          {/* Line 2: English secondary text — fades in after typewriter */}
+          <motion.span
+            className="font-mono text-[10px] uppercase leading-tight block"
+            style={{
+              letterSpacing: '0.15em',
+              color: 'rgba(100,200,255,0.4)',
+            }}
+            initial={reduced ? { opacity: 1 } : { opacity: 0 }}
+            animate={{ opacity: typewriterDone ? 1 : 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            {hasCheckmark ? (
+              <>
+                {config.text.replace(' ✓', '')}{' '}
+                <span style={{ color: config.accentColor, opacity: 0.5 }}>✓</span>
+              </>
             ) : config.value ? (
               <>
                 {config.text}{' '}
-                <span style={{ color: 'rgba(100,200,255,0.85)' }}>
-                  {dynamicValue}
+                <span style={{ color: 'rgba(100,200,255,0.5)' }}>
+                  {EN_VARIANTS[variantIndex]}
                 </span>
               </>
             ) : (
               config.text
             )}
-          </span>
+          </motion.span>
         </div>
       </div>
     </motion.div>
