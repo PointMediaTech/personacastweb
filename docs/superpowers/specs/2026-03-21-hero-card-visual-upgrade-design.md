@@ -18,7 +18,7 @@ All card types adopt these baseline properties:
 
 | Property | Current | New |
 |----------|---------|-----|
-| Min width | ~260px | **320px** |
+| Min width | ~260px (DataCards), 200px (DecisionCard) | **320px** (DataCards/AgentCards), **280px** (DecisionCard) |
 | Backdrop blur | `blur(12px)` | **`blur(16px)`** |
 | Background | `rgba(2,6,23,0.5)` | **`rgba(10,14,23,0.55)`** |
 | Border | `border-slate-700/40` | **1px `rgba(0,242,255,0.12)`** |
@@ -58,9 +58,14 @@ Restructured top-to-bottom:
 
 - **Pulse dot:** 6px circle, `aurora-cyan`, CSS `pulse 2s infinite`
 - **Pill Badges:** `border-radius: 9999px`, bg `rgba(0,242,255,0.1)`, text `#00F2FF`, padding `2px 10px`, font 12px
-- Tags: 公關, 法律, 技術 as applicable per card
+- Tags per card: hardcoded in `theaterData.ts` as a new `tags` field on `DecisionConfig`
+  - Decision A: `['公關']`
+  - Decision B: `['法律']`
+  - Decision C: `['公關', '技術']`
 
 ### Title Copy Changes
+
+Updated in `theaterData.ts` `DECISIONS` array (`titleZh` field):
 
 | Original | New |
 |----------|-----|
@@ -68,11 +73,13 @@ Restructured top-to-bottom:
 | 法律攻防 | **法規防禦部署** |
 | 轉移關注 | **議題重構策略** |
 
+Risk labels in `metrics.risk` remain unchanged ("低", "中", "高").
+
 ### Success Rate Progress Bar
 
 - Height: 3px
 - Track: `rgba(255,255,255,0.08)`
-- Fill color by value: ≥60% `aurora-cyan`, 40-59% `amber-warn`, <40% `alert-red`
+- Fill color by value (replaces per-card accent colors for metrics): ≥60% `aurora-cyan`, 40-59% `amber-warn`, <40% `alert-red`
 - Trigger: 0.3s after card entrance animation completes
 - Duration: 1.2s, `ease-out`, from 0% to target
 - Number counts up in sync
@@ -88,6 +95,10 @@ Restructured top-to-bottom:
 ### Hover Expansion (decision cards only)
 
 - In addition to shared hover state, reveals a hidden info line (estimated execution time)
+- Execution time per card: hardcoded in `theaterData.ts` as a new `executionTime` field on `DecisionConfig`
+  - Decision A: `"48-72h"`
+  - Decision B: `"2-4 週"`
+  - Decision C: `"24-48h"`
 - Expand via `max-height` + `opacity` transition
 
 ---
@@ -149,7 +160,8 @@ Existing colors (`insight-gold`, `strategic-blue`, `dried-rose`, etc.) remain un
 
 ### LIVE Pulse Dot (decision cards + AgentCards)
 
-- CSS: `scale(1) → scale(1.6) → scale(1)` + `opacity 1 → 0.3 → 1`
+- Pure CSS animation (replace existing framer-motion opacity animation in DecisionCard)
+- Keyframes: `scale(1) → scale(1.6) → scale(1)` + `opacity 1 → 0.3 → 1`
 - Duration: 2s, infinite
 - Color: decision cards = `aurora-cyan`, AgentCards = respective pro/anti color
 
@@ -166,9 +178,11 @@ Existing colors (`insight-gold`, `strategic-blue`, `dried-rose`, etc.) remain un
 ### In scope:
 
 - `src/index.css` — 3 new color variables
+- `src/components/hero/theaterData.ts` — extend `DecisionConfig` with `tags` and `executionTime` fields; update `titleZh` values
+- `src/components/hero/DecisionCard.tsx` — full layout rework (progress bar, breathing light, pill badges, hover expand)
+- `src/components/hero/SimulationTheater.tsx` — adjust card positioning if needed for new card width (200px → 280px)
 - `src/components/hero/DataCards.tsx` — GlassCard upgrade, sizing, fonts
 - `src/components/hero/AgentCards.tsx` — style sync, sizing, fonts
-- Decision path card component in SimulationTheater — full layout rework
 - `src/components/hero/cards/ConflictIndexCard.tsx` — font sizing, container fit
 - `src/components/hero/cards/TrajectoryCard.tsx` — same
 - `src/components/hero/cards/SentimentCard.tsx` — same
