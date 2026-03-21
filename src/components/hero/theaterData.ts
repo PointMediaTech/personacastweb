@@ -5,7 +5,9 @@ export type DecisionKey = 'A' | 'B' | 'C';
 export interface HUDLabelConfig {
   id: number;
   text: string;
-  value?: string;           // dynamic portion (e.g., "2.1M")
+  textZh: string;            // Chinese primary text
+  value?: string;            // dynamic portion (e.g., "2.1M PATHS")
+  valueZh?: string;          // Chinese dynamic portion (e.g., "2.1M 路徑")
   accentColor: string;       // hex
   position: { top: string; left?: string; right?: string };
   cardPosition: { top: string; right: string }; // position when morphed to decision card
@@ -38,25 +40,29 @@ export const HUD_LABELS: HUDLabelConfig[] = [
   {
     id: 1,
     text: 'RISK VECTORS: DIVERGING',
+    textZh: '風險向量：擴散中',
     accentColor: '#B57D7D',
     position: { top: '20%', left: '52%' },
-    cardPosition: { top: '18%', right: '40%' },
+    cardPosition: { top: '18%', right: '30%' },
     hideBelow: 'lg',
   },
   {
     id: 2,
     text: 'SCENARIO LOCK:',
+    textZh: '情境鎖定：',
     value: '2.1M PATHS',
+    valueZh: '2.1M 路徑',
     accentColor: '#769EDB',
     position: { top: '38%', right: '28%' },
-    cardPosition: { top: '36%', right: '28%' },
+    cardPosition: { top: '36%', right: '18%' },
   },
   {
     id: 3,
     text: 'OUTCOME: CONTROLLED ✓',
+    textZh: '結果：已控制 ✓',
     accentColor: '#4ADE80',
     position: { top: '55%', right: '12%' },
-    cardPosition: { top: '54%', right: '16%' },
+    cardPosition: { top: '54%', right: '6%' },
   },
 ];
 
