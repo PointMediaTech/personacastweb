@@ -1,11 +1,23 @@
+import { useState, useCallback } from 'react';
 import { Navbar } from './Navbar';
 import { HeroContent } from './HeroContent';
 import { LiveBadge } from './LiveBadge';
 import { ChaosFlowCanvas } from './ChaosFlowCanvas';
 import { DataRainCanvas } from './DataRainCanvas';
-import { DataCards } from './DataCards';
+import { SimulationTheater } from './SimulationTheater';
+import type { DecisionKey } from './theaterData';
 
 export function HeroSection() {
+  const [theaterActive, setTheaterActive] = useState(false);
+  const [selectedDecision, setSelectedDecision] = useState<DecisionKey | null>(null);
+
+  const handleToggleTheater = useCallback(() => {
+    setTheaterActive((prev) => {
+      if (prev) setSelectedDecision(null); // reset decision when deactivating
+      return !prev;
+    });
+  }, []);
+
   return (
     <section className="relative h-screen bg-deep-space overflow-hidden">
       {/* Atmospheric glow — z-0 */}
@@ -23,7 +35,10 @@ export function HeroSection() {
       <DataRainCanvas />
 
       {/* ChaosFlow — z-2, full-width flow lines */}
-      <ChaosFlowCanvas />
+      <ChaosFlowCanvas
+        simulationActive={theaterActive}
+        selectedDecision={selectedDecision}
+      />
 
       {/* Left scrim — z-[2], same z as ChaosFlow but renders on top via DOM order */}
       <div
@@ -39,12 +54,20 @@ export function HeroSection() {
         style={{ paddingLeft: 'clamp(2.5rem, 8vw, 10rem)', paddingRight: '1.5rem' }}
       >
         <div className="w-full max-w-xl">
-          <HeroContent />
+          <HeroContent
+            theaterActive={theaterActive}
+            onToggleTheater={handleToggleTheater}
+            selectedDecision={selectedDecision}
+          />
         </div>
       </div>
 
-      {/* DataCards — z-15, floating glassmorphism cards */}
-      <DataCards />
+      {/* SimulationTheater — z-15, HUD labels / decision cards */}
+      <SimulationTheater
+        theaterActive={theaterActive}
+        selectedDecision={selectedDecision}
+        onSelectDecision={setSelectedDecision}
+      />
 
       <LiveBadge />
       <Navbar />
