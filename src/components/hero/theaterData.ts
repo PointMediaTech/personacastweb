@@ -19,6 +19,8 @@ export interface DecisionConfig {
   accentColor: string;
   accentRgb: string;         // for rgba usage
   metrics: { successRate: number; risk: string };
+  tags: string[];
+  executionTime: string;
   hideBelow?: 'lg';
 }
 
@@ -61,29 +63,35 @@ export const HUD_LABELS: HUDLabelConfig[] = [
 export const DECISIONS: DecisionConfig[] = [
   {
     key: 'A',
-    titleZh: '公開道歉',
+    titleZh: '主動式誠意溝通',
     titleEn: 'PR PIVOT',
     accentColor: '#769EDB',
     accentRgb: '118,158,219',
     metrics: { successRate: 73, risk: '低' },
+    tags: ['公關'],
+    executionTime: '48-72h',
     hideBelow: undefined,
   },
   {
     key: 'B',
-    titleZh: '法律攻防',
+    titleZh: '法規防禦部署',
     titleEn: 'LEGAL WAR',
     accentColor: '#FFB800',
     accentRgb: '255,184,0',
     metrics: { successRate: 45, risk: '中' },
+    tags: ['法律'],
+    executionTime: '2-4 週',
     hideBelow: undefined,
   },
   {
     key: 'C',
-    titleZh: '轉移關注',
+    titleZh: '議題重構策略',
     titleEn: 'DIVERSION',
     accentColor: '#B57D7D',
     accentRgb: '181,125,125',
     metrics: { successRate: 28, risk: '高' },
+    tags: ['公關', '技術'],
+    executionTime: '24-48h',
     hideBelow: 'lg',
   },
 ];
