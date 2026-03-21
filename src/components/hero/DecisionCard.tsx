@@ -95,7 +95,7 @@ export function DecisionCard({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="px-5 py-5">
+        <div style={{ padding: '24px 28px' }}>
           {/* Header: pulse dot + LIVE SIMULATION + pill badges */}
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">

@@ -20,7 +20,7 @@ function slideLeft(delay: number, reduced: boolean | null) {
  *   "掌握變數" → Pure White #FFFFFF
  *   "定義結局" → Luminous Blue #93C5FD with subtle glow
  *   Subtitle → Off-White #CBD5E1
- *   Primary CTA (inactive) → Strategic Blue #769EDB bg, White text
+ *   Primary CTA (inactive) → Matte Deep Teal-Blue #2A7B8B bg, Dark Blue #0A2540 text
  *   Primary CTA (active) → Transparent bg, Gold #FFB800 border/text
  */
 interface HeroContentProps {
@@ -36,11 +36,11 @@ export function HeroContent({ theaterActive, onToggleTheater, selectedDecision }
 
   return (
     <>
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col">
         {/* Eyebrow */}
         <motion.div {...slideLeft(0.1, reduced)} className="flex items-center gap-3 mb-8">
           <div className="h-[1px] w-10 bg-strategic-blue/40" />
-          <span className="font-mono text-[10px] tracking-[0.25em] text-strategic-blue/60 uppercase">
+          <span className="font-mono text-[13px] tracking-[0.25em] text-strategic-blue/60 uppercase">
             AI-Powered Simulation
           </span>
         </motion.div>
@@ -72,12 +72,12 @@ export function HeroContent({ theaterActive, onToggleTheater, selectedDecision }
         {/* Subtitle — #CBD5E1 */}
         <motion.p
           {...slideLeft(0.4, reduced)}
-          className="text-base md:text-lg leading-relaxed max-w-lg mb-10"
-          style={{ color: '#CBD5E1' }}
+          className="text-base md:text-lg leading-relaxed max-w-lg"
+          style={{ color: '#CBD5E1', marginBottom: 'calc(2rem + 30px)' }}
         >
-          在危機發生前{' '}
+          領先{' '}
           <span className="font-mono text-insight-gold font-bold">72</span>{' '}
-          小時，透過 AI 智能體模擬百萬種輿論路徑，讓未知的風險成為可控的數據資產。
+          小時的 AI 戰略預演，讓每個決策都有數據撐腰。
         </motion.p>
 
         {/* CTAs — Primary: Strategic Blue toggle (see spec) */}
@@ -86,12 +86,14 @@ export function HeroContent({ theaterActive, onToggleTheater, selectedDecision }
             type="button"
             onClick={onToggleTheater}
             aria-pressed={theaterActive}
-            className={`group inline-flex items-center gap-3 rounded-sm px-10 py-4 text-[15px] font-bold tracking-wide transition-all duration-400 focus-visible:ring-2 focus-visible:ring-strategic-blue/60 focus-visible:ring-offset-2 focus-visible:ring-offset-deep-space ${
-              theaterActive
-                ? 'border border-[rgba(255,184,0,0.3)] hover:border-[rgba(255,184,0,0.5)]'
-                : 'bg-[#769EDB] hover:shadow-[0_0_30px_6px_rgba(118,158,219,0.25)]'
-            }`}
-            style={{ color: theaterActive ? '#FFB800' : '#FFFFFF' }}
+            className="group inline-flex items-center gap-3 rounded-full text-[15px] font-bold tracking-wide transition-all duration-400 focus-visible:ring-2 focus-visible:ring-strategic-blue/60 focus-visible:ring-offset-2 focus-visible:ring-offset-deep-space hover:brightness-110"
+            style={{
+              backgroundColor: 'transparent',
+              color: theaterActive ? '#FFB800' : '#4DC8D2',
+              padding: '0.65rem 1.75rem',
+              fontSize: '15px',
+              border: theaterActive ? '1.5px solid #FFB800' : '1.5px solid #4DC8D2',
+            }}
           >
             {theaterActive ? (
               <>
@@ -104,14 +106,14 @@ export function HeroContent({ theaterActive, onToggleTheater, selectedDecision }
               </>
             ) : (
               <>
-                <Play className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
+                <Play className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
                 啟動推演劇場
               </>
             )}
           </button>
           <button
             type="button"
-            className="group inline-flex items-center gap-2 rounded-sm border border-white/10 px-6 py-4 text-sm tracking-wide transition-all duration-400 hover:border-white/25"
+            className="group inline-flex items-center gap-2 border border-white/10 px-5 py-2.5 text-[15px] font-bold tracking-wide transition-all duration-400 hover:border-white/25"
             style={{ color: '#CBD5E1' }}
           >
             <FileBarChart className="h-3.5 w-3.5" />
@@ -128,21 +130,21 @@ export function HeroContent({ theaterActive, onToggleTheater, selectedDecision }
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 2.6 }}
       >
-        <div className="flex items-center gap-5 opacity-50">
+        <div className="flex items-center gap-5 opacity-70">
           <div className="flex items-center gap-2">
             <motion.span
               className="inline-block h-1.5 w-1.5 rounded-full bg-dried-rose"
               animate={{ opacity: [1, 0.3, 1] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
             />
-            <span className="font-mono text-[10px] text-dried-rose tracking-[0.15em] uppercase">
+            <span className="font-mono text-[12px] text-dried-rose tracking-[0.15em] uppercase">
               2 Agents Active
             </span>
           </div>
-          <span className="font-mono text-[10px] text-mist-blue-gray tracking-[0.12em] uppercase">
+          <span className="font-mono text-[12px] text-mist-blue-gray tracking-[0.12em] uppercase">
             Simulation: <span className="text-strategic-blue">T+56H</span>
           </span>
-          <span className="font-mono text-[10px] text-mist-blue-gray tracking-[0.12em] uppercase">
+          <span className="font-mono text-[12px] text-mist-blue-gray tracking-[0.12em] uppercase">
             Conflict:{' '}
             <motion.span
               key={conflictDisplay}
@@ -155,7 +157,7 @@ export function HeroContent({ theaterActive, onToggleTheater, selectedDecision }
               {conflictDisplay}%
             </motion.span>
           </span>
-          <span className="font-mono text-[10px] text-mist-blue-gray tracking-[0.12em] uppercase">
+          <span className="font-mono text-[12px] text-mist-blue-gray tracking-[0.12em] uppercase">
             Paths Analyzed: <span className="text-white">3.4M+</span>
           </span>
         </div>

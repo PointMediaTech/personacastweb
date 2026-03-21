@@ -55,7 +55,7 @@ function smoothstep(t: number) {
 }
 
 // Focal point: the vortex center where all lines converge
-const FOCAL_X = 0.80; // 80% from left
+const FOCAL_X = 0.83; // 83% from left
 const FOCAL_Y = 0.42; // 42% from top (slightly above center)
 
 function getFlowPoint(
@@ -100,41 +100,42 @@ function getFlowPoint(
     const distFromCenter = Math.abs(xNorm - FOCAL_X) / 0.03;
     baseY = focalY;
     amplitude = 2 + distFromCenter * 5;
-  } else if (xNorm < 0.82) {
+  } else if (xNorm < FOCAL_X + 0.05) {
     // Right emergence: converge from focal toward tight exitY band
-    const rightRange = 0.82 - (FOCAL_X + 0.03);
-    const progress = rightRange > 0 ? smoothstep((xNorm - FOCAL_X - 0.03) / rightRange) : 1;
+    const rightRange = 0.02; // FOCAL_X+0.05 - FOCAL_X+0.03
+    const progress = smoothstep((xNorm - FOCAL_X - 0.03) / rightRange);
     baseY = lerp(focalY, line.exitY, progress);
     amplitude = lerp(4 + line.z * 2, 0.5 + line.z * 0.5, progress);
   } else {
     // Right fan zone: 90% tight band, 5% slight diverge, 5% irregular curves
-    const fanProgress = (xNorm - 0.82) / 0.18;
+    const fanProgress = (xNorm - (FOCAL_X + 0.05)) / (1.0 - (FOCAL_X + 0.05));
     const strayHash = (line.seed % 1000) / 1000;
 
-    if (strayHash < 0.05) {
-      // Tier 2 (~5%): irregular curves — each line has unique angle, curvature, direction
-      // Use seed to derive per-line randomness for angle, bend frequency, bend strength
-      const seedA = Math.sin(line.seed * 127.1) * 43758.5453 % 1; // pseudo-random 0–1
+    if (strayHash < 0.04) {
+      // Tier 2 (4%): wide divergence — evenly spread above & below, each line unique curve
+      const seedA = Math.sin(line.seed * 127.1) * 43758.5453 % 1;
       const seedB = Math.sin(line.seed * 269.5) * 17623.1327 % 1;
       const seedC = Math.sin(line.seed * 419.2) * 91225.8741 % 1;
-      const divergeAngle = (seedA - 0.5) * 2; // -1 to 1, unique direction per line
-      const bendFreq = 1.5 + seedB * 4; // how many wiggles — varies per line
-      const bendAmp = 20 + seedC * 40; // how wide the bends are
+      // Evenly distribute above/below: alternate based on seed
+      const direction = seedA > 0.5 ? 1 : -1;
+      const driftMag = (0.08 + seedB * 0.18) * h; // 8-26% of height
+      const bendFreq = 1.0 + seedC * 3;
+      const bendAmp = 15 + seedA * 50;
       const curvature = Math.sin(fanProgress * Math.PI * bendFreq + line.seed) * bendAmp * fanProgress;
-      const drift = divergeAngle * fanProgress * h * 0.10;
+      const drift = direction * fanProgress * driftMag;
       baseY = line.exitY + drift + curvature;
       amplitude = 2 + line.z * 2;
     } else if (strayHash < 0.10) {
-      // Tier 1 (~5%): slight divergence — each line drifts at its own unique angle
+      // Tier 1 (6%): slight divergence — mild drift with unique angles
       const seedD = Math.sin(line.seed * 331.7) * 28411.9237 % 1;
-      const divergeAngle = (seedD - 0.5) * 2; // unique angle per line
-      const mildBend = Math.sin(fanProgress * Math.PI * (1 + seedD * 2) + line.seed) * 8 * fanProgress;
-      const extraDiverge = divergeAngle * fanProgress * h * 0.035;
+      const direction = seedD > 0.5 ? 1 : -1;
+      const mildBend = Math.sin(fanProgress * Math.PI * (1 + seedD * 2) + line.seed) * 12 * fanProgress;
+      const extraDiverge = direction * fanProgress * h * 0.04;
       baseY = line.exitY + extraDiverge + mildBend;
       amplitude = 1 + line.z * 1.2;
     } else {
-      // Main bundle (90%): very tight parallel band
-      const gentleDiverge = (line.exitY - focalY) * fanProgress * 0.05;
+      // Main bundle (90%): tight on the beam band
+      const gentleDiverge = (line.exitY - focalY) * fanProgress * 0.08;
       baseY = line.exitY + gentleDiverge;
       amplitude = 0.4 + line.z * 0.4;
     }
@@ -205,19 +206,19 @@ export function ChaosFlowCanvas({
       const biasedSpread = Math.sign(spread) * Math.pow(Math.abs(spread), 0.7);
       const entryY = focalY + biasedSpread * h * 0.48;
 
-      // Exit Y (RIGHT endpoint): very tight band from focal center
-      const exitY = focalY + (t - 0.5) * h * 0.025;
+      // Exit Y (RIGHT endpoint): spread evenly above/below focal center
+      const exitY = focalY + (t - 0.5) * h * 0.03;
 
       // How far left/right each line extends from the vortex center
       // Lines radiate different distances — some short, some long
-      const leftExtent = FOCAL_X - 0.15 - Math.random() * 0.55; // reach 15-70% left of focal
-      const rightExtent = FOCAL_X + 0.08 + Math.random() * 0.38; // reach 8-46% right of focal
+      const leftExtent = FOCAL_X - 0.35 - Math.pow(Math.random(), 0.5) * 0.45; // bias toward longer lines, denser on left
+      const rightExtent = 1.02; // always extend past browser right edge to avoid gaps
 
       lines.push({
         entryY: entryY + (Math.random() - 0.5) * 10,
         exitY: exitY + (Math.random() - 0.5) * 4,
         leftExtent: Math.max(0.05, leftExtent),
-        rightExtent: Math.min(1.0, rightExtent),
+        rightExtent: rightExtent, // allow extending past 1.0 to ensure no gap at right edge
         z: Math.random(),
         seed: Math.random() * 1000,
       });

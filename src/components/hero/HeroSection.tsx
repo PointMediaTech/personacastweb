@@ -28,7 +28,7 @@ export function HeroSection() {
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
           background: [
-            'radial-gradient(ellipse 65% 75% at 72% 45%, rgba(118,158,219,0.14) 0%, rgba(118,158,219,0.04) 40%, transparent 60%)',
+            'radial-gradient(ellipse 65% 75% at 75% 45%, rgba(118,158,219,0.14) 0%, rgba(118,158,219,0.04) 40%, transparent 60%)',
             'radial-gradient(ellipse 35% 35% at 60% 40%, rgba(255,184,0,0.03) 0%, transparent 50%)',
           ].join(', '),
         }}
@@ -54,7 +54,7 @@ export function HeroSection() {
       {/* Text content — z-10 */}
       <div
         className="relative z-20 h-screen flex items-center"
-        style={{ paddingLeft: 'clamp(2.5rem, 8vw, 10rem)', paddingRight: '1.5rem' }}
+        style={{ paddingLeft: 'clamp(2.5rem, 8vw, 10rem)', paddingRight: '1.5rem', paddingBottom: '4rem' }}
       >
         <div className="w-full max-w-xl">
           <HeroContent

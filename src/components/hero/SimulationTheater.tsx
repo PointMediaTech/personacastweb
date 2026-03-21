@@ -97,16 +97,12 @@ export function SimulationTheater({
 
       {/* Countdown Timer — always in DOM, opacity-controlled */}
       <motion.div
-        className="absolute"
-        style={{ top: '6%', right: '12%' }}
-        animate={{ opacity: theaterActive ? 0.6 : 0, y: theaterActive ? 0 : -10 }}
+        className="fixed top-28 right-6 md:right-10 z-50 flex items-center gap-2"
+        animate={{ opacity: theaterActive ? 1 : 0, x: theaterActive ? 0 : 20 }}
         transition={{ duration: 0.5, delay: theaterActive ? 0.3 : 0, ease: EASE }}
         aria-hidden="true"
       >
-        <span
-          className="font-mono text-[11px] uppercase"
-          style={{ letterSpacing: '0.2em', color: '#FFB800' }}
-        >
+        <span className="font-mono text-[10px] font-bold tracking-[0.2em] text-insight-gold uppercase">
           72H CRISIS WINDOW: T-{countdown}H
         </span>
       </motion.div>

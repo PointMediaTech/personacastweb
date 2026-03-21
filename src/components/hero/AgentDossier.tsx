@@ -33,16 +33,17 @@ interface DossierProps {
   readonly radarValues: readonly number[];
   readonly conflictIndex: number;
   readonly timeLabel: string;
+  readonly actionDesc: string;
   readonly delay: number;
 }
 
 function Dossier({
   name, mbti, role, tagVariant,
-  radarValues, conflictIndex, timeLabel, delay,
+  radarValues, conflictIndex, timeLabel, actionDesc, delay,
 }: DossierProps) {
   const reduced = useReducedMotion();
   const accentColor = tagVariant === 'pro' ? '#769EDB' : '#B57D7D';
-  const isWarning = conflictIndex > 70;
+  const accentRgb = tagVariant === 'pro' ? '118,158,219' : '181,125,125';
 
   return (
     <motion.div
@@ -57,32 +58,46 @@ function Dossier({
       }}
     >
       <div
-        className="relative rounded-sm w-[260px] overflow-hidden"
+        className="relative w-[280px] overflow-hidden bg-slate-950/40 backdrop-blur-md border border-slate-700/50"
         style={{
-          backdropFilter: 'blur(24px)',
-          WebkitBackdropFilter: 'blur(24px)',
-          backgroundColor: 'rgba(10, 17, 40, 0.8)',
-          border: '0.5px solid rgba(255,255,255,0.06)',
+          borderRadius: '0.75rem',
           borderLeft: `2px solid ${accentColor}`,
-          boxShadow: `inset 3px 0 10px -3px ${accentColor}25`,
+          boxShadow: `inset 3px 0 12px -3px rgba(${accentRgb}, 0.15)`,
         }}
       >
+        {/* LIVE status bar */}
+        <div className="flex items-center gap-1.5 px-4 pt-3 pb-0">
+          <span
+            className="w-[6px] h-[6px] rounded-full animate-pulse"
+            style={{ backgroundColor: accentColor }}
+          />
+          <span
+            className="font-mono text-[10px] font-medium tracking-wider uppercase"
+            style={{ color: accentColor, opacity: 0.8 }}
+          >
+            LIVE SIMULATING: T+56h
+          </span>
+        </div>
+
         <div className="p-4">
           {/* Header */}
           <div className="flex items-center justify-between mb-3">
             <div>
-              <h3 className="text-white/90 text-[13px] font-semibold">{name}</h3>
-              <p className="text-[11px] mt-0.5" style={{ color: '#CBD5E1', opacity: 0.4 }}>{role}</p>
+              <h3 className="font-sans text-[15px] font-bold text-white">{name}</h3>
+              <p className="font-sans text-[12px] text-slate-400 mt-0.5">
+                {mbti} · {role}
+              </p>
             </div>
             <span
-              className="font-mono text-[8px] font-bold tracking-wider px-1.5 py-0.5 rounded-sm"
+              className="font-mono text-[10px] font-bold uppercase tracking-wider px-2 py-0.5"
               style={{
-                color: '#FFB800',
-                backgroundColor: 'rgba(255,184,0,0.06)',
-                border: '0.5px solid rgba(255,184,0,0.15)',
+                borderRadius: '0.75rem',
+                color: accentColor,
+                backgroundColor: `rgba(${accentRgb}, 0.1)`,
+                border: `1px solid rgba(${accentRgb}, 0.2)`,
               }}
             >
-              {mbti}
+              {tagVariant === 'pro' ? 'Defense' : 'Risk'}
             </span>
           </div>
 
@@ -92,20 +107,17 @@ function Dossier({
             <div className="flex-1 space-y-2">
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="font-mono text-[7px] uppercase tracking-widest" style={{ color: 'rgba(203,213,225,0.25)' }}>
+                  <span className="font-mono text-[11px] uppercase tracking-widest text-slate-400">
                     Conflict
                   </span>
-                  <span
-                    className="font-mono text-[11px] font-bold"
-                    style={{ color: isWarning ? '#FFB800' : 'rgba(203,213,225,0.5)' }}
-                  >
+                  <span className="font-mono text-xl font-bold text-[#B57D7D]">
                     {conflictIndex}%
                   </span>
                 </div>
-                <div className="h-[2px] rounded-full bg-white/[0.05] overflow-hidden">
+                <div className="h-[3px] rounded-full bg-white/[0.06] overflow-hidden">
                   <motion.div
                     className="h-full rounded-full"
-                    style={{ backgroundColor: isWarning ? '#FFB800' : accentColor, opacity: 0.7 }}
+                    style={{ backgroundColor: accentColor, opacity: 0.8 }}
                     initial={{ width: 0 }}
                     animate={{ width: `${conflictIndex}%` }}
                     transition={{ duration: 1.5, delay: delay + 0.5, ease: EASE }}
@@ -113,12 +125,22 @@ function Dossier({
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                <span className="font-mono text-[7px] uppercase tracking-widest" style={{ color: 'rgba(203,213,225,0.25)' }}>
+                <span className="font-mono text-[11px] uppercase tracking-widest text-slate-400">
                   Horizon
                 </span>
-                <span className="font-mono text-[10px]" style={{ color: 'rgba(203,213,225,0.4)' }}>{timeLabel}</span>
+                <span className="font-mono text-[12px] text-slate-400">{timeLabel}</span>
               </div>
             </div>
+          </div>
+
+          {/* Action description */}
+          <div
+            className="mt-3 pt-2.5"
+            style={{ borderTop: `1px solid rgba(${accentRgb}, 0.12)` }}
+          >
+            <p className="font-mono text-[11px] leading-relaxed" style={{ color: accentColor, opacity: 0.7 }}>
+              {actionDesc}
+            </p>
           </div>
         </div>
       </div>
@@ -128,35 +150,37 @@ function Dossier({
 
 /**
  * AgentDossiers — Pinned inside the NeuralCanvas right wing.
- * Clear accent differentiation: Pro = Strategic Blue, Anti = Dried Rose.
+ * Brand PR War scenario: Pro = Brand Defense (Strategic Blue), Anti = Risk Source (Dried Rose).
  */
 export function AgentDossiers() {
   return (
     <>
-      {/* Pro — upper area */}
+      {/* Pro — Brand Defense — upper area */}
       <div className="absolute top-[12%] left-[8%] z-20">
         <Dossier
-          name="陳立峰"
-          mbti="ENTJ"
-          role="縣市長候選人"
+          name="林雅婷"
+          mbti="ENFJ"
+          role="品牌發言人"
           tagVariant="pro"
-          radarValues={[0.9, 0.6, 0.85, 0.7, 0.8]}
-          conflictIndex={78}
-          timeLabel="T+72h"
+          radarValues={[0.85, 0.75, 0.9, 0.6, 0.8]}
+          conflictIndex={68}
+          timeLabel="T+12h"
+          actionDesc="T+12h：啟動全球補償計畫"
           delay={0.8}
         />
       </div>
 
-      {/* Anti — lower area */}
+      {/* Anti — Risk Source — lower area */}
       <div className="absolute bottom-[12%] right-[8%] z-20">
         <Dossier
           name="張銳"
           mbti="ENTP"
-          role="政論名嘴"
+          role="科技評論家"
           tagVariant="anti"
-          radarValues={[0.7, 0.95, 0.5, 0.85, 0.6]}
-          conflictIndex={82}
-          timeLabel="T+48h"
+          radarValues={[0.7, 0.95, 0.55, 0.9, 0.65]}
+          conflictIndex={84}
+          timeLabel="T+32h"
+          actionDesc="T+32h：發動負面輿論擴散"
           delay={1.1}
         />
       </div>

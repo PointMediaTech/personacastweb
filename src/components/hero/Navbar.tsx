@@ -10,12 +10,11 @@ export function Navbar() {
         backgroundColor: 'rgba(2, 6, 23, 0.85)',
       }}
     >
-      {/* Logo — official PersonaCast logo from public directory */}
-      <img
-        src="/PersonaCast_Logo.png"
-        alt="PersonaCast"
-        className="h-8 md:h-9 w-auto"
-      />
+      {/* Logo — text wordmark */}
+      <a href="/" aria-label="PersonaCast" className="flex items-center leading-none">
+        <span className="text-[26px] font-semibold tracking-[-0.02em] text-[#E2E8F0]" style={{ fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif" }}>Persona</span>
+        <span className="text-[26px] font-extrabold tracking-[-0.02em] text-[#00E0C2]" style={{ fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif" }}>Cast</span>
+      </a>
 
       {/* Navigation links — hidden on mobile */}
       <ul className="hidden md:flex items-center gap-8">
