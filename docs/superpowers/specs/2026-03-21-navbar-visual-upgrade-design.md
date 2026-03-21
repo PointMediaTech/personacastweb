@@ -17,6 +17,7 @@ Upgrade the PersonaCast top navigation bar from a functional-minimal style to a 
 - Menu label renaming (keep current Chinese labels)
 - Scroll-based hide/show behavior (deferred to multi-page phase)
 - Neon border CTA style (rejected in favor of solid fill)
+- Mobile layout changes (all changes apply to `md:` breakpoint and above; mobile layout is unchanged)
 
 ## Current State
 
@@ -52,7 +53,7 @@ When hovering a nav link:
 
 When hovering a nav link:
 - A 2px `aurora-cyan` (#00F2FF) line expands from center outward
-- Implementation: CSS pseudo-element `::after` with `scaleX(0)` → `scaleX(1)`
+- Implementation: CSS pseudo-element `::after` on each `<a>` element, with `scaleX(0)` → `scaleX(1)`
 - `transform-origin: center`
 - Transition duration: `300ms` ease-out
 - Line positioned 4px below text (`bottom: -4px`)
@@ -64,7 +65,7 @@ When hovering a nav link:
   - Keyframe: `0%, 100%` → `box-shadow: 0 0 0 0 rgba(118, 158, 219, 0)`
   - Keyframe: `50%` → `box-shadow: 0 0 12px 2px rgba(118, 158, 219, 0.4)`
   - Duration: `2.5s`, infinite, ease-in-out
-- Hover state: maintain existing gold glow (`rgba(255,184,0,0.3)`), breathing pauses on hover
+- Hover state: maintain existing gold glow (`rgba(255,184,0,0.3)`), breathing pauses on hover via `animation-play-state: paused`
 - CTA text: "預約專屬演示" (no change)
 - CTA font size: maintain `text-sm` (14px)
 
@@ -87,7 +88,7 @@ When hovering a nav link:
 
 The expanding underline and bottom gradient line require pseudo-elements. Since Tailwind utility classes don't natively support `::after` with complex transforms, these should be implemented via:
 
-**Option A (Recommended):** Inline styles + CSS classes defined in `index.css` using `@layer components` or a scoped class.
+**Option A (Recommended):** CSS classes defined in `index.css` at the top level (no `@layer` directive, consistent with existing keyframe definitions in the project).
 
 **Option B:** Framer Motion for the underline animation (consistent with existing animation approach), though CSS is lighter for simple hover effects.
 
@@ -104,9 +105,14 @@ Add to `index.css`:
 
 ### Accessibility
 
-- All hover effects respect `prefers-reduced-motion`: when enabled, disable breathing animation and underline expand, keep color transitions only
+- All hover effects respect `prefers-reduced-motion` via CSS media query `@media (prefers-reduced-motion: reduce)`: disable breathing animation and underline expand, keep color transitions only
+- Nav links should include `focus-visible` states using the same underline + glow treatment as hover, ensuring keyboard accessibility
 - 16px font size meets WCAG readability guidelines
-- Color contrast: `#8892B0` on `rgba(2,6,23,0.85)` meets AA standard for large text
+- Color contrast: `#8892B0` on `rgba(2,6,23,0.85)` — ratio ~6.56:1, meets WCAG AA for normal text (4.5:1 threshold)
+
+### Timing Notes
+
+- Text glow transitions at 200ms while underline expands at 300ms — this is intentional to create a staggered feel where the glow arrives first and the underline follows
 
 ## Files to Modify
 
