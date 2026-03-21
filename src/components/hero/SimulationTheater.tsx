@@ -63,7 +63,7 @@ export function SimulationTheater({
       {HUD_LABELS.map((label, i) => (
         <motion.div
           key={`hud-${label.id}`}
-          animate={{ opacity: theaterActive ? 0 : 0.7 }}
+          animate={{ opacity: theaterActive ? 0 : 1 }}
           transition={{ duration: 0.3, ease: EASE }}
           style={{ pointerEvents: 'none' }}
         >
