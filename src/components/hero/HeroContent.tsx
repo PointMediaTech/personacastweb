@@ -1,7 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { Play, FileBarChart } from 'lucide-react';
-
-const EASE = [0.22, 1, 0.36, 1] as const;
+import { DECISION_RESULTS, EASE, type DecisionKey } from './theaterData';
 
 function slideLeft(delay: number, reduced: boolean | null) {
   if (reduced) {
@@ -23,8 +22,16 @@ function slideLeft(delay: number, reduced: boolean | null) {
  *   Subtitle → Off-White #CBD5E1
  *   Primary CTA → Solid White bg, Deep Blue text
  */
-export function HeroContent() {
+interface HeroContentProps {
+  readonly theaterActive: boolean;
+  readonly onToggleTheater: () => void;
+  readonly selectedDecision: DecisionKey | null;
+}
+export function HeroContent({ theaterActive, onToggleTheater, selectedDecision }: HeroContentProps) {
   const reduced = useReducedMotion();
+  const conflictData = selectedDecision ? DECISION_RESULTS[selectedDecision] : null;
+  const conflictDisplay = conflictData ? conflictData.conflictValue : 72;
+  const conflictColor = conflictData ? conflictData.conflictColor : undefined;
 
   return (
     <>
@@ -76,11 +83,29 @@ export function HeroContent() {
         <motion.div {...slideLeft(0.6, reduced)} className="flex items-center gap-4">
           <button
             type="button"
-            className="group inline-flex items-center gap-3 rounded-sm bg-white px-10 py-4 text-[15px] font-bold tracking-wide transition-all duration-400 hover:shadow-[0_0_30px_6px_rgba(255,255,255,0.15)]"
-            style={{ color: '#0A1128' }}
+            onClick={onToggleTheater}
+            className={`group inline-flex items-center gap-3 rounded-sm px-10 py-4 text-[15px] font-bold tracking-wide transition-all duration-400 ${
+              theaterActive
+                ? 'border border-[rgba(255,184,0,0.3)] hover:border-[rgba(255,184,0,0.5)]'
+                : 'bg-white hover:shadow-[0_0_30px_6px_rgba(255,255,255,0.15)]'
+            }`}
+            style={{ color: theaterActive ? '#FFB800' : '#0A1128' }}
           >
-            <Play className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
-            啟動推演劇場
+            {theaterActive ? (
+              <>
+                <motion.span
+                  className="inline-block w-2 h-2 rounded-full bg-[#FFB800]"
+                  animate={{ opacity: [1, 0.3, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+                />
+                SIMULATION ACTIVE
+              </>
+            ) : (
+              <>
+                <Play className="h-4 w-4 transition-transform duration-300 group-hover:scale-110" />
+                啟動推演劇場
+              </>
+            )}
           </button>
           <button
             type="button"
@@ -93,13 +118,13 @@ export function HeroContent() {
         </motion.div>
       </div>
 
-      {/* Bottom system log — JetBrains Mono, opacity 0.5 */}
+      {/* Bottom status bar — JetBrains Mono, opacity 0.5 */}
       <motion.div
         className="absolute bottom-8 z-30"
         style={{ left: 'clamp(2.5rem, 8vw, 10rem)' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.5 }}
+        transition={{ duration: 1, delay: 2.6 }}
       >
         <div className="flex items-center gap-5 opacity-50">
           <div className="flex items-center gap-2">
@@ -109,17 +134,27 @@ export function HeroContent() {
               transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
             />
             <span className="font-mono text-[10px] text-dried-rose tracking-[0.15em] uppercase">
-              Simulating
+              2 Agents Active
             </span>
           </div>
           <span className="font-mono text-[10px] text-mist-blue-gray tracking-[0.12em] uppercase">
-            Conflict_Idx: <span className="text-insight-gold">72%</span>
+            Simulation: <span className="text-strategic-blue">T+56H</span>
           </span>
           <span className="font-mono text-[10px] text-mist-blue-gray tracking-[0.12em] uppercase">
-            Window: <span className="text-strategic-blue">T+72H</span>
+            Conflict:{' '}
+            <motion.span
+              key={conflictDisplay}
+              className={conflictColor ? '' : 'text-insight-gold'}
+              style={conflictColor ? { color: conflictColor } : undefined}
+              initial={{ opacity: 0.5 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              {conflictDisplay}%
+            </motion.span>
           </span>
           <span className="font-mono text-[10px] text-mist-blue-gray tracking-[0.12em] uppercase">
-            Latency: <span className="text-white">14ms</span>
+            Paths Analyzed: <span className="text-white">3.4M+</span>
           </span>
         </div>
       </motion.div>
