@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { EASE, type DecisionConfig, type DecisionKey } from './theaterData';
 
 interface DecisionCardProps {
@@ -17,8 +17,6 @@ interface DecisionCardProps {
 export function DecisionCard({
   config, isSelected, isOtherSelected, onSelect, position,
 }: DecisionCardProps) {
-  const reduced = useReducedMotion();
-
   return (
     <motion.div
       className={`absolute ${config.hideBelow === 'lg' ? 'hidden lg:block' : ''}`}

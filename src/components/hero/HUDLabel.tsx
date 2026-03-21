@@ -8,7 +8,7 @@ interface HUDLabelProps {
   readonly visible?: boolean;
 }
 
-export function HUDLabel({ config, delay, visible = true }: HUDLabelProps) {
+export function HUDLabel({ config, delay }: HUDLabelProps) {
   const reduced = useReducedMotion();
 
   // Label 2: fluctuating number
