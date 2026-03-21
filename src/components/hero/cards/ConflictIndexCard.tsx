@@ -18,8 +18,8 @@ export function ConflictIndexCard() {
     if (!ctx) return;
 
     const dpr = window.devicePixelRatio || 1;
-    const w = 230;
-    const h = 70;
+    const w = 290;
+    const h = 80;
     canvas.width = w * dpr;
     canvas.height = h * dpr;
     canvas.style.width = `${w}px`;
@@ -93,10 +93,10 @@ export function ConflictIndexCard() {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <span className="font-mono text-[11px] font-semibold text-white/80 tracking-wide">
-          CONFLICT INDEX: <span className="text-[#64C8FF]">88.4%</span>
+        <span className="font-mono text-[14px] font-semibold text-white/80 tracking-wide">
+          CONFLICT INDEX: <span className="text-[16px] text-[#64C8FF]">88.4%</span>
         </span>
-        <span className="font-mono text-[9px] px-1.5 py-0.5 rounded bg-[#B57D7D]/20 text-[#B57D7D] font-bold tracking-wider">
+        <span className="font-mono text-[11px] px-1.5 py-0.5 rounded bg-[#B57D7D]/20 text-[#B57D7D] font-bold tracking-wider">
           HIGH RISK
         </span>
       </div>

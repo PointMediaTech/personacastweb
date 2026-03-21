@@ -19,7 +19,7 @@ export function SentimentCard() {
     if (!ctx) return;
 
     const dpr = window.devicePixelRatio || 1;
-    const size = 130;
+    const size = 150;
     canvas.width = size * dpr;
     canvas.height = size * dpr;
     canvas.style.width = `${size}px`;
@@ -112,10 +112,10 @@ export function SentimentCard() {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <span className="font-mono text-[11px] font-semibold text-white/80 tracking-wide">
-          SENTIMENT: <span className="text-[#FFB800]">POLARIZED</span>
+        <span className="font-mono text-[14px] font-semibold text-white/80 tracking-wide">
+          SENTIMENT: <span className="text-[16px] text-[#FFB800]">POLARIZED</span>
         </span>
-        <span className="font-mono text-[8px] text-white/20">•••</span>
+        <span className="font-mono text-[10px] text-white/20">•••</span>
       </div>
       <div className="flex justify-center">
         <canvas ref={canvasRef} />

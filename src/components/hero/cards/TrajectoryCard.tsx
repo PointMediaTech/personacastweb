@@ -5,8 +5,8 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const ACTUAL = [0.2, 0.25, 0.28, 0.35, 0.32, 0.40, 0.45, 0.50, 0.48, 0.55, 0.60, 0.58, 0.65, 0.68, 0.70];
 const PREDICTED = [0.70, 0.73, 0.76, 0.80, 0.78, 0.82, 0.85, 0.88];
 
-const W = 230;
-const H = 70;
+const W = 290;
+const H = 80;
 const PAD = { top: 8, bottom: 18, left: 5, right: 5 };
 
 function toSVGPath(data: number[], startIdx: number = 0) {
@@ -31,7 +31,7 @@ export function TrajectoryCard() {
 
   return (
     <div className="flex flex-col gap-2">
-      <span className="font-mono text-[11px] font-semibold text-white/80 tracking-wide">
+      <span className="font-mono text-[14px] font-semibold text-white/80 tracking-wide">
         72h TRAJECTORY
       </span>
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
@@ -56,7 +56,7 @@ export function TrajectoryCard() {
           Risk
         </text>
       </svg>
-      <span className="font-mono text-[9px] text-white/30 tracking-widest uppercase">
+      <span className="font-mono text-[11px] text-white/30 tracking-widest uppercase">
         Predicted Pathway
       </span>
     </div>
