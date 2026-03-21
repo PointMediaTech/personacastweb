@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { EASE, type HUDLabelConfig } from './theaterData';
 
+const ZH_VARIANTS = ['2.0M 路徑', '2.1M 路徑', '2.2M 路徑'] as const;
+const EN_VARIANTS = ['2.0M PATHS', '2.1M PATHS', '2.2M PATHS'] as const;
+
 interface HUDLabelProps {
   readonly config: HUDLabelConfig;
   readonly delay: number;
@@ -11,8 +14,6 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
   const reduced = useReducedMotion();
 
   // Label 2: fluctuating number — use index to keep zh/en in sync
-  const ZH_VARIANTS = ['2.0M 路徑', '2.1M 路徑', '2.2M 路徑'];
-  const EN_VARIANTS = ['2.0M PATHS', '2.1M PATHS', '2.2M PATHS'];
   const [variantIndex, setVariantIndex] = useState(1); // default index=1 → "2.1M"
 
   useEffect(() => {
