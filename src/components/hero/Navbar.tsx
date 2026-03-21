@@ -35,7 +35,7 @@ export function Navbar() {
       <div className="hidden md:flex items-center gap-3">
         <button
           type="button"
-          className="cta-breathing rounded-lg bg-strategic-blue px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:shadow-[0_0_16px_2px_rgba(255,184,0,0.3)] hover:brightness-110"
+          className="cta-breathing rounded-lg bg-strategic-blue px-4 py-2 text-sm font-medium text-white transition-all duration-200"
         >
           預約專屬演示
         </button>

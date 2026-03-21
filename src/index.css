@@ -105,6 +105,8 @@ body {
 
 .cta-breathing:hover {
   animation: none;
+  box-shadow: 0 0 16px 2px rgba(255, 184, 0, 0.3);
+  filter: brightness(1.1);
 }
 
 @media (prefers-reduced-motion: reduce) {
