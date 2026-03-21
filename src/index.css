@@ -8,6 +8,9 @@
   --color-insight-gold: #FFB800;
   --color-logo-navy: #0A3D7A;
   --color-logo-cyan: #00A3E0;
+  --color-aurora-cyan: #00F2FF;
+  --color-amber-warn: #FFAD00;
+  --color-alert-red: #FF4D4D;
 
   --font-heading: "Plus Jakarta Sans", system-ui, sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
@@ -31,4 +34,14 @@ body {
 @keyframes hudTypewriter {
   from { clip-path: inset(0 100% 0 0); }
   to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes cardPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.6); opacity: 0.3; }
+}
+
+@keyframes riskBreathing {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
 }
