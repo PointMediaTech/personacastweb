@@ -20,7 +20,8 @@ function slideLeft(delay: number, reduced: boolean | null) {
  *   "掌握變數" → Pure White #FFFFFF
  *   "定義結局" → Luminous Blue #93C5FD with subtle glow
  *   Subtitle → Off-White #CBD5E1
- *   Primary CTA → Solid White bg, Deep Blue text
+ *   Primary CTA (inactive) → Strategic Blue #769EDB bg, White text
+ *   Primary CTA (active) → Transparent bg, Gold #FFB800 border/text
  */
 interface HeroContentProps {
   readonly theaterActive: boolean;
@@ -35,11 +36,11 @@ export function HeroContent({ theaterActive, onToggleTheater, selectedDecision }
 
   return (
     <>
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col">
         {/* Eyebrow */}
         <motion.div {...slideLeft(0.1, reduced)} className="flex items-center gap-3 mb-8">
           <div className="h-[1px] w-10 bg-strategic-blue/40" />
-          <span className="font-mono text-[10px] tracking-[0.25em] text-strategic-blue/60 uppercase">
+          <span className="font-mono text-[13px] tracking-[0.25em] text-strategic-blue/60 uppercase">
             AI-Powered Simulation
           </span>
         </motion.div>
@@ -71,15 +72,15 @@ export function HeroContent({ theaterActive, onToggleTheater, selectedDecision }
         {/* Subtitle — #CBD5E1 */}
         <motion.p
           {...slideLeft(0.4, reduced)}
-          className="text-base md:text-lg leading-relaxed max-w-lg mb-10"
-          style={{ color: '#CBD5E1' }}
+          className="text-base md:text-lg leading-relaxed max-w-lg"
+          style={{ color: '#CBD5E1', marginBottom: '2rem' }}
         >
-          在危機發生前{' '}
+          領先{' '}
           <span className="font-mono text-insight-gold font-bold">72</span>{' '}
-          小時，透過 AI 智能體模擬百萬種輿論路徑，讓未知的風險成為可控的數據資產。
+          小時的 AI 戰略預演，讓每個決策都有數據撐腰。
         </motion.p>
 
-        {/* CTAs — Primary: SOLID WHITE, brightest element on page */}
+        {/* CTAs — Primary: Strategic Blue toggle (see spec) */}
         <motion.div {...slideLeft(0.6, reduced)} className="flex items-center gap-4">
           <button
             type="button"
