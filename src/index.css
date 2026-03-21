@@ -101,7 +101,7 @@ body {
 .cta-ghost {
   padding: 0.4rem 1.5rem;
   background: rgba(0, 242, 255, 0.05);
-  border: 1.5px solid rgba(0, 242, 255, 0.85);
+  border: 2px solid rgba(0, 242, 255, 1);
   transition: all 300ms ease-out;
 }
 
