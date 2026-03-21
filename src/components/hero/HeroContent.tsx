@@ -88,9 +88,9 @@ export function HeroContent({ theaterActive, onToggleTheater, selectedDecision }
             className={`group inline-flex items-center gap-3 rounded-sm px-10 py-4 text-[15px] font-bold tracking-wide transition-all duration-400 ${
               theaterActive
                 ? 'border border-[rgba(255,184,0,0.3)] hover:border-[rgba(255,184,0,0.5)]'
-                : 'bg-white hover:shadow-[0_0_30px_6px_rgba(255,255,255,0.15)]'
+                : 'bg-[#769EDB] hover:shadow-[0_0_30px_6px_rgba(118,158,219,0.25)]'
             }`}
-            style={{ color: theaterActive ? '#FFB800' : '#0A1128' }}
+            style={{ color: theaterActive ? '#FFB800' : '#FFFFFF' }}
           >
             {theaterActive ? (
               <>
