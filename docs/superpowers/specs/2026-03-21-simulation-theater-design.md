@@ -1,5 +1,7 @@
 # Simulation Theater — Hero Section Redesign
 
+> **Supersedes**: `2026-03-21-hero-floating-elements-redesign.md` (Agent Cards design). This spec replaces the Agent Cards approach with the Simulation Theater concept.
+
 ## Overview
 
 Replace the two Agent Cards and three DataCards on the hero right side with a **two-phase interactive experience**:
@@ -17,7 +19,7 @@ This redesign solves the core problem: the current Agent Cards (林雅婷, 張�
 | Default right-side content | HUD annotation labels on flow zones | Translates abstract flow lines into readable narrative: chaos → analysis → control |
 | Expansion method | In-place transformation | HUD labels morph into decision cards; feels like "the screen comes alive" |
 | Interaction depth | Select → Result (3 preset decisions) | Complete micro-experience loop: choose → see result → try another |
-| Exit method | Scroll away; state preserved on return | Most natural; no explicit close button needed |
+| Exit method | Scroll away; state preserved on return (within same page session) | Most natural; no explicit close button needed. State is React `useState` — persists on scroll, resets on navigation/refresh. No `sessionStorage` or global store needed. |
 | Implementation approach | DOM overlay + Canvas signal (方案 B) | DOM handles text/interaction (SEO, a11y), Canvas handles visual feedback (flow line branching), bridged via React state |
 
 ## Phase 1: Default State — HUD Annotation Layer
@@ -61,11 +63,13 @@ Three floating text labels anchored to the three visual zones of ChaosFlowCanvas
 
 #### Responsive Behavior
 
-| Device | Behavior |
-|--------|----------|
-| Desktop ≥1280px | All 3 labels visible |
-| Tablet 768–1279px | Labels 2 and 3 only (chaos zone obscured by left-side text on tablet) |
-| Mobile <768px | All hidden (flow lines also hidden) |
+Note: DOM visibility uses Tailwind's default breakpoints (`md: 768px`, `lg: 1024px`). The ChaosFlowCanvas internal `getDeviceTier()` uses its own 1280px threshold for canvas rendering quality — these are separate concerns.
+
+| Device | Tailwind class | Behavior |
+|--------|---------------|----------|
+| Desktop ≥1024px | Container: `hidden md:block`; Label 1: `hidden lg:block` | All 3 labels visible |
+| Tablet 768–1023px | Container visible; Label 1 hidden | Labels 2 and 3 only (chaos zone obscured by left-side text on tablet) |
+| Mobile <768px | Container hidden | All hidden (flow lines also hidden) |
 
 ### Bottom Status Bar
 
@@ -105,6 +109,18 @@ Three things happen simultaneously:
 
 Morph animation: text crossfade (old text fades out → new text fades in), simultaneously card expands glassmorphism background (`bg-slate-950/40 backdrop-blur-md`), duration 0.6s.
 
+**Decision card positions** (same container, positions shift slightly from HUD labels during morph):
+
+| Card | Position (desktop) |
+|------|--------------------|
+| A 公開道歉 | `top: 18%, right: 38%` (near former Label 1 zone) |
+| B 法律攻防 | `top: 36%, right: 26%` (near former Label 2 zone) |
+| C 轉移關注 | `top: 54%, right: 14%` (near former Label 3 zone) |
+
+All cards use `right:` positioning for consistency. HUD Label 1's `left: 52%` is equivalent to approximately `right: 38%` on standard viewports; during morph, the position interpolates to the `right:`-based value.
+
+**Tablet morph behavior**: On tablet (768–1023px), only Labels 2+3 are visible. When theater activates, Cards A+B are shown (Card C hidden via `hidden lg:block`). Since Label 2 → Card B and Label 3 is hidden but Card A needs to appear, the tablet transition uses fade-in (`opacity: 0→1`) for Card A instead of the morph animation. Card B morphs from Label 2 normally. Label 3 fades out during activation.
+
 #### 2. ChaosFlowCanvas Reacts
 
 Via React state `simulationActive: true`:
@@ -115,7 +131,7 @@ Via React state `simulationActive: true`:
 
 #### 3. Countdown Timer Appears
 
-- Position: Top center-right of Hero Section, below LiveBadge
+- Position: `absolute` within HeroSection (not `fixed`), top center-right, visually below LiveBadge
 - Content: `72H CRISIS WINDOW: T-68H`
 - Style: JetBrains Mono, 11px, uppercase, `tracking-[0.2em]`
 - Color: `#FFB800` (insight-gold), opacity 0.6
@@ -150,7 +166,7 @@ Three lightweight glassmorphism cards, smaller and more refined than the old Age
 | C 轉移關注 | `#B57D7D` (dried-rose) | 成功率: 28% · 風險: 高 |
 
 **Interaction states**:
-- Default: `pointerEvents: 'auto'` (clickable, unlike HUD's `none`)
+- Default: `pointerEvents: 'auto'` enabled via Framer Motion `onAnimationComplete` callback (not a fixed delay), ensuring cards are only clickable after the morph animation fully completes
 - Hover: border opacity `0.3 → 0.6`, corresponding flow line paths brighten slightly
 - Selected: see Decision Interaction section
 
@@ -291,6 +307,13 @@ Canvas internals use `useRef` to store target values, lerping in the render loop
 - `targetDivergence`: set offset parameters based on `selectedDecision`
 - Per-frame lerp factor ≈ 0.05 (~0.8s natural transition)
 
+**Canvas implementation notes** (the current component accepts zero props and runs in a single `useEffect` closure):
+
+1. **Props → Refs bridge**: Store prop values in refs (`simulationActiveRef`, `selectedDecisionRef`) so the render loop can read them without re-initializing the canvas.
+2. **Dynamic particle injection**: Current `init()` creates particles once on resize. When `simulationActive` transitions to `true`, push additional particles into `particlesRef.current` (don't regenerate all lines). When transitioning back to `false`, mark excess particles for removal (let them complete their current path, then don't respawn).
+3. **Per-line color interpolation**: The current render loop hardcodes cyan RGB values. For decision C's dried-rose tint, add a color interpolation step in the right-side divergence zone (x > 75%): lerp between the base cyan `[100,200,255]` and the decision-dependent color based on divergence progress. Store the current color blend factor in a ref and lerp it per-frame.
+4. **Y offset injection**: The `getFlowPoint` function (lines 48-56) has no decision-awareness. Rather than modifying `getFlowPoint`, apply the Y offset as a post-processing step in the render loop: after computing each control point, add the decision-dependent offset for points in the right-side zone. This avoids touching the core flow algorithm.
+
 ### Removed Component Imports
 
 | Component | Handling |
@@ -340,7 +363,7 @@ z-50  Navbar, LiveBadge   Fixed navigation (unchanged)
 | 0s | ChaosFlow | Begin lerp brightness boost + particle doubling |
 | 0.1s | HUD Labels ×3 | Text crossfade + background expands to decision cards (0.6s) |
 | 0.3s | Countdown timer | Fade-in `y: -10→0` |
-| 0.7s | Decision cards | `pointerEvents` switches from `none` to `auto` |
+| ~0.7s | Decision cards | `pointerEvents` switches from `none` to `auto` via `onAnimationComplete` |
 
 ### Decision Selection Sequence (T=0 at card click)
 
@@ -364,8 +387,8 @@ z-50  Navbar, LiveBadge   Fixed navigation (unchanged)
 
 | Device | Default State | Theater Active |
 |--------|--------------|----------------|
-| Desktop ≥1280px | 3 HUD labels | 3 decision cards + result panel + countdown timer |
-| Tablet 768–1279px | 2 HUD labels (1+2) | 2 decision cards (C hidden) + result panel + countdown timer |
+| Desktop ≥1024px | 3 HUD labels | 3 decision cards + result panel + countdown timer |
+| Tablet 768–1023px | 2 HUD labels (2+3) | 2 decision cards (A+B, C hidden via `hidden lg:block`) + result panel + countdown timer |
 | Mobile <768px | All hidden | Button still clickable; theater effects only in bottom status bar value changes and button state |
 
 ## Accessibility
@@ -427,7 +450,7 @@ No new dependencies. All changes use existing libraries (React, Framer Motion, T
 |------|---------|
 | `HeroSection.tsx` | Remove AgentCards/DataCards imports; add SimulationTheater; lift theater state (`theaterActive`, `selectedDecision`); pass new props to ChaosFlowCanvas and HeroContent |
 | `ChaosFlowCanvas.tsx` | Accept `simulationActive` and `selectedDecision` props; implement brightness lerp, particle doubling, and right-side divergence offset |
-| `HeroContent.tsx` | Accept `theaterActive` and `setTheaterActive`; button state toggle; accept `selectedDecision` for bottom status bar Conflict value sync with count animation |
+| `HeroContent.tsx` | Accept `theaterActive` and `setTheaterActive` props (currently zero-props component); wire `onClick` handler to primary CTA button; accept `selectedDecision` for bottom status bar Conflict value sync. Number animation: use Framer Motion `useMotionValue` + `useTransform` for count-up/down interpolation (pattern-consistent with existing Framer Motion usage). The "2 AGENTS ACTIVE" text in status bar remains as-is (it references the simulation agents, not the removed AgentCards UI elements). |
 
 ### Removed imports (files kept, not deleted)
 
