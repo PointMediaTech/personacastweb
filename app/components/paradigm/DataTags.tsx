@@ -14,47 +14,41 @@ export function DataTags() {
   const isInView = useInView(ref, { once: true, margin: '-80px' });
   const prefersReducedMotion = useReducedMotion();
 
-  const tagClassName =
-    'flex items-baseline gap-1.5 px-3 py-2 rounded border border-aurora-cyan/15 bg-aurora-cyan/[0.04]';
-
   return (
-    <div ref={ref} className="flex flex-wrap gap-2.5 mt-8 pt-6 border-t border-white/[0.06]">
-      {tags.map((tag, i) => {
-        const content = (
-          <>
-            <span className="font-mono text-xs font-semibold text-aurora-cyan tabular-nums tracking-wide">
-              {tag.value}
-            </span>
-            <span className="font-mono text-[10px] text-slate-500 tracking-wider uppercase">
-              {tag.label}
-            </span>
-          </>
-        );
-
-        if (prefersReducedMotion) {
-          return (
-            <span key={tag.value} className={tagClassName}>
-              {content}
-            </span>
+    <div ref={ref} className="mt-10 pt-6 border-t border-aurora-cyan/[0.08]">
+      <div className="grid grid-cols-3 gap-4">
+        {tags.map((tag, i) => {
+          const content = (
+            <div className="flex flex-col">
+              <span className="font-mono text-base font-semibold text-aurora-cyan/90 tabular-nums tracking-wide">
+                {tag.value}
+              </span>
+              <span className="font-mono text-[10px] text-slate-500 tracking-wider uppercase mt-1">
+                {tag.label}
+              </span>
+            </div>
           );
-        }
 
-        return (
-          <motion.span
-            key={tag.value}
-            initial={{ opacity: 0, y: 4 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 4 }}
-            transition={{
-              duration: 0.3,
-              delay: 0.3 + i * 0.12,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className={tagClassName}
-          >
-            {content}
-          </motion.span>
-        );
-      })}
+          if (prefersReducedMotion) {
+            return <div key={tag.value}>{content}</div>;
+          }
+
+          return (
+            <motion.div
+              key={tag.value}
+              initial={{ opacity: 0, y: 6 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
+              transition={{
+                duration: 0.35,
+                delay: 0.3 + i * 0.1,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              {content}
+            </motion.div>
+          );
+        })}
+      </div>
     </div>
   );
 }

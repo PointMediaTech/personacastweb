@@ -7,16 +7,16 @@ export function ParadigmSection() {
   return (
     <SectionWrapper id="paradigm" ariaLabel="範式轉移" className="!py-24 lg:!py-0 relative">
       <ScanlineBackground />
-      <div className="relative z-10 min-h-screen flex flex-col justify-center">
+      <div className="relative z-10 min-h-screen flex flex-col justify-center py-16 lg:py-24">
         {/* Title area */}
-        <div className="text-center mb-16 lg:mb-24">
+        <div className="text-center mb-16 lg:mb-20 max-w-4xl mx-auto">
           <p className="text-xs tracking-[4px] text-strategic-blue uppercase font-mono mb-6">
             PARADIGM SHIFT
           </p>
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white font-heading tracking-tighter leading-[1.05]">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white font-heading tracking-tight leading-[1.1]">
             輿論定型前，掌控您的劇本。
           </h2>
-          <p className="text-lg lg:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed tracking-wide mt-12">
+          <p className="text-base lg:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed mt-8">
             當對手還在猜測您的下一步，您已在千萬次推演中看透結局。領先 72 小時佈局，讓每場危機都成為您的主場。
           </p>
         </div>
