@@ -140,4 +140,14 @@ body {
   .cta-ghost:focus-visible {
     box-shadow: none;
   }
+
+  /* Disable CTA glow */
+  [style*="ctaGlow"] {
+    animation: none !important;
+  }
+
+  /* Disable radar chart rotation */
+  .animate-spin, [style*="spin"] {
+    animation: none !important;
+  }
 }
