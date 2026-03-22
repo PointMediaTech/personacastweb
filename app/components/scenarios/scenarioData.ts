@@ -2,56 +2,59 @@ export const CTA_PLACEHOLDER = '#';
 
 export interface ScenarioData {
   id: string;
+  number: string;
   title: string;
   description: string;
-  color: string;
-  hex: string;
-  alertLabel: string;
-  alertTitle: string;
-  alertSubtitle: string;
-  meterLabel: string;
-  meterPercent: number;
-  backgroundType: 'angular' | 'shield' | 'wave';
+  accentHex: string;
+  accentRgb: string;
+  highlightColor: string; // for data number highlights in description
+  statusTag: string;
+  ctaLabel: string;
+  bottomLabel: string;
+  visualType: 'waveform' | 'orb' | 'comet';
 }
 
 export const scenarios: ScenarioData[] = [
   {
     id: 'political',
-    title: '政治選戰',
-    description: '醜聞爆發與議題置換的 72 小時壓力測試。',
-    color: 'alert-red',
-    hex: '#FF4D4D',
-    alertLabel: 'ALERT',
-    alertTitle: '衝突指數 > 70%',
-    alertSubtitle: '醜聞擴散速率異常',
-    meterLabel: 'CRISIS T-48H',
-    meterPercent: 70,
-    backgroundType: 'angular',
+    number: '01',
+    title: '敘事攔截：奪回議題主導權',
+    description:
+      '數位模擬對手的決策邏輯，精準捕捉危機發酵前的關鍵窗口。透過逆向路徑演算，預先部署論點，在輿論成型前完成全面攔截。',
+    accentHex: '#E53E3E',
+    accentRgb: '229,62,62',
+    highlightColor: '#E53E3E',
+    statusTag: 'ALERT｜議題置換率 > 89%',
+    ctaLabel: '執行模擬：奪回主導權',
+    bottomLabel: '[ 啟動攔截 ]',
+    visualType: 'waveform',
   },
   {
     id: 'corporate',
-    title: '企業公關',
-    description: '產品合規與品牌聲譽的風險控管。',
-    color: 'strategic-blue',
-    hex: '#769EDB',
-    alertLabel: 'STRATEGY',
-    alertTitle: '議題置換策略',
-    alertSubtitle: '模擬報告 #PR-2847',
-    meterLabel: 'BRAND RISK',
-    meterPercent: 45,
-    backgroundType: 'shield',
+    number: '02',
+    title: '風險治理：精準定位火線源頭',
+    description:
+      '掃描利益網絡中 80+ 個核心節點，將被動防禦轉為主動佈局。精準鎖定影響全局的關鍵火線，在危機擴散前鞏固品牌護城河。',
+    accentHex: '#00A3FF',
+    accentRgb: '0,163,255',
+    highlightColor: '#00D1FF',
+    statusTag: 'STRATEGY｜溯源精確度 > 94%',
+    ctaLabel: '執行模擬：鞏固品牌',
+    bottomLabel: '[ 鞏固品牌 ]',
+    visualType: 'orb',
   },
   {
     id: 'financial',
-    title: '金融社會',
-    description: '群體情緒對市場動盪的連鎖反應預演。',
-    color: 'insight-gold',
-    hex: '#FFB800',
-    alertLabel: 'CASCADE',
-    alertTitle: '連鎖反應偵測',
-    alertSubtitle: '群體恐慌指數: 62%',
-    meterLabel: 'MARKET IMPACT',
-    meterPercent: 62,
-    backgroundType: 'wave',
+    number: '03',
+    title: '演化推演：排除崩盤，鎖定勝率',
+    description:
+      '啟動 340 萬次模擬演算，徹底過濾導致風險的潛在路徑。抹除所有不可控變數，將未來導向預設軌跡，讓現實成為一場早已排練好的勝利。',
+    accentHex: '#00E5C8',
+    accentRgb: '0,229,200',
+    highlightColor: '#00FFC2',
+    statusTag: 'CASCADE｜市場預測率 100%',
+    ctaLabel: '執行模擬：鎖定優勝',
+    bottomLabel: '[ 鎖定優勝 ]',
+    visualType: 'comet',
   },
 ];
