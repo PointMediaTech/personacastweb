@@ -5,71 +5,118 @@ import { DataTags } from './DataTags';
 
 export function ComparisonPanel() {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-6xl mx-auto">
-      {/* Left card: Reactive Mode */}
-      <ScrollReveal direction="left">
-        <div className="relative rounded-xl bg-white/[0.03] border border-white/[0.07] p-8 lg:p-10 h-full">
-          {/* Top accent — red risk bar */}
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-alert-red/50 to-transparent" />
-
-          {/* Status badge */}
-          <div className="flex items-center gap-2 mb-8">
-            <div className="w-1.5 h-1.5 rounded-full bg-alert-red/70" />
-            <span className="text-[10px] text-alert-red/60 tracking-[3px] uppercase font-mono font-medium">
-              REACTIVE MODE
-            </span>
-          </div>
-
-          {/* Heading */}
-          <h3 className="text-2xl lg:text-[1.75rem] font-bold text-slate-300 font-heading tracking-tight leading-snug mb-4">
-            事後救火：<br className="hidden lg:block" />昂貴的徒勞
+    <div className="relative flex flex-col lg:flex-row items-stretch w-full">
+      {/* ─── Left card: Reactive Mode ─── */}
+      <ScrollReveal direction="left" className="w-full lg:w-[46%]">
+        <div
+          className="relative rounded-2xl h-full"
+          style={{
+            padding: '2rem 2.5rem',
+            background:
+              'radial-gradient(ellipse at 30% 40%, rgba(255,90,50,0.15), transparent 60%), rgba(15,8,8,0.9)',
+            border: '1px solid rgba(255,77,77,0.5)',
+            boxShadow:
+              '0 0 25px rgba(255,77,77,0.35), 0 0 50px rgba(255,77,77,0.2), 0 0 100px rgba(255,77,77,0.12), inset 0 0 60px rgba(255,77,77,0.04)',
+            backdropFilter: 'blur(16px)',
+          }}
+        >
+          <h3
+            className="font-bold font-heading tracking-tight leading-snug"
+            style={{ fontSize: '1.6rem', color: '#e87058', marginBottom: '1.25rem' }}
+          >
+            傳統監測：盲目博弈的代價
           </h3>
-
-          {/* Separator */}
-          <div className="h-px w-10 bg-alert-red/20 mb-6" />
-
-          {/* Body */}
-          <p className="text-[15px] text-slate-500 leading-[1.8] max-w-md">
-            傳統工具只記錄失敗。當負面聲量爆發，傷害已成定局 —— 您在盲目博弈，對手在看您失血。
+          <p className="text-slate-400" style={{ fontSize: '15px', lineHeight: '1.9', letterSpacing: '0.025em' }}>
+            等數據出現在螢幕上，您的品牌已在失血。此時的補救，只是昂貴的徒勞。
           </p>
-
-          {/* Bottom muted label — placeholder for future chart */}
-          <div className="mt-10 pt-6 border-t border-white/[0.05]">
-            <span className="text-[10px] font-mono text-white/15 tracking-[2px] uppercase">
-              Reactive analysis · No prediction
-            </span>
-          </div>
         </div>
       </ScrollReveal>
 
-      {/* Right card: Proactive Mode */}
-      <ScrollReveal direction="right" delay={0.15}>
-        <div className="relative rounded-xl bg-aurora-cyan/[0.03] border border-aurora-cyan/[0.12] p-8 lg:p-10 h-full">
-          {/* Top accent — cyan signal bar */}
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-aurora-cyan/50 to-transparent" />
+      {/* ─── VS Divider ─── */}
+      <div
+        className="flex items-center justify-center lg:flex-col shrink-0"
+        aria-hidden="true"
+        style={{ padding: '1rem 0' }}
+      >
+        {/* Mobile */}
+        <div className="flex lg:hidden w-full items-center" style={{ gap: '0.75rem' }}>
+          <div className="flex-1" style={{ height: '1px', background: 'linear-gradient(to right, rgba(255,77,77,0.4), rgba(255,255,255,0.1), transparent)' }} />
+          <span
+            className="font-mono shrink-0 flex items-center justify-center"
+            style={{
+              fontSize: '11px',
+              color: '#cbd5e1',
+              letterSpacing: '3px',
+              border: '1px solid rgba(255,255,255,0.2)',
+              borderRadius: '50%',
+              width: '40px',
+              height: '40px',
+              background: '#0c1220',
+            }}
+          >
+            VS
+          </span>
+          <div className="flex-1" style={{ height: '1px', background: 'linear-gradient(to left, rgba(0,242,255,0.4), rgba(255,255,255,0.1), transparent)' }} />
+        </div>
 
-          {/* Status badge */}
-          <div className="flex items-center gap-2 mb-8">
-            <div className="w-1.5 h-1.5 rounded-full bg-aurora-cyan" />
-            <span className="text-[10px] text-aurora-cyan/80 tracking-[3px] uppercase font-mono font-medium">
-              PROACTIVE MODE
-            </span>
-          </div>
+        {/* Desktop */}
+        <div className="hidden lg:flex flex-col items-center h-full" style={{ padding: '1.5rem 0.75rem' }}>
+          <div
+            className="flex-1"
+            style={{
+              width: '1px',
+              background: 'linear-gradient(to bottom, rgba(255,77,77,0.6), rgba(255,255,255,0.15), transparent)',
+            }}
+          />
+          <span
+            className="font-mono shrink-0 flex items-center justify-center"
+            style={{
+              fontSize: '11px',
+              color: '#cbd5e1',
+              letterSpacing: '3px',
+              border: '1px solid rgba(255,255,255,0.25)',
+              borderRadius: '50%',
+              width: '40px',
+              height: '40px',
+              background: '#0c1220',
+              margin: '0.75rem 0',
+            }}
+          >
+            VS
+          </span>
+          <div
+            className="flex-1"
+            style={{
+              width: '1px',
+              background: 'linear-gradient(to top, rgba(0,242,255,0.6), rgba(255,255,255,0.15), transparent)',
+            }}
+          />
+        </div>
+      </div>
 
-          {/* Heading */}
-          <h3 className="text-2xl lg:text-[1.75rem] font-bold text-white font-heading tracking-tight leading-snug mb-4">
-            預見式導航：<br className="hidden lg:block" />寫好的勝局
+      {/* ─── Right card: Proactive Mode ─── */}
+      <ScrollReveal direction="right" delay={0.15} className="w-full lg:w-[54%]">
+        <div
+          className="relative rounded-2xl h-full"
+          style={{
+            padding: '2rem 2.5rem',
+            background:
+              'radial-gradient(ellipse at 70% 40%, rgba(0,242,255,0.12), transparent 60%), rgba(8,15,30,0.9)',
+            border: '1px solid rgba(0,242,255,0.45)',
+            boxShadow:
+              '0 0 25px rgba(0,242,255,0.3), 0 0 50px rgba(0,242,255,0.18), 0 0 100px rgba(0,242,255,0.1), inset 0 0 60px rgba(0,242,255,0.03)',
+            backdropFilter: 'blur(16px)',
+          }}
+        >
+          <h3
+            className="font-bold font-heading tracking-tight leading-snug text-aurora-cyan"
+            style={{ fontSize: '1.6rem', marginBottom: '1.25rem' }}
+          >
+            戰略導航：上帝視角的劇本
           </h3>
-
-          {/* Separator */}
-          <div className="h-px w-10 bg-aurora-cyan/25 mb-6" />
-
-          {/* Body */}
-          <p className="text-[15px] text-slate-400 leading-[1.8] max-w-md">
-            行動前推演千萬次。鎖定 T+36h 最佳反擊窗口，看穿 80% 利益關係人的底牌，贏得毫無懸念。
+          <p className="text-slate-400" style={{ fontSize: '15px', lineHeight: '1.9', letterSpacing: '0.025em' }}>
+            在正式行動前模擬千次，精準鎖定 T+36h 的黃金窗口。看穿 80 個利益方的底牌，讓局勢隨您起舞。
           </p>
-
-          {/* Data tags */}
           <DataTags />
         </div>
       </ScrollReveal>
