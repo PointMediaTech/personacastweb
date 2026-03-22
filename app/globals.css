@@ -117,6 +117,11 @@ body {
   outline-offset: 4px;
 }
 
+@keyframes ctaGlow {
+  0%, 100% { box-shadow: 0 4px 20px rgba(118,158,219,0.3), 0 0 40px rgba(118,158,219,0.1); }
+  50% { box-shadow: 0 4px 28px rgba(118,158,219,0.45), 0 0 50px rgba(118,158,219,0.15); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nav-link::after {
     transition: none;
