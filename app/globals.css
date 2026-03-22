@@ -12,9 +12,9 @@
   --color-amber-warn: #FFAD00;
   --color-alert-red: #FF4D4D;
 
-  --font-heading: "Plus Jakarta Sans", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-heading: var(--font-gf-heading, "Plus Jakarta Sans"), system-ui, sans-serif;
+  --font-body: var(--font-gf-body, "Inter"), system-ui, sans-serif;
+  --font-mono: var(--font-gf-mono, "JetBrains Mono"), ui-monospace, monospace;
 }
 
 *, *::before, *::after {

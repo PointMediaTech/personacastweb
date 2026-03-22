@@ -1,3 +1,9 @@
+import { HeroSection } from './components/hero';
+
 export default function HomePage() {
-  return <main>PersonaCast</main>;
+  return (
+    <main>
+      <HeroSection />
+    </main>
+  );
 }

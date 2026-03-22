@@ -5,21 +5,21 @@ import "./globals.css";
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["700", "800"],
-  variable: "--font-heading",
+  variable: "--font-gf-heading",
   display: "swap",
 });
 
 const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "800"],
-  variable: "--font-body",
+  variable: "--font-gf-body",
   display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
-  variable: "--font-mono",
+  variable: "--font-gf-mono",
   display: "swap",
 });
 
@@ -51,6 +51,7 @@ export default function RootLayout({
     <html
       lang="zh-Hant"
       className={`${plusJakartaSans.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      suppressHydrationWarning
     >
       <body>{children}</body>
     </html>
