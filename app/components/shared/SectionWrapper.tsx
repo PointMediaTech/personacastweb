@@ -17,7 +17,7 @@ export function SectionWrapper({
       aria-label={ariaLabel}
       className={`py-20 lg:py-28 ${className ?? ''}`}
     >
-      <div className="mx-auto max-w-6xl px-6 lg:px-8">{children}</div>
+      <div className="mx-auto w-full px-6 lg:px-8 2xl:px-16">{children}</div>
     </section>
   );
 }

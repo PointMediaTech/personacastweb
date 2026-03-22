@@ -7,7 +7,7 @@ interface PillarCardProps {
   subtitle: string;
   icon: string;
   color: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   footer: React.ReactNode;
   description: string;
   index: number;
@@ -36,7 +36,6 @@ export function PillarCard({
   subtitle,
   icon,
   color,
-  children,
   footer,
   description,
   index,
@@ -50,19 +49,21 @@ export function PillarCard({
         <div className="flex items-center gap-2 mb-4">
           <span className="text-lg">{icon}</span>
           <div>
-            <h3 className={`text-sm font-bold ${classes.text}`}>{title}</h3>
-            <p className="text-[10px] text-mist-blue-gray">{subtitle}</p>
+            <h3 className={`text-base font-bold ${classes.text}`}>{title}</h3>
+            <p className="text-xs text-mist-blue-gray">{subtitle}</p>
           </div>
         </div>
 
-        {/* Chart */}
-        <div className="mb-4">{children}</div>
+        {/* Chart placeholder */}
+        <div className="mb-4 h-32 rounded-lg border border-dashed border-white/10 flex items-center justify-center">
+          <span className="text-xs font-mono text-white/20 tracking-wider uppercase">{title} Visual</span>
+        </div>
 
         {/* Footer */}
         <div className="mb-3">{footer}</div>
 
         {/* Description */}
-        <p className="text-[9px] text-mist-blue-gray font-mono leading-relaxed">
+        <p className="text-xs text-mist-blue-gray font-mono leading-relaxed">
           {description}
         </p>
       </div>

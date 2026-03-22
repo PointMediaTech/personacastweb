@@ -1,0 +1,175 @@
+<h2>Section 2：範式轉移 (The Paradigm Shift)</h2>
+<p class="subtitle">Split-screen 對比設計 — 從混亂到精準的視覺敘事</p>
+
+<!-- Overall Layout -->
+<div class="section">
+  <h3>整體佈局</h3>
+  <div class="mockup">
+    <div class="mockup-header">Section 2 — Desktop View (1440px)</div>
+    <div class="mockup-body" style="background:#020617; padding:0; overflow:hidden;">
+
+      <!-- Section title area -->
+      <div style="text-align:center; padding:48px 32px 32px;">
+        <div style="font-size:10px; letter-spacing:3px; color:#769EDB; text-transform:uppercase; margin-bottom:8px; font-family:monospace;">PARADIGM SHIFT</div>
+        <div style="font-size:22px; font-weight:800; color:white; margin-bottom:6px;">別只看過去，讓我們定義未來。</div>
+        <div style="font-size:11px; color:#8892B0; max-width:480px; margin:0 auto;">傳統工具告訴你聲明發出後「發生了什麼」，PersonaCast 則在聲明發出前告訴你「將會發生什麼」。</div>
+      </div>
+
+      <!-- Split screen comparison -->
+      <div style="display:flex; gap:0; margin:0 32px 48px; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.06);">
+
+        <!-- LEFT: Traditional -->
+        <div style="flex:1; background:rgba(255,255,255,0.02); padding:28px 24px; position:relative; border-right:1px solid rgba(255,255,255,0.06);">
+          <!-- Label -->
+          <div style="display:flex; align-items:center; gap:6px; margin-bottom:16px;">
+            <div style="width:8px; height:8px; border-radius:50%; background:#666;"></div>
+            <div style="font-size:10px; color:#666; letter-spacing:2px; text-transform:uppercase; font-family:monospace;">傳統輿情監測</div>
+          </div>
+
+          <!-- Chaotic chart mockup -->
+          <div style="background:rgba(255,255,255,0.02); border-radius:8px; padding:16px; margin-bottom:12px; border:1px solid rgba(255,255,255,0.04);">
+            <svg viewBox="0 0 280 100" style="width:100%; height:auto;">
+              <!-- Messy, overlapping lines in grey -->
+              <polyline points="0,60 20,45 40,70 60,30 80,65 100,40 120,75 140,35 160,80 180,25 200,70 220,50 240,60 260,45 280,55" fill="none" stroke="#555" stroke-width="1.5" opacity="0.5"/>
+              <polyline points="0,40 20,55 40,30 60,65 80,35 100,70 120,25 140,60 160,40 180,75 200,30 220,65 240,45 260,70 280,35" fill="none" stroke="#444" stroke-width="1.5" opacity="0.4"/>
+              <polyline points="0,50 20,70 40,45 60,55 80,80 100,30 120,60 140,50 160,70 180,40 200,55 220,75 240,35 260,50 280,65" fill="none" stroke="#666" stroke-width="1" opacity="0.3"/>
+              <!-- Question mark -->
+              <text x="140" y="55" font-size="28" fill="#555" text-anchor="middle" opacity="0.4">?</text>
+            </svg>
+          </div>
+
+          <!-- Tags -->
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <span style="font-size:9px; padding:3px 8px; border-radius:4px; background:rgba(255,255,255,0.04); color:#555; border:1px solid rgba(255,255,255,0.06);">後設式分析</span>
+            <span style="font-size:9px; padding:3px 8px; border-radius:4px; background:rgba(255,255,255,0.04); color:#555; border:1px solid rgba(255,255,255,0.06);">無法重來的決策</span>
+            <span style="font-size:9px; padding:3px 8px; border-radius:4px; background:rgba(255,77,77,0.1); color:#FF4D4D; border:1px solid rgba(255,77,77,0.15);">事後才知道</span>
+          </div>
+
+          <!-- Desaturation overlay hint -->
+          <div style="position:absolute; bottom:12px; right:12px; font-size:8px; color:#444; font-style:italic;">灰階 · 低飽和度 · 靜態</div>
+        </div>
+
+        <!-- Divider with VS -->
+        <!-- RIGHT: PersonaCast -->
+        <div style="flex:1; background:rgba(118,158,219,0.04); padding:28px 24px; position:relative;">
+          <!-- Label -->
+          <div style="display:flex; align-items:center; gap:6px; margin-bottom:16px;">
+            <div style="width:8px; height:8px; border-radius:50%; background:#00F2FF; box-shadow:0 0 8px rgba(0,242,255,0.4);"></div>
+            <div style="font-size:10px; color:#00F2FF; letter-spacing:2px; text-transform:uppercase; font-family:monospace;">PersonaCast 預演系統</div>
+          </div>
+
+          <!-- Ordered prediction path -->
+          <div style="background:rgba(118,158,219,0.06); border-radius:8px; padding:16px; margin-bottom:12px; border:1px solid rgba(118,158,219,0.12);">
+            <svg viewBox="0 0 280 100" style="width:100%; height:auto;">
+              <!-- Clean prediction line with glow -->
+              <defs>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="2" result="blur"/>
+                  <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+                <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#769EDB"/>
+                  <stop offset="100%" style="stop-color:#00F2FF"/>
+                </linearGradient>
+              </defs>
+              <!-- Subtle grid -->
+              <line x1="0" y1="25" x2="280" y2="25" stroke="rgba(118,158,219,0.08)" stroke-width="0.5"/>
+              <line x1="0" y1="50" x2="280" y2="50" stroke="rgba(118,158,219,0.08)" stroke-width="0.5"/>
+              <line x1="0" y1="75" x2="280" y2="75" stroke="rgba(118,158,219,0.08)" stroke-width="0.5"/>
+              <!-- Main prediction line -->
+              <polyline points="0,70 40,65 80,55 120,50 160,40 200,35 240,28 280,22" fill="none" stroke="url(#lineGrad)" stroke-width="2" filter="url(#glow)"/>
+              <!-- Data nodes -->
+              <circle cx="80" cy="55" r="3" fill="#769EDB" filter="url(#glow)"/>
+              <circle cx="160" cy="40" r="3" fill="#00E0C2" filter="url(#glow)"/>
+              <circle cx="240" cy="28" r="4" fill="#00F2FF" filter="url(#glow)"/>
+              <!-- Time labels -->
+              <text x="80" y="95" font-size="7" fill="#769EDB" text-anchor="middle" font-family="monospace">T+0h</text>
+              <text x="160" y="95" font-size="7" fill="#00E0C2" text-anchor="middle" font-family="monospace">T+36h</text>
+              <text x="240" y="95" font-size="7" fill="#00F2FF" text-anchor="middle" font-family="monospace">T+72h</text>
+            </svg>
+          </div>
+
+          <!-- Tags -->
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <span style="font-size:9px; padding:3px 8px; border-radius:4px; background:rgba(0,242,255,0.08); color:#00F2FF; border:1px solid rgba(0,242,255,0.15);">預測式分析</span>
+            <span style="font-size:9px; padding:3px 8px; border-radius:4px; background:rgba(0,242,255,0.08); color:#00F2FF; border:1px solid rgba(0,242,255,0.15);">可重來的決策</span>
+            <span style="font-size:9px; padding:3px 8px; border-radius:4px; background:rgba(118,158,219,0.1); color:#769EDB; border:1px solid rgba(118,158,219,0.15);">事前就知道</span>
+          </div>
+
+          <!-- Style hint -->
+          <div style="position:absolute; bottom:12px; right:12px; font-size:8px; color:rgba(0,242,255,0.4); font-style:italic;">發光 · 有序 · 動態</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Animation Notes -->
+<div class="section">
+  <h3>滾動動畫編排</h3>
+  <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+    <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:14px; border:1px solid rgba(255,255,255,0.06);">
+      <div style="font-size:9px; color:#769EDB; font-family:monospace; margin-bottom:6px;">STEP 1</div>
+      <div style="font-size:11px; color:white; font-weight:600; margin-bottom:4px;">標題淡入</div>
+      <div style="font-size:10px; color:#8892B0;">「別只看過去」從上方滑入 + 淡入，副文案延遲 0.2s 跟進</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:14px; border:1px solid rgba(255,255,255,0.06);">
+      <div style="font-size:9px; color:#769EDB; font-family:monospace; margin-bottom:6px;">STEP 2</div>
+      <div style="font-size:11px; color:white; font-weight:600; margin-bottom:4px;">左側先現</div>
+      <div style="font-size:10px; color:#8892B0;">傳統監測面板從左滑入，灰色折線圖逐段繪製</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:14px; border:1px solid rgba(255,255,255,0.06);">
+      <div style="font-size:9px; color:#769EDB; font-family:monospace; margin-bottom:6px;">STEP 3</div>
+      <div style="font-size:11px; color:white; font-weight:600; margin-bottom:4px;">右側對比</div>
+      <div style="font-size:10px; color:#8892B0;">PersonaCast 面板從右滑入，預測線帶發光效果從左繪製到右，節點依序亮起</div>
+    </div>
+  </div>
+</div>
+
+<!-- Component Structure -->
+<div class="section">
+  <h3>元件結構</h3>
+  <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:16px; border:1px solid rgba(255,255,255,0.06); font-family:monospace; font-size:11px; color:#8892B0; line-height:1.8;">
+    <div><span style="color:#769EDB;">components/paradigm/</span></div>
+    <div style="padding-left:16px;"><span style="color:white;">ParadigmSection.tsx</span> <span style="color:#555;">— Server Component, 標題文案 + SEO 語義</span></div>
+    <div style="padding-left:16px;"><span style="color:white;">ComparisonPanel.tsx</span> <span style="color:#555;">— 'use client', 雙面板容器 + 滾動動畫</span></div>
+    <div style="padding-left:16px;"><span style="color:white;">TraditionalChart.tsx</span> <span style="color:#555;">— 左側灰色混亂折線 SVG</span></div>
+    <div style="padding-left:16px;"><span style="color:white;">PredictionPath.tsx</span> <span style="color:#555;">— 右側發光預測導航線 SVG + 繪製動畫</span></div>
+  </div>
+</div>
+
+<!-- SEO -->
+<div class="section">
+  <h3>SEO 結構</h3>
+  <div style="background:rgba(118,158,219,0.06); border-radius:8px; padding:14px; border:1px solid rgba(118,158,219,0.1); font-family:monospace; font-size:10px; color:#8892B0; line-height:1.8;">
+    <div style="color:#769EDB;">&lt;section aria-label="範式轉移"&gt;</div>
+    <div style="padding-left:16px; color:#00F2FF;">&lt;h2&gt;</div>
+    <div style="padding-left:24px; color:white;">別只看過去，讓我們定義未來。</div>
+    <div style="padding-left:16px; color:#00F2FF;">&lt;/h2&gt;</div>
+    <div style="padding-left:16px; color:#00F2FF;">&lt;p&gt;</div>
+    <div style="padding-left:24px; color:white;">傳統工具告訴你...PersonaCast 則在聲明發出前告訴你「將會發生什麼」。</div>
+    <div style="padding-left:16px; color:#00F2FF;">&lt;/p&gt;</div>
+    <div style="padding-left:16px; color:#555;">/* 對比面板的 alt text / aria-label 描述圖表內容 */</div>
+    <div style="color:#769EDB;">&lt;/section&gt;</div>
+  </div>
+</div>
+
+<!-- Mobile -->
+<div class="section">
+  <h3>響應式策略</h3>
+  <div style="display:flex; gap:16px;">
+    <div style="flex:1; background:rgba(255,255,255,0.03); border-radius:8px; padding:14px; border:1px solid rgba(255,255,255,0.06);">
+      <div style="font-size:10px; color:#769EDB; font-weight:600; margin-bottom:6px;">Desktop (≥1024px)</div>
+      <div style="font-size:10px; color:#8892B0;">左右並排 split-screen</div>
+    </div>
+    <div style="flex:1; background:rgba(255,255,255,0.03); border-radius:8px; padding:14px; border:1px solid rgba(255,255,255,0.06);">
+      <div style="font-size:10px; color:#FFB800; font-weight:600; margin-bottom:6px;">Tablet (768-1023px)</div>
+      <div style="font-size:10px; color:#8892B0;">維持並排但縮小 padding</div>
+    </div>
+    <div style="flex:1; background:rgba(255,255,255,0.03); border-radius:8px; padding:14px; border:1px solid rgba(255,255,255,0.06);">
+      <div style="font-size:10px; color:#B57D7D; font-weight:600; margin-bottom:6px;">Mobile (&lt;768px)</div>
+      <div style="font-size:10px; color:#8892B0;">上下堆疊：傳統在上，PersonaCast 在下</div>
+    </div>
+  </div>
+</div>

@@ -1,10 +1,44 @@
 export function TraditionalChart({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 280 100" className={className} role="img" aria-label="雜亂的傳統監測折線圖">
-      <polyline points="0,60 20,45 40,70 60,30 80,65 100,40 120,75 140,35 160,80 180,25 200,70 220,50 240,60 260,45 280,55" fill="none" stroke="#555" strokeWidth="1.5" opacity="0.5"/>
-      <polyline points="0,40 20,55 40,30 60,65 80,35 100,70 120,25 140,60 160,40 180,75 200,30 220,65 240,45 260,70 280,35" fill="none" stroke="#444" strokeWidth="1.5" opacity="0.4"/>
-      <polyline points="0,50 20,70 40,45 60,55 80,80 100,30 120,60 140,50 160,70 180,40 200,55 220,75 240,35 260,50 280,65" fill="none" stroke="#666" strokeWidth="1" opacity="0.3"/>
-      <text x="140" y="55" fontSize="28" fill="#555" textAnchor="middle" opacity="0.4">?</text>
+    <svg viewBox="0 0 340 120" className={className} role="img" aria-label="混亂的傳統監測折線圖">
+      {/* Subtle grid */}
+      {[30, 55, 80, 105].map((y) => (
+        <line key={y} x1="0" y1={y} x2="340" y2={y} stroke="rgba(255,255,255,0.025)" strokeWidth="0.5" />
+      ))}
+
+      {/* Chaotic overlapping lines — with red tint */}
+      <polyline
+        points="0,65 18,48 36,72 54,32 72,68 90,42 108,78 126,38 144,82 162,28 180,72 198,52 216,62 234,48 252,58 270,70 288,40 306,65 324,50 340,55"
+        fill="none"
+        stroke="rgba(255,77,77,0.35)"
+        strokeWidth="1.5"
+      />
+      <polyline
+        points="0,42 18,58 36,32 54,68 72,38 90,72 108,28 126,62 144,42 162,78 180,32 198,68 216,48 234,72 252,38 270,58 288,68 306,35 324,60 340,45"
+        fill="none"
+        stroke="rgba(255,77,77,0.25)"
+        strokeWidth="1.5"
+      />
+      <polyline
+        points="0,52 18,72 36,48 54,58 72,82 90,32 108,62 126,52 144,72 162,42 180,58 198,78 216,38 234,52 252,68 270,42 288,55 306,75 324,42 340,60"
+        fill="none"
+        stroke="rgba(255,100,100,0.15)"
+        strokeWidth="1"
+      />
+
+      {/* Noise scatter dots with red tint */}
+      {[
+        [30, 55], [65, 70], [95, 38], [130, 65], [160, 50], [195, 72],
+        [225, 42], [260, 60], [290, 48], [320, 58],
+        [50, 45], [110, 75], [170, 35], [240, 68], [305, 52],
+      ].map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r="1.2" fill="rgba(255,77,77,0.2)" />
+      ))}
+
+      {/* Large question mark — uncertainty */}
+      <text x="170" y="72" fontSize="36" fill="rgba(255,77,77,0.12)" textAnchor="middle" fontWeight="bold">
+        ?
+      </text>
     </svg>
   );
 }

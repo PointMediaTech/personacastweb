@@ -1,0 +1,247 @@
+<h2>Branching Paths v2 — 強化終點數據面板</h2>
+<p class="subtitle">每個結局展示多維度指標：趨勢線、衝突儀表、情緒分佈、關鍵詞觸發</p>
+
+<div class="section">
+  <h3>完整佈局預覽</h3>
+  <div class="mockup">
+    <div class="mockup-header">Hero Section — 右側 62vw 完整視覺</div>
+    <div class="mockup-body" style="background:#020617; padding:30px 20px; min-height:620px; position:relative; overflow:hidden;">
+
+      <!-- Subtle grid background -->
+      <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.04;z-index:0;">
+        <defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#769EDB" stroke-width="0.5"/></pattern></defs>
+        <rect width="100%" height="100%" fill="url(#grid)"/>
+      </svg>
+
+      <!-- Decision Tree SVG -->
+      <svg viewBox="0 0 380 400" style="width:42%;height:100%;position:absolute;left:0;top:0;z-index:1;">
+
+        <!-- Path 1: Optimal (upward) -->
+        <path d="M 100,200 C 180,200 240,70 360,50" fill="none" stroke="#769EDB" stroke-width="2.5" opacity="0.8" stroke-linecap="round"/>
+        <path d="M 100,200 C 180,200 240,70 360,50" fill="none" stroke="#769EDB" stroke-width="8" opacity="0.06" stroke-linecap="round"/>
+
+        <!-- Path 2: Neutral (horizontal) -->
+        <path d="M 100,200 C 180,205 280,205 360,200" fill="none" stroke="#8892B0" stroke-width="1.5" opacity="0.4" stroke-dasharray="6 4" stroke-linecap="round"/>
+
+        <!-- Path 3: Crisis (downward) -->
+        <path d="M 100,200 C 180,200 240,330 360,350" fill="none" stroke="#B57D7D" stroke-width="2.5" opacity="0.8" stroke-linecap="round"/>
+        <path d="M 100,200 C 180,200 240,330 360,350" fill="none" stroke="#B57D7D" stroke-width="8" opacity="0.06" stroke-linecap="round"/>
+
+        <!-- Travelling particles -->
+        <circle r="3" fill="#769EDB" opacity="0.9"><animateMotion dur="3.5s" repeatCount="indefinite" path="M 100,200 C 180,200 240,70 360,50"/></circle>
+        <circle r="2" fill="#769EDB" opacity="0.4"><animateMotion dur="3.5s" repeatCount="indefinite" path="M 100,200 C 180,200 240,70 360,50" begin="1.8s"/></circle>
+        <circle r="2" fill="#8892B0" opacity="0.5"><animateMotion dur="5s" repeatCount="indefinite" path="M 100,200 C 180,205 280,205 360,200"/></circle>
+        <circle r="3" fill="#B57D7D" opacity="0.9"><animateMotion dur="3.5s" repeatCount="indefinite" path="M 100,200 C 180,200 240,330 360,350"/></circle>
+        <circle r="2" fill="#B57D7D" opacity="0.4"><animateMotion dur="3.5s" repeatCount="indefinite" path="M 100,200 C 180,200 240,330 360,350" begin="1.5s"/></circle>
+
+        <!-- Origin Node -->
+        <circle cx="100" cy="200" r="24" fill="rgba(118,158,219,0.06)" stroke="rgba(118,158,219,0.2)" stroke-width="1"/>
+        <circle cx="100" cy="200" r="14" fill="rgba(118,158,219,0.1)" stroke="rgba(118,158,219,0.4)" stroke-width="1"/>
+        <circle cx="100" cy="200" r="5" fill="#769EDB"><animate attributeName="r" values="5;7;5" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0.6;1" dur="2s" repeatCount="indefinite"/></circle>
+
+        <!-- Origin label -->
+        <text x="100" y="244" text-anchor="middle" fill="white" font-family="Inter,sans-serif" font-size="10" font-weight="700">品牌爭議爆發</text>
+        <text x="100" y="258" text-anchor="middle" fill="#8892B0" font-family="JetBrains Mono,monospace" font-size="8">(T+0h)</text>
+      </svg>
+
+      <!-- ============================================ -->
+      <!-- OUTCOME PANELS — right 55% area, stacked     -->
+      <!-- ============================================ -->
+
+      <!-- CARD 1: OPTIMAL — 主動補償 -->
+      <div style="position:absolute; top:3%; right:3%; width:52%; z-index:2;">
+        <div style="background:rgba(2,6,23,0.55); backdrop-filter:blur(12px); border:1px solid rgba(118,158,219,0.25); border-radius:0.75rem; padding:16px 18px; border-left:3px solid #769EDB;">
+
+          <!-- Header -->
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div style="width:7px;height:7px;border-radius:50%;background:#769EDB;box-shadow:0 0 8px #769EDB;"></div>
+              <span style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#769EDB; text-transform:uppercase; letter-spacing:1.5px; font-weight:600;">Optimal Path</span>
+            </div>
+            <span style="font-family:Inter,sans-serif; font-size:11px; color:#94a3b8;">最優戰略：主動補償</span>
+          </div>
+
+          <!-- Metrics row -->
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1.2fr; gap:12px;">
+
+            <!-- Metric 1: Support Rate -->
+            <div style="background:rgba(118,158,219,0.06); border-radius:8px; padding:10px;">
+              <p style="font-family:'JetBrains Mono',monospace; font-size:9px; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin:0 0 4px;">支持率</p>
+              <p style="font-family:'JetBrains Mono',monospace; font-size:22px; font-weight:700; color:#769EDB; margin:0; line-height:1;">+15%</p>
+              <p style="font-family:Inter,sans-serif; font-size:9px; color:#4ade80; margin:3px 0 0;">▲ 穩定上升</p>
+            </div>
+
+            <!-- Metric 2: Conflict Index -->
+            <div style="background:rgba(118,158,219,0.06); border-radius:8px; padding:10px;">
+              <p style="font-family:'JetBrains Mono',monospace; font-size:9px; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin:0 0 4px;">衝突指數</p>
+              <p style="font-family:'JetBrains Mono',monospace; font-size:22px; font-weight:700; color:#4ade80; margin:0; line-height:1;">23%</p>
+              <!-- Mini gauge bar -->
+              <div style="margin-top:6px; height:3px; background:rgba(255,255,255,0.06); border-radius:2px; overflow:hidden;">
+                <div style="width:23%; height:100%; background:#4ade80; border-radius:2px;"></div>
+              </div>
+            </div>
+
+            <!-- Metric 3: Sentiment -->
+            <div style="background:rgba(118,158,219,0.06); border-radius:8px; padding:10px;">
+              <p style="font-family:'JetBrains Mono',monospace; font-size:9px; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin:0 0 4px;">正面情緒</p>
+              <p style="font-family:'JetBrains Mono',monospace; font-size:22px; font-weight:700; color:#769EDB; margin:0; line-height:1;">72%</p>
+              <!-- Mini sentiment bar -->
+              <div style="display:flex; gap:2px; margin-top:6px; height:3px;">
+                <div style="flex:72; background:#769EDB; border-radius:2px;"></div>
+                <div style="flex:18; background:#8892B0; border-radius:2px;"></div>
+                <div style="flex:10; background:#B57D7D; border-radius:2px;"></div>
+              </div>
+            </div>
+
+            <!-- Metric 4: Sparkline trend -->
+            <div style="background:rgba(118,158,219,0.06); border-radius:8px; padding:10px;">
+              <p style="font-family:'JetBrains Mono',monospace; font-size:9px; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin:0 0 6px;">72H 趨勢</p>
+              <svg viewBox="0 0 100 32" style="width:100%;height:28px;">
+                <polyline points="0,28 15,25 30,22 45,18 55,20 65,14 80,10 95,5" fill="none" stroke="#769EDB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="0,28 15,25 30,22 45,18 55,20 65,14 80,10 95,5" fill="url(#sparkFillBlue)" stroke="none"/>
+                <defs><linearGradient id="sparkFillBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#769EDB" stop-opacity="0.2"/><stop offset="100%" stop-color="#769EDB" stop-opacity="0"/></linearGradient></defs>
+                <circle cx="95" cy="5" r="2.5" fill="#769EDB"><animate attributeName="opacity" values="1;0.4;1" dur="1.5s" repeatCount="indefinite"/></circle>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2: NEUTRAL — 無作為 -->
+      <div style="position:absolute; top:38%; right:3%; width:52%; z-index:2;">
+        <div style="background:rgba(2,6,23,0.45); backdrop-filter:blur(12px); border:1px solid rgba(136,146,176,0.15); border-radius:0.75rem; padding:14px 18px; border-left:3px solid rgba(136,146,176,0.4);">
+
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div style="width:7px;height:7px;border-radius:50%;background:#8892B0;opacity:0.5;"></div>
+              <span style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#8892B0; text-transform:uppercase; letter-spacing:1.5px; font-weight:600;">Neutral Path</span>
+            </div>
+            <span style="font-family:Inter,sans-serif; font-size:11px; color:#64748b;">自然發展：無作為</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1.2fr; gap:12px;">
+            <div style="background:rgba(136,146,176,0.04); border-radius:8px; padding:10px;">
+              <p style="font-family:'JetBrains Mono',monospace; font-size:9px; color:#475569; text-transform:uppercase; letter-spacing:1px; margin:0 0 4px;">支持率</p>
+              <p style="font-family:'JetBrains Mono',monospace; font-size:20px; font-weight:700; color:#8892B0; margin:0; line-height:1;">±0%</p>
+              <p style="font-family:Inter,sans-serif; font-size:9px; color:#8892B0; margin:3px 0 0;">— 持平</p>
+            </div>
+            <div style="background:rgba(136,146,176,0.04); border-radius:8px; padding:10px;">
+              <p style="font-family:'JetBrains Mono',monospace; font-size:9px; color:#475569; text-transform:uppercase; letter-spacing:1px; margin:0 0 4px;">衝突指數</p>
+              <p style="font-family:'JetBrains Mono',monospace; font-size:20px; font-weight:700; color:#8892B0; margin:0; line-height:1;">51%</p>
+              <div style="margin-top:6px; height:3px; background:rgba(255,255,255,0.04); border-radius:2px; overflow:hidden;">
+                <div style="width:51%; height:100%; background:#8892B0; opacity:0.5; border-radius:2px;"></div>
+              </div>
+            </div>
+            <div style="background:rgba(136,146,176,0.04); border-radius:8px; padding:10px;">
+              <p style="font-family:'JetBrains Mono',monospace; font-size:9px; color:#475569; text-transform:uppercase; letter-spacing:1px; margin:0 0 4px;">正面情緒</p>
+              <p style="font-family:'JetBrains Mono',monospace; font-size:20px; font-weight:700; color:#8892B0; margin:0; line-height:1;">45%</p>
+              <div style="display:flex; gap:2px; margin-top:6px; height:3px;">
+                <div style="flex:45; background:#8892B0; border-radius:2px;"></div>
+                <div style="flex:35; background:#64748b; border-radius:2px;"></div>
+                <div style="flex:20; background:#B57D7D; opacity:0.5; border-radius:2px;"></div>
+              </div>
+            </div>
+            <div style="background:rgba(136,146,176,0.04); border-radius:8px; padding:10px;">
+              <p style="font-family:'JetBrains Mono',monospace; font-size:9px; color:#475569; text-transform:uppercase; letter-spacing:1px; margin:0 0 6px;">72H 趨勢</p>
+              <svg viewBox="0 0 100 32" style="width:100%;height:28px;">
+                <polyline points="0,16 15,17 30,15 45,16 55,17 65,15 80,16 95,16" fill="none" stroke="#8892B0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+                <circle cx="95" cy="16" r="2" fill="#8892B0" opacity="0.5"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 3: CRISIS — 資訊洩漏 -->
+      <div style="position:absolute; bottom:3%; right:3%; width:52%; z-index:2;">
+        <div style="background:rgba(2,6,23,0.55); backdrop-filter:blur(12px); border:1px solid rgba(181,125,125,0.25); border-radius:0.75rem; padding:16px 18px; border-left:3px solid #B57D7D;">
+
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div style="width:7px;height:7px;border-radius:50%;background:#B57D7D;box-shadow:0 0 8px #B57D7D;"></div>
+              <span style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#B57D7D; text-transform:uppercase; letter-spacing:1.5px; font-weight:600;">Crisis Path</span>
+            </div>
+            <span style="font-family:Inter,sans-serif; font-size:11px; color:#94a3b8;">危機擴散：資訊洩漏</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1.2fr; gap:12px;">
+            <div style="background:rgba(181,125,125,0.06); border-radius:8px; padding:10px;">
+              <p style="font-family:'JetBrains Mono',monospace; font-size:9px; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin:0 0 4px;">支持率</p>
+              <p style="font-family:'JetBrains Mono',monospace; font-size:22px; font-weight:700; color:#B57D7D; margin:0; line-height:1;">-28%</p>
+              <p style="font-family:Inter,sans-serif; font-size:9px; color:#B57D7D; margin:3px 0 0;">▼ 急速下跌</p>
+            </div>
+            <div style="background:rgba(181,125,125,0.06); border-radius:8px; padding:10px;">
+              <p style="font-family:'JetBrains Mono',monospace; font-size:9px; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin:0 0 4px;">衝突指數</p>
+              <p style="font-family:'JetBrains Mono',monospace; font-size:22px; font-weight:700; color:#ef4444; margin:0; line-height:1;">82%</p>
+              <div style="margin-top:6px; height:3px; background:rgba(255,255,255,0.06); border-radius:2px; overflow:hidden;">
+                <div style="width:82%; height:100%; background:#ef4444; border-radius:2px;"></div>
+              </div>
+            </div>
+            <div style="background:rgba(181,125,125,0.06); border-radius:8px; padding:10px;">
+              <p style="font-family:'JetBrains Mono',monospace; font-size:9px; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin:0 0 4px;">正面情緒</p>
+              <p style="font-family:'JetBrains Mono',monospace; font-size:22px; font-weight:700; color:#B57D7D; margin:0; line-height:1;">18%</p>
+              <div style="display:flex; gap:2px; margin-top:6px; height:3px;">
+                <div style="flex:18; background:#8892B0; border-radius:2px;"></div>
+                <div style="flex:22; background:#B57D7D; border-radius:2px;"></div>
+                <div style="flex:60; background:#ef4444; border-radius:2px;"></div>
+              </div>
+            </div>
+            <div style="background:rgba(181,125,125,0.06); border-radius:8px; padding:10px;">
+              <p style="font-family:'JetBrains Mono',monospace; font-size:9px; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin:0 0 6px;">72H 趨勢</p>
+              <svg viewBox="0 0 100 32" style="width:100%;height:28px;">
+                <polyline points="0,5 15,8 30,10 45,14 55,18 65,22 80,26 95,30" fill="none" stroke="#B57D7D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="0,5 15,8 30,10 45,14 55,18 65,22 80,26 95,30" fill="url(#sparkFillRose)" stroke="none"/>
+                <defs><linearGradient id="sparkFillRose" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#B57D7D" stop-opacity="0"/><stop offset="100%" stop-color="#B57D7D" stop-opacity="0.2"/></linearGradient></defs>
+                <circle cx="95" cy="30" r="2.5" fill="#B57D7D"><animate attributeName="opacity" values="1;0.4;1" dur="1.5s" repeatCount="indefinite"/></circle>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Triggered keywords badge row (crisis only) -->
+          <div style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(181,125,125,0.12); display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+            <span style="font-family:'JetBrains Mono',monospace; font-size:9px; color:#64748b; text-transform:uppercase; letter-spacing:1px;">觸發詞：</span>
+            <span style="font-family:Inter,sans-serif; font-size:10px; color:#B57D7D; background:rgba(181,125,125,0.1); padding:2px 8px; border-radius:4px; border:1px solid rgba(181,125,125,0.15);">造謠</span>
+            <span style="font-family:Inter,sans-serif; font-size:10px; color:#B57D7D; background:rgba(181,125,125,0.1); padding:2px 8px; border-radius:4px; border:1px solid rgba(181,125,125,0.15);">洩密</span>
+            <span style="font-family:Inter,sans-serif; font-size:10px; color:#B57D7D; background:rgba(181,125,125,0.1); padding:2px 8px; border-radius:4px; border:1px solid rgba(181,125,125,0.15);">抵制</span>
+            <span style="font-family:Inter,sans-serif; font-size:10px; color:#64748b; background:rgba(100,116,139,0.08); padding:2px 8px; border-radius:4px;">+16 more</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>每張結局面板包含的指標</h3>
+  <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px;">
+    <div style="background:rgba(30,41,59,0.4); border:1px solid rgba(100,116,139,0.2); border-radius:0.75rem; padding:14px; text-align:center;">
+      <p style="font-size:20px; margin:0 0 6px;">📊</p>
+      <p style="font-family:'JetBrains Mono',monospace; font-size:11px; color:white; font-weight:600; margin:0 0 4px;">支持率變化</p>
+      <p style="font-size:11px; color:#94a3b8; margin:0;">大字體數值 + 趨勢箭頭</p>
+    </div>
+    <div style="background:rgba(30,41,59,0.4); border:1px solid rgba(100,116,139,0.2); border-radius:0.75rem; padding:14px; text-align:center;">
+      <p style="font-size:20px; margin:0 0 6px;">⚡</p>
+      <p style="font-family:'JetBrains Mono',monospace; font-size:11px; color:white; font-weight:600; margin:0 0 4px;">衝突指數</p>
+      <p style="font-size:11px; color:#94a3b8; margin:0;">百分比 + 進度條</p>
+    </div>
+    <div style="background:rgba(30,41,59,0.4); border:1px solid rgba(100,116,139,0.2); border-radius:0.75rem; padding:14px; text-align:center;">
+      <p style="font-size:20px; margin:0 0 6px;">💬</p>
+      <p style="font-family:'JetBrains Mono',monospace; font-size:11px; color:white; font-weight:600; margin:0 0 4px;">情緒分佈</p>
+      <p style="font-size:11px; color:#94a3b8; margin:0;">正/中/負三色堆疊條</p>
+    </div>
+    <div style="background:rgba(30,41,59,0.4); border:1px solid rgba(100,116,139,0.2); border-radius:0.75rem; padding:14px; text-align:center;">
+      <p style="font-size:20px; margin:0 0 6px;">📈</p>
+      <p style="font-family:'JetBrains Mono',monospace; font-size:11px; color:white; font-weight:600; margin:0 0 4px;">72H 趨勢線</p>
+      <p style="font-size:11px; color:#94a3b8; margin:0;">SVG Sparkline + 漸層填充</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Crisis 面板額外元素</h3>
+  <div style="background:rgba(30,41,59,0.3); border:1px solid rgba(181,125,125,0.15); border-radius:0.75rem; padding:16px; color:#94a3b8; font-size:13px; line-height:1.8;">
+    <p style="margin:0 0 6px;"><strong style="color:white;">觸發詞標籤列：</strong>底部顯示 AI 偵測到的衝突關鍵詞（造謠、洩密、抵制...），以 pill badge 呈現，附帶「+16 more」收合提示。僅 Crisis 路徑有此區塊，強化威脅感。</p>
+    <p style="margin:0;"><strong style="color:white;">Hover 展開：</strong>當用戶 hover Crisis 路徑時，觸發詞列展開顯示更多標籤，並以 Dried Rose 邊框脈衝。</p>
+  </div>
+</div>

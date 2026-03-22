@@ -1,0 +1,101 @@
+<h2>Logo 尺寸比較</h2>
+<p class="subtitle">方案 C（字重對比）在不同大小下的效果</p>
+
+<style>
+  .logo-preview {
+    background: rgba(2, 6, 23, 0.95);
+    border-radius: 12px;
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    min-height: 64px;
+  }
+  .logo-text {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+  .nav-mock {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: rgba(136, 146, 176, 0.7);
+    letter-spacing: 0.08em;
+  }
+  .nav-mock span { opacity: 0.6; }
+  .cta-mock {
+    border: 1px solid rgba(0, 224, 194, 0.5);
+    color: rgba(0, 224, 194, 0.8);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.08em;
+  }
+  .option .content { width: 100%; }
+  .size-label {
+    display: inline-block;
+    background: rgba(136, 146, 176, 0.15);
+    color: #8892B0;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-top: 6px;
+    font-family: monospace;
+  }
+</style>
+
+<div class="options">
+  <div class="option" data-choice="current" onclick="toggleSelect(this)">
+    <div class="letter">1</div>
+    <div class="content">
+      <h3>目前大小（28px）</h3>
+      <div class="logo-preview">
+        <div>
+          <span class="logo-text" style="font-size: 22px; color: #E2E8F0; font-weight: 600;">Persona</span><span class="logo-text" style="font-size: 22px; color: #00E0C2; font-weight: 800;">Cast</span>
+        </div>
+        <div class="nav-mock">
+          <span>核心推演</span><span>應用場景</span><span>技術深度</span>
+          <div class="cta-mock">預約專屬演示</div>
+        </div>
+      </div>
+      <span class="size-label">h-8 (32px) — 現狀</span>
+    </div>
+  </div>
+
+  <div class="option" data-choice="medium" onclick="toggleSelect(this)">
+    <div class="letter">2</div>
+    <div class="content">
+      <h3>中等放大（+20%）</h3>
+      <div class="logo-preview">
+        <div>
+          <span class="logo-text" style="font-size: 26px; color: #E2E8F0; font-weight: 600;">Persona</span><span class="logo-text" style="font-size: 26px; color: #00E0C2; font-weight: 800;">Cast</span>
+        </div>
+        <div class="nav-mock">
+          <span>核心推演</span><span>應用場景</span><span>技術深度</span>
+          <div class="cta-mock">預約專屬演示</div>
+        </div>
+      </div>
+      <span class="size-label">text-2xl (26px)</span>
+    </div>
+  </div>
+
+  <div class="option" data-choice="large" onclick="toggleSelect(this)">
+    <div class="letter">3</div>
+    <div class="content">
+      <h3>明顯放大（+40%）</h3>
+      <div class="logo-preview">
+        <div>
+          <span class="logo-text" style="font-size: 30px; color: #E2E8F0; font-weight: 600;">Persona</span><span class="logo-text" style="font-size: 30px; color: #00E0C2; font-weight: 800;">Cast</span>
+        </div>
+        <div class="nav-mock">
+          <span>核心推演</span><span>應用場景</span><span>技術深度</span>
+          <div class="cta-mock">預約專屬演示</div>
+        </div>
+      </div>
+      <span class="size-label">text-3xl (30px)</span>
+    </div>
+  </div>
+</div>

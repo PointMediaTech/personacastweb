@@ -1,0 +1,120 @@
+<h2>滾動體驗比較：三種模式</h2>
+<p class="subtitle">左側是「混合式 (推薦)」，右側是「全螢幕分頁式」作為對比</p>
+
+<div class="split" style="gap: 32px; align-items: flex-start;">
+
+  <!-- LEFT: Mixed Mode -->
+  <div style="flex:1;">
+    <h3 style="text-align:center; margin-bottom: 16px;">C) 混合式 (推薦)</h3>
+    <div style="background:#0a0f1a; border-radius:12px; overflow:hidden; border:1px solid rgba(0,242,255,0.15); height: 520px; overflow-y: auto; position: relative;">
+
+      <!-- Hero: Full screen -->
+      <div style="height: 280px; background: linear-gradient(135deg, #020617 0%, #0a1628 50%, #020617 100%); display:flex; align-items:center; justify-content:center; flex-direction:column; position:relative; border-bottom: 1px solid rgba(0,242,255,0.1);">
+        <div style="position:absolute; top:8px; left:12px; font-size:9px; color:#00F2FF; font-family:monospace; background:rgba(0,242,255,0.1); padding:2px 8px; border-radius:4px;">HERO — 佔滿整個螢幕，滾動前不會看到下方內容</div>
+        <div style="font-size:28px; font-weight:800; color:white; letter-spacing:-1px;">掌握變數</div>
+        <div style="font-size:28px; font-weight:800; color:#93C5FD;">定義結局</div>
+        <div style="margin-top:12px; padding:8px 20px; border-radius:6px; background:rgba(118,158,219,0.2); border:1px solid #769EDB; color:#769EDB; font-size:11px;">啟動推演劇場</div>
+        <div style="position:absolute; bottom:12px; font-size:9px; color:#8892B0;">↓ 向下滾動繼續 ↓</div>
+      </div>
+
+      <!-- Section 2: flows naturally -->
+      <div style="padding: 24px 16px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+        <div style="font-size:9px; color:#00F2FF; font-family:monospace; margin-bottom:8px; background:rgba(0,242,255,0.1); padding:2px 8px; border-radius:4px; display:inline-block;">SECTION 2 — 自然銜接，內容多長就多長</div>
+        <div style="font-size:14px; font-weight:700; color:white; margin-bottom:8px;">範式轉移</div>
+        <div style="display:flex; gap:8px;">
+          <div style="flex:1; background:rgba(255,255,255,0.03); border-radius:6px; padding:12px; text-align:center;">
+            <div style="font-size:9px; color:#666;">傳統監測</div>
+            <div style="font-size:20px; margin:4px 0;">📊</div>
+            <div style="font-size:8px; color:#555;">灰色、混亂</div>
+          </div>
+          <div style="flex:1; background:rgba(118,158,219,0.08); border-radius:6px; padding:12px; text-align:center; border:1px solid rgba(118,158,219,0.15);">
+            <div style="font-size:9px; color:#769EDB;">PersonaCast</div>
+            <div style="font-size:20px; margin:4px 0;">✨</div>
+            <div style="font-size:8px; color:#769EDB;">有序、發光</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: flows naturally -->
+      <div style="padding: 24px 16px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+        <div style="font-size:9px; color:#00F2FF; font-family:monospace; margin-bottom:8px; background:rgba(0,242,255,0.1); padding:2px 8px; border-radius:4px; display:inline-block;">SECTION 3 — 繼續自然滾動</div>
+        <div style="font-size:14px; font-weight:700; color:white; margin-bottom:8px;">三大戰略支柱</div>
+        <div style="display:flex; gap:6px;">
+          <div style="flex:1; background:rgba(255,255,255,0.03); border-radius:6px; padding:10px; text-align:center;">
+            <div style="font-size:9px; color:#769EDB;">PersonaLab</div>
+          </div>
+          <div style="flex:1; background:rgba(255,255,255,0.03); border-radius:6px; padding:10px; text-align:center;">
+            <div style="font-size:9px; color:#FFB800;">Arena</div>
+          </div>
+          <div style="flex:1; background:rgba(255,255,255,0.03); border-radius:6px; padding:10px; text-align:center;">
+            <div style="font-size:9px; color:#B57D7D;">Graph</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4 -->
+      <div style="padding: 24px 16px;">
+        <div style="font-size:14px; font-weight:700; color:white; margin-bottom:6px;">戰場選擇</div>
+        <div style="font-size:9px; color:#8892B0;">...更多內容自然往下延伸...</div>
+      </div>
+    </div>
+    <div style="margin-top:12px; padding:12px; background:rgba(0,242,255,0.05); border-radius:8px; border:1px solid rgba(0,242,255,0.1);">
+      <div style="font-size:11px; color:#00F2FF; font-weight:600; margin-bottom:4px;">混合式特點</div>
+      <ul style="font-size:10px; color:#8892B0; margin:0; padding-left:16px; line-height:1.6;">
+        <li>Hero 獨佔整個畫面，建立沉浸感</li>
+        <li>滾過 Hero 後，後續 Section <strong style="color:white;">自然連接</strong></li>
+        <li>每個 Section 的高度<strong style="color:white;">不受限制</strong>，內容多長就多長</li>
+        <li>元素在滾動進入視窗時觸發<strong style="color:white;">淡入動畫</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- RIGHT: Full-page Snap -->
+  <div style="flex:1;">
+    <h3 style="text-align:center; margin-bottom: 16px;">B) 全螢幕分頁式</h3>
+    <div style="background:#0a0f1a; border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.1); height: 520px; position: relative;">
+
+      <!-- Page 1: Hero -->
+      <div style="height: 260px; background: linear-gradient(135deg, #020617 0%, #0a1628 50%, #020617 100%); display:flex; align-items:center; justify-content:center; flex-direction:column; position:relative; border-bottom: 2px solid rgba(255,173,0,0.3);">
+        <div style="position:absolute; top:8px; left:12px; font-size:9px; color:#FFAD00; font-family:monospace; background:rgba(255,173,0,0.1); padding:2px 8px; border-radius:4px;">PAGE 1 — 佔滿螢幕</div>
+        <div style="font-size:28px; font-weight:800; color:white;">掌握變數</div>
+        <div style="font-size:28px; font-weight:800; color:#93C5FD;">定義結局</div>
+      </div>
+
+      <!-- Page 2: forced full screen -->
+      <div style="height: 260px; display:flex; align-items:center; justify-content:center; flex-direction:column; position:relative; border-bottom: 2px solid rgba(255,173,0,0.3);">
+        <div style="position:absolute; top:8px; left:12px; font-size:9px; color:#FFAD00; font-family:monospace; background:rgba(255,173,0,0.1); padding:2px 8px; border-radius:4px;">PAGE 2 — 也佔滿螢幕</div>
+        <div style="font-size:14px; font-weight:700; color:white; margin-bottom:12px;">範式轉移</div>
+        <div style="display:flex; gap:8px; padding: 0 16px; width:100%; box-sizing:border-box;">
+          <div style="flex:1; background:rgba(255,255,255,0.03); border-radius:6px; padding:12px; text-align:center;">
+            <div style="font-size:9px; color:#666;">傳統</div>
+          </div>
+          <div style="flex:1; background:rgba(118,158,219,0.08); border-radius:6px; padding:12px; text-align:center;">
+            <div style="font-size:9px; color:#769EDB;">PersonaCast</div>
+          </div>
+        </div>
+        <div style="position:absolute; bottom:40px; left:16px; right:16px; background:rgba(255,77,77,0.08); border:1px solid rgba(255,77,77,0.2); border-radius:6px; padding:8px;">
+          <div style="font-size:9px; color:#FF4D4D; text-align:center;">⚠️ 內容太少 → 大量留白；內容太多 → 被截斷</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:12px; padding:12px; background:rgba(255,77,77,0.05); border-radius:8px; border:1px solid rgba(255,77,77,0.1);">
+      <div style="font-size:11px; color:#FF4D4D; font-weight:600; margin-bottom:4px;">全螢幕分頁的問題</div>
+      <ul style="font-size:10px; color:#8892B0; margin:0; padding-left:16px; line-height:1.6;">
+        <li>每頁<strong style="color:white;">強制佔滿螢幕</strong>，滾動會「跳」到下一頁</li>
+        <li>內容少的 Section → <strong style="color:#FF4D4D;">大量空白</strong></li>
+        <li>內容多的 Section → <strong style="color:#FF4D4D;">被截斷或需要頁內滾動</strong></li>
+        <li>手機螢幕高度更小，問題更嚴重</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top:24px; padding:16px; background:rgba(118,158,219,0.08); border-radius:8px; border:1px solid rgba(118,158,219,0.15);">
+  <div style="font-size:12px; color:white; font-weight:600; margin-bottom:6px;">💡 簡單來說</div>
+  <div style="font-size:11px; color:#CBD5E1; line-height:1.7;">
+    <strong style="color:#00F2FF;">混合式</strong> = Hero 佔滿全螢幕（像電影開場），滾過去之後就像正常網頁一樣<strong>自由滾動</strong>，每個 Section 在滾到的時候會有漂亮的淡入動畫。<br/>
+    <strong style="color:#FFAD00;">全螢幕分頁</strong> = 每個 Section 都強制佔滿全螢幕，滾動時「跳頁」而不是平滑滾動。看起來戲劇化但很多限制。
+  </div>
+</div>

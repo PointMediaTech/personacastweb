@@ -14,19 +14,24 @@ export function ParadigmSection() {
         {/* Centering wrapper */}
         <div style={{ maxWidth: '1200px', width: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
           {/* Title area */}
-          <div className="text-center" style={{ marginBottom: '4rem' }}>
+          <div className="text-center" style={{ marginBottom: '5.5rem' }}>
             <p className="text-xs tracking-[4px] text-strategic-blue uppercase font-mono" style={{ marginBottom: '1.5rem' }}>
               PARADIGM SHIFT
             </p>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white font-heading tracking-tight leading-[1.1]">
               輿論定型前，拿回您的劇本掌控權。
             </h2>
-            <p
-              className="text-base lg:text-lg text-slate-400 leading-relaxed"
-              style={{ maxWidth: '720px', marginLeft: 'auto', marginRight: 'auto', marginTop: '2rem' }}
+            <div
+              className="text-base lg:text-lg text-slate-400"
+              style={{ maxWidth: '720px', marginLeft: 'auto', marginRight: 'auto', marginTop: '2rem', lineHeight: '2' }}
             >
-              在數位時代，敘事即是現實。當對手還在猜測您的下一步，您已在千萬次推演中看透結局。領先 72 小時主動佈局，確保由您主導故事的終局——讓每場危機，都成為您的主場。定義您的傳奇，而非僅僅是對它做出反應。
-            </p>
+              <p>
+                在數位時代，敘事即是現實。當對手還在猜測您的下一步，您已在千萬次推演中看透結局。
+              </p>
+              <p className="text-slate-300 font-medium" style={{ marginTop: '1rem' }}>
+                領先 72 小時主動佈局，確保由您主導故事的終局——讓每場危機，都成為您的主場。定義您的傳奇，而非僅僅是對它做出反應。
+              </p>
+            </div>
           </div>
 
           {/* Comparison panel */}

@@ -1,0 +1,216 @@
+<h2>Section 4：戰場選擇 (Scenario Entry)</h2>
+<p class="subtitle">三大應用場景入口，抽象背景 + 前景 UI 疊加，引導用戶進入專屬沙盒</p>
+
+<!-- Overall Layout -->
+<div class="section">
+  <h3>整體佈局</h3>
+  <div class="mockup">
+    <div class="mockup-header">Section 4 — Desktop View (1440px)</div>
+    <div class="mockup-body" style="background:#020617; padding:0; overflow:hidden;">
+
+      <!-- Section header -->
+      <div style="text-align:center; padding:48px 32px 28px;">
+        <div style="font-size:10px; letter-spacing:3px; color:#769EDB; text-transform:uppercase; margin-bottom:8px; font-family:monospace;">SCENARIO ENTRY</div>
+        <div style="font-size:22px; font-weight:800; color:white; margin-bottom:6px;">為您的決策場景，定制專屬沙盒。</div>
+        <div style="font-size:11px; color:#8892B0; max-width:480px; margin:0 auto;">選擇您面臨的戰場，啟動針對性的 72 小時壓力測試。</div>
+      </div>
+
+      <!-- Three scenario cards -->
+      <div style="display:flex; gap:16px; margin:0 32px 48px;">
+
+        <!-- Card 1: Political Campaign -->
+        <div style="flex:1; border-radius:12px; overflow:hidden; border:1px solid rgba(255,77,77,0.15); position:relative; cursor:pointer;">
+          <!-- Abstract background -->
+          <div style="height:160px; position:relative; overflow:hidden;">
+            <!-- Abstract geometric pattern (political/conflict theme) -->
+            <div style="position:absolute; inset:0; background:linear-gradient(135deg, rgba(255,77,77,0.08) 0%, rgba(2,6,23,0.95) 100%);">
+              <svg viewBox="0 0 300 160" style="width:100%; height:100%; position:absolute; inset:0;">
+                <!-- Abstract angular shapes suggesting tension -->
+                <polygon points="0,0 150,60 0,120" fill="rgba(255,77,77,0.06)"/>
+                <polygon points="300,0 150,60 300,120" fill="rgba(255,77,77,0.04)"/>
+                <line x1="0" y1="80" x2="300" y2="80" stroke="rgba(255,77,77,0.08)" stroke-width="0.5"/>
+                <line x1="150" y1="0" x2="150" y2="160" stroke="rgba(255,77,77,0.06)" stroke-width="0.5"/>
+                <!-- Scattered data points -->
+                <circle cx="60" cy="40" r="1.5" fill="rgba(255,77,77,0.3)"/>
+                <circle cx="120" cy="90" r="1" fill="rgba(255,77,77,0.2)"/>
+                <circle cx="200" cy="50" r="1.5" fill="rgba(255,77,77,0.25)"/>
+                <circle cx="240" cy="110" r="1" fill="rgba(255,77,77,0.15)"/>
+                <!-- Pulse rings -->
+                <circle cx="150" cy="80" r="20" fill="none" stroke="rgba(255,77,77,0.1)" stroke-width="0.5"/>
+                <circle cx="150" cy="80" r="40" fill="none" stroke="rgba(255,77,77,0.06)" stroke-width="0.5"/>
+              </svg>
+            </div>
+
+            <!-- Floating UI overlay: Alert window -->
+            <div style="position:absolute; top:20px; right:16px; background:rgba(2,6,23,0.85); border:1px solid rgba(255,77,77,0.3); border-radius:8px; padding:10px 14px; backdrop-filter:blur(8px);">
+              <div style="display:flex; align-items:center; gap:4px; margin-bottom:4px;">
+                <div style="width:6px; height:6px; border-radius:50%; background:#FF4D4D;"></div>
+                <div style="font-size:8px; color:#FF4D4D; font-family:monospace;">ALERT</div>
+              </div>
+              <div style="font-size:10px; color:white; font-weight:600;">衝突指數 &gt; 70%</div>
+              <div style="font-size:8px; color:#8892B0;">醜聞擴散速率異常</div>
+            </div>
+
+            <!-- Secondary UI element -->
+            <div style="position:absolute; bottom:16px; left:16px; background:rgba(2,6,23,0.75); border:1px solid rgba(255,77,77,0.15); border-radius:6px; padding:6px 10px;">
+              <div style="font-size:7px; color:#FF4D4D; font-family:monospace;">CRISIS T-48H</div>
+              <div style="width:80px; height:3px; background:rgba(255,255,255,0.06); border-radius:2px; margin-top:3px;">
+                <div style="width:70%; height:100%; background:linear-gradient(90deg, #FF4D4D, #FFAD00); border-radius:2px;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card content -->
+          <div style="padding:16px 18px; background:rgba(255,77,77,0.03);">
+            <div style="font-size:14px; font-weight:700; color:white; margin-bottom:4px;">政治選戰</div>
+            <div style="font-size:10px; color:#8892B0; margin-bottom:10px;">醜聞爆發與議題置換的 72 小時壓力測試。</div>
+            <div style="display:flex; align-items:center; gap:4px;">
+              <div style="font-size:10px; color:#FF4D4D;">進入沙盒</div>
+              <div style="font-size:10px; color:#FF4D4D;">→</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Corporate PR -->
+        <div style="flex:1; border-radius:12px; overflow:hidden; border:1px solid rgba(118,158,219,0.15); position:relative; cursor:pointer;">
+          <!-- Abstract background -->
+          <div style="height:160px; position:relative; overflow:hidden;">
+            <div style="position:absolute; inset:0; background:linear-gradient(135deg, rgba(118,158,219,0.08) 0%, rgba(2,6,23,0.95) 100%);">
+              <svg viewBox="0 0 300 160" style="width:100%; height:100%; position:absolute; inset:0;">
+                <!-- Abstract grid pattern suggesting corporate structure -->
+                <rect x="20" y="20" width="80" height="40" rx="4" fill="none" stroke="rgba(118,158,219,0.1)" stroke-width="0.5"/>
+                <rect x="120" y="30" width="60" height="50" rx="4" fill="none" stroke="rgba(118,158,219,0.08)" stroke-width="0.5"/>
+                <rect x="200" y="25" width="70" height="35" rx="4" fill="none" stroke="rgba(118,158,219,0.06)" stroke-width="0.5"/>
+                <line x1="100" y1="40" x2="120" y2="55" stroke="rgba(118,158,219,0.1)" stroke-width="0.5"/>
+                <line x1="180" y1="55" x2="200" y2="42" stroke="rgba(118,158,219,0.08)" stroke-width="0.5"/>
+                <!-- Shield/protect motif -->
+                <path d="M150,70 L165,78 L165,95 L150,105 L135,95 L135,78 Z" fill="rgba(118,158,219,0.06)" stroke="rgba(118,158,219,0.15)" stroke-width="0.8"/>
+                <circle cx="150" cy="88" r="3" fill="rgba(118,158,219,0.2)"/>
+              </svg>
+            </div>
+
+            <!-- Floating UI overlay: Report preview -->
+            <div style="position:absolute; top:20px; right:16px; background:rgba(2,6,23,0.85); border:1px solid rgba(118,158,219,0.3); border-radius:8px; padding:10px 14px; backdrop-filter:blur(8px);">
+              <div style="display:flex; align-items:center; gap:4px; margin-bottom:4px;">
+                <div style="width:6px; height:6px; border-radius:50%; background:#769EDB;"></div>
+                <div style="font-size:8px; color:#769EDB; font-family:monospace;">STRATEGY</div>
+              </div>
+              <div style="font-size:10px; color:white; font-weight:600;">議題置換策略</div>
+              <div style="font-size:8px; color:#8892B0;">模擬報告 #PR-2847</div>
+            </div>
+
+            <!-- Risk gauge -->
+            <div style="position:absolute; bottom:16px; left:16px; background:rgba(2,6,23,0.75); border:1px solid rgba(118,158,219,0.15); border-radius:6px; padding:6px 10px;">
+              <div style="font-size:7px; color:#769EDB; font-family:monospace;">BRAND RISK</div>
+              <div style="width:80px; height:3px; background:rgba(255,255,255,0.06); border-radius:2px; margin-top:3px;">
+                <div style="width:45%; height:100%; background:#769EDB; border-radius:2px;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card content -->
+          <div style="padding:16px 18px; background:rgba(118,158,219,0.03);">
+            <div style="font-size:14px; font-weight:700; color:white; margin-bottom:4px;">企業公關</div>
+            <div style="font-size:10px; color:#8892B0; margin-bottom:10px;">產品合規與品牌聲譽的風險控管。</div>
+            <div style="display:flex; align-items:center; gap:4px;">
+              <div style="font-size:10px; color:#769EDB;">進入沙盒</div>
+              <div style="font-size:10px; color:#769EDB;">→</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Financial/Social -->
+        <div style="flex:1; border-radius:12px; overflow:hidden; border:1px solid rgba(255,184,0,0.15); position:relative; cursor:pointer;">
+          <!-- Abstract background -->
+          <div style="height:160px; position:relative; overflow:hidden;">
+            <div style="position:absolute; inset:0; background:linear-gradient(135deg, rgba(255,184,0,0.08) 0%, rgba(2,6,23,0.95) 100%);">
+              <svg viewBox="0 0 300 160" style="width:100%; height:100%; position:absolute; inset:0;">
+                <!-- Abstract wave pattern suggesting market volatility -->
+                <path d="M0,100 Q50,60 100,90 Q150,120 200,70 Q250,30 300,80" fill="none" stroke="rgba(255,184,0,0.15)" stroke-width="1"/>
+                <path d="M0,110 Q60,80 110,100 Q160,130 210,80 Q260,40 300,90" fill="none" stroke="rgba(255,184,0,0.08)" stroke-width="0.8"/>
+                <!-- Candlestick-like elements -->
+                <line x1="60" y1="50" x2="60" y2="80" stroke="rgba(255,184,0,0.2)" stroke-width="2"/>
+                <line x1="120" y1="40" x2="120" y2="75" stroke="rgba(0,242,255,0.15)" stroke-width="2"/>
+                <line x1="180" y1="55" x2="180" y2="85" stroke="rgba(255,184,0,0.15)" stroke-width="2"/>
+                <line x1="240" y1="35" x2="240" y2="65" stroke="rgba(255,77,77,0.15)" stroke-width="2"/>
+              </svg>
+            </div>
+
+            <!-- Floating UI overlay: Chain reaction -->
+            <div style="position:absolute; top:20px; right:16px; background:rgba(2,6,23,0.85); border:1px solid rgba(255,184,0,0.3); border-radius:8px; padding:10px 14px; backdrop-filter:blur(8px);">
+              <div style="display:flex; align-items:center; gap:4px; margin-bottom:4px;">
+                <div style="width:6px; height:6px; border-radius:50%; background:#FFB800;"></div>
+                <div style="font-size:8px; color:#FFB800; font-family:monospace;">CASCADE</div>
+              </div>
+              <div style="font-size:10px; color:white; font-weight:600;">連鎖反應偵測</div>
+              <div style="font-size:8px; color:#8892B0;">群體恐慌指數: 62%</div>
+            </div>
+
+            <!-- Sentiment meter -->
+            <div style="position:absolute; bottom:16px; left:16px; background:rgba(2,6,23,0.75); border:1px solid rgba(255,184,0,0.15); border-radius:6px; padding:6px 10px;">
+              <div style="font-size:7px; color:#FFB800; font-family:monospace;">MARKET IMPACT</div>
+              <div style="width:80px; height:3px; background:rgba(255,255,255,0.06); border-radius:2px; margin-top:3px;">
+                <div style="width:62%; height:100%; background:linear-gradient(90deg, #FFB800, #FF4D4D); border-radius:2px;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card content -->
+          <div style="padding:16px 18px; background:rgba(255,184,0,0.03);">
+            <div style="font-size:14px; font-weight:700; color:white; margin-bottom:4px;">金融社會</div>
+            <div style="font-size:10px; color:#8892B0; margin-bottom:10px;">群體情緒對市場動盪的連鎖反應預演。</div>
+            <div style="display:flex; align-items:center; gap:4px;">
+              <div style="font-size:10px; color:#FFB800;">進入沙盒</div>
+              <div style="font-size:10px; color:#FFB800;">→</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Animation & Interaction -->
+<div class="section">
+  <h3>滾動動畫 & 互動</h3>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+    <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:14px; border:1px solid rgba(255,255,255,0.06);">
+      <div style="font-size:10px; color:#769EDB; font-weight:600; margin-bottom:6px;">滾動進場</div>
+      <div style="font-size:10px; color:#8892B0; line-height:1.6;">標題淡入 → 三張卡片從下方交錯滑入（0.2s stagger）→ UI 疊加元素延遲淡入</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:14px; border:1px solid rgba(255,255,255,0.06);">
+      <div style="font-size:10px; color:#FFB800; font-weight:600; margin-bottom:6px;">Hover 效果</div>
+      <div style="font-size:10px; color:#8892B0; line-height:1.6;">卡片整體上移 4px + border 亮度提升 + 抽象背景的 SVG 元素微幅放大（scale 1.05）+ 「進入沙盒 →」文字右移</div>
+    </div>
+  </div>
+</div>
+
+<!-- Component Structure -->
+<div class="section">
+  <h3>元件結構</h3>
+  <div style="background:rgba(255,255,255,0.03); border-radius:8px; padding:16px; border:1px solid rgba(255,255,255,0.06); font-family:monospace; font-size:11px; color:#8892B0; line-height:1.8;">
+    <div><span style="color:#769EDB;">components/scenarios/</span></div>
+    <div style="padding-left:16px;"><span style="color:white;">ScenariosSection.tsx</span> <span style="color:#555;">— Server Component, 標題 + SEO 語義</span></div>
+    <div style="padding-left:16px;"><span style="color:white;">ScenarioCard.tsx</span> <span style="color:#555;">— 'use client', 通用場景卡片 + hover 動畫</span></div>
+    <div style="padding-left:16px;"><span style="color:white;">scenarioData.ts</span> <span style="color:#555;">— 三個場景的文案、顏色、指標數據</span></div>
+  </div>
+</div>
+
+<!-- Mobile -->
+<div class="section">
+  <h3>響應式策略</h3>
+  <div style="display:flex; gap:16px;">
+    <div style="flex:1; background:rgba(255,255,255,0.03); border-radius:8px; padding:14px; border:1px solid rgba(255,255,255,0.06);">
+      <div style="font-size:10px; color:#769EDB; font-weight:600; margin-bottom:6px;">Desktop (≥1024px)</div>
+      <div style="font-size:10px; color:#8892B0;">三卡並排，圖片區域 160px 高</div>
+    </div>
+    <div style="flex:1; background:rgba(255,255,255,0.03); border-radius:8px; padding:14px; border:1px solid rgba(255,255,255,0.06);">
+      <div style="font-size:10px; color:#FFB800; font-weight:600; margin-bottom:6px;">Tablet (768-1023px)</div>
+      <div style="font-size:10px; color:#8892B0;">三卡並排，圖片區域縮至 120px</div>
+    </div>
+    <div style="flex:1; background:rgba(255,255,255,0.03); border-radius:8px; padding:14px; border:1px solid rgba(255,255,255,0.06);">
+      <div style="font-size:10px; color:#B57D7D; font-weight:600; margin-bottom:6px;">Mobile (&lt;768px)</div>
+      <div style="font-size:10px; color:#8892B0;">垂直堆疊，圖片區域維持 140px 保留視覺衝擊</div>
+    </div>
+  </div>
+</div>

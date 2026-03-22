@@ -26,8 +26,8 @@ export function ComparisonPanel() {
           >
             傳統監測：盲目博弈的代價
           </h3>
-          <p className="text-slate-400" style={{ fontSize: '15px', lineHeight: '1.9', letterSpacing: '0.025em' }}>
-            等數據出現在螢幕上，您的品牌已在失血。此時的補救，只是昂貴的徒勞。
+          <p className="text-slate-400" style={{ fontSize: '17px', lineHeight: '1.9', letterSpacing: '0.025em' }}>
+            監測不等於掌控。被動救火，永遠追不上輿論擴散的速度。別讓您的決策，淪為對失敗的追認。
           </p>
         </div>
       </ScrollReveal>
@@ -114,8 +114,8 @@ export function ComparisonPanel() {
           >
             戰略導航：上帝視角的劇本
           </h3>
-          <p className="text-slate-400" style={{ fontSize: '15px', lineHeight: '1.9', letterSpacing: '0.025em' }}>
-            在正式行動前模擬千次，精準鎖定 T+36h 的黃金窗口。看穿 80 個利益方的底牌，讓局勢隨您起舞。
+          <p className="text-slate-400" style={{ fontSize: '17px', lineHeight: '1.9', letterSpacing: '0.025em' }}>
+            將未知量化為勝率。透過 80% 的精準預判，我們在 T+36h 為您標記出致勝路徑，確保您的每一項行動都能換回絕對的贏面。
           </p>
           <DataTags />
         </div>

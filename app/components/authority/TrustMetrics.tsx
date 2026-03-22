@@ -61,10 +61,10 @@ export function TrustMetrics() {
     <div ref={ref} className="grid grid-cols-2 lg:grid-cols-4 gap-3">
       {metrics.map((m) => (
         <div key={m.label} className="text-center py-4">
-          <p className="text-xl font-extrabold text-strategic-blue">
+          <p className="text-2xl font-extrabold text-strategic-blue">
             <CountUp target={m.target} suffix={m.suffix} inView={isInView} />
           </p>
-          <p className="text-[8px] text-mist-blue-gray font-mono mt-1">{m.label}</p>
+          <p className="text-xs text-mist-blue-gray font-mono mt-1">{m.label}</p>
         </div>
       ))}
     </div>

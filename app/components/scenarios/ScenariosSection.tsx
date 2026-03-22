@@ -4,15 +4,15 @@ import { scenarios } from './scenarioData';
 
 export function ScenariosSection() {
   return (
-    <SectionWrapper id="scenarios" ariaLabel="應用場景">
+    <SectionWrapper id="scenarios" ariaLabel="應用場景" className="min-h-screen flex flex-col justify-center">
       <div className="text-center mb-12">
-        <p className="text-xs tracking-[3px] text-strategic-blue uppercase font-mono mb-2">
+        <p className="text-sm tracking-[3px] text-strategic-blue uppercase font-mono mb-2">
           SCENARIO ENTRY
         </p>
         <h2 className="text-2xl lg:text-4xl font-extrabold text-white mb-3 font-heading">
           為您的決策場景，定制專屬沙盒。
         </h2>
-        <p className="text-sm text-mist-blue-gray max-w-xl mx-auto">
+        <p className="text-base text-mist-blue-gray max-w-xl mx-auto">
           選擇您面臨的戰場，啟動針對性的 72 小時壓力測試。
         </p>
       </div>

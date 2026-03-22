@@ -1,0 +1,134 @@
+<h2>Logo 方案比較</h2>
+<p class="subtitle">移除腦袋圖示，強化 Persona / Cast 文字區分</p>
+
+<style>
+  .logo-preview {
+    background: rgba(2, 6, 23, 0.95);
+    border-radius: 12px;
+    padding: 32px 40px;
+    display: flex;
+    align-items: center;
+    min-height: 80px;
+  }
+  .logo-text {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .nav-mock {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: rgba(136, 146, 176, 0.7);
+    letter-spacing: 0.08em;
+  }
+  .nav-mock span { opacity: 0.6; }
+  .cta-mock {
+    border: 1px solid rgba(0, 224, 194, 0.5);
+    color: rgba(0, 224, 194, 0.8);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.08em;
+  }
+  .option .content { width: 100%; }
+  .tag {
+    display: inline-block;
+    background: rgba(0, 163, 224, 0.15);
+    color: #00A3E0;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-top: 8px;
+    font-family: monospace;
+  }
+</style>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>雙色文字 — 粗細對比</h3>
+      <p>"Persona" 白色 Bold + "Cast" 青色 Bold，靠字色區分</p>
+      <div class="logo-preview">
+        <div>
+          <span class="logo-text" style="font-size: 28px; color: #E2E8F0;">Persona</span><span class="logo-text" style="font-size: 28px; color: #00E0C2;">Cast</span>
+        </div>
+        <div class="nav-mock">
+          <span>核心推演</span><span>應用場景</span><span>技術深度</span>
+          <div class="cta-mock">預約專屬演示</div>
+        </div>
+      </div>
+      <span class="tag">最簡潔</span>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>雙色文字 — 加分隔點</h3>
+      <p>"Persona" 白色 + 金色中點 + "Cast" 青色，用分隔符號強調兩段</p>
+      <div class="logo-preview">
+        <div>
+          <span class="logo-text" style="font-size: 28px; color: #E2E8F0;">Persona</span><span class="logo-text" style="font-size: 28px; color: #FFB800; margin: 0 2px;">·</span><span class="logo-text" style="font-size: 28px; color: #00E0C2;">Cast</span>
+        </div>
+        <div class="nav-mock">
+          <span>核心推演</span><span>應用場景</span><span>技術深度</span>
+          <div class="cta-mock">預約專屬演示</div>
+        </div>
+      </div>
+      <span class="tag">有節奏感</span>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>雙色文字 — 粗細 + 字重對比</h3>
+      <p>"Persona" 白色 Semi-Bold + "Cast" 青色 Extra-Bold，用字重差異強化區分</p>
+      <div class="logo-preview">
+        <div>
+          <span class="logo-text" style="font-size: 28px; color: #E2E8F0; font-weight: 600;">Persona</span><span class="logo-text" style="font-size: 28px; color: #00E0C2; font-weight: 800;">Cast</span>
+        </div>
+        <div class="nav-mock">
+          <span>核心推演</span><span>應用場景</span><span>技術深度</span>
+          <div class="cta-mock">預約專屬演示</div>
+        </div>
+      </div>
+      <span class="tag">推薦</span>
+    </div>
+  </div>
+
+  <div class="option" data-choice="d" onclick="toggleSelect(this)">
+    <div class="letter">D</div>
+    <div class="content">
+      <h3>簡易圖標 + 雙色文字</h3>
+      <p>保留一個極簡的幾何符號（非腦袋），搭配雙色文字</p>
+      <div class="logo-preview">
+        <div style="display:flex; align-items:center; gap: 10px;">
+          <svg width="24" height="24" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" fill="none" stroke="#00E0C2" stroke-width="1.5" opacity="0.7"/>
+            <circle cx="8" cy="10" r="2" fill="#FFB800" opacity="0.9"/>
+            <circle cx="16" cy="10" r="2" fill="#769EDB" opacity="0.8"/>
+            <line x1="8" y1="10" x2="16" y2="10" stroke="#8892B0" stroke-width="0.8" opacity="0.5"/>
+            <circle cx="12" cy="16" r="2" fill="#00E0C2" opacity="0.8"/>
+            <line x1="8" y1="10" x2="12" y2="16" stroke="#8892B0" stroke-width="0.8" opacity="0.5"/>
+            <line x1="16" y1="10" x2="12" y2="16" stroke="#8892B0" stroke-width="0.8" opacity="0.5"/>
+          </svg>
+          <div>
+            <span class="logo-text" style="font-size: 28px; color: #E2E8F0; font-weight: 600;">Persona</span><span class="logo-text" style="font-size: 28px; color: #00E0C2; font-weight: 800;">Cast</span>
+          </div>
+        </div>
+        <div class="nav-mock">
+          <span>核心推演</span><span>應用場景</span><span>技術深度</span>
+          <div class="cta-mock">預約專屬演示</div>
+        </div>
+      </div>
+      <span class="tag">有品牌識別度</span>
+    </div>
+  </div>
+</div>
