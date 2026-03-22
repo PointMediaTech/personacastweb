@@ -57,15 +57,29 @@
 
 ### 3.1 整體容器
 
-- `min-h-screen` + `flex flex-col justify-center` — 內容垂直居中於視口
 - `SectionWrapper` 覆寫 padding 為 `py-24 lg:py-0`
-- 保留 `ScanlineBackground` 背景動畫
-- 對比區容器：`max-w-7xl mx-auto`
+- 保留 `ScanlineBackground` 背景動畫（absolute, z-0）
+- 對比區容器：`max-w-7xl mx-auto`（從 `max-w-6xl` 放大，配合左右並排佈局需要更寬的空間）
+
+**DOM 結構（`min-h-screen` 居中方案）：**
+
+```html
+<SectionWrapper className="!py-24 lg:!py-0">
+  <ScanlineBackground />              <!-- absolute z-0 -->
+  <div className="relative z-10 min-h-screen flex flex-col justify-center px-6 lg:px-8 2xl:px-16">
+    <!-- 標題區 -->
+    <!-- 對比區 (max-w-7xl mx-auto) -->
+    <!-- CTA -->
+  </div>
+</SectionWrapper>
+```
+
+`min-h-screen` 和 `flex flex-col justify-center` 放在 `relative z-10` 的內容容器上，而非 `<section>` 本身，避免影響 `ScanlineBackground` 的定位。
 
 ### 3.2 標題區
 
 - 全部置中對齊
-- Eyebrow：`font-mono`, `text-[11px]`, `tracking-[4px]`, `text-strategic-blue`
+- Eyebrow：`font-mono`, `text-xs`, `tracking-[4px]`, `text-strategic-blue`（使用 `text-xs` 與其他 section 保持一致）
 - H2：`text-5xl md:text-6xl lg:text-7xl`, `font-extrabold`, `font-heading`, `tracking-tighter`
 - 副文案：`text-lg lg:text-xl`, `text-slate-300`, `max-w-3xl mx-auto`
 - 標題與對比區間距：`mb-16 lg:mb-24`
@@ -110,7 +124,7 @@
 - 位置：對比區下方，`mt-12 lg:mt-16`，置中
 - 樣式：`text-strategic-blue hover:text-aurora-cyan transition-colors`
 - 字體：`font-mono text-sm tracking-wide`
-- 使用 `<a>` 或 `<Link>`（導航行為，非 `<button>`）
+- 使用 `<Link href="#authority">`（導航至 Section 5 方法論區塊，非 `<button>`）
 
 ---
 
@@ -121,15 +135,16 @@
 - 寬度：`lg:w-[45%]`
 - 內距：`p-8 lg:p-10`
 - 圓角：桌面 `rounded-l-2xl rounded-r-none`，手機 `rounded-2xl`
+- `overflow-hidden`（防止 radial gradient 溢出圓角邊界）
 - 內部垂直排列：狀態標籤 → H3 → 內文 → 圖表佔位區
 
 ### 4.2 視覺調性（褪色、過時）
 
 - 背景：`bg-red-950/15`，疊加 `radial-gradient(ellipse at center, rgba(255,77,77,0.05), transparent)`
-- 整卡 `opacity-75`
-- 狀態標籤圓點：`bg-alert-red/50`
-- 狀態標籤文字：`text-alert-red/50`
-- H3：`text-[#888]`
+- 不使用整卡 `opacity`，改為逐元素控制顏色以確保可預測性和 WCAG 對比度
+- 狀態標籤圓點：`bg-alert-red/40`
+- 狀態標籤文字：`text-alert-red/40`
+- H3：`text-[#777]`
 - 內文：`text-[#666]`
 
 ### 4.3 圖表佔位區
@@ -149,6 +164,7 @@
 - 寬度：`lg:w-[55%]`
 - 內距：`p-8 lg:p-10`
 - 圓角：桌面 `rounded-r-2xl rounded-l-none`，手機 `rounded-2xl`
+- `overflow-hidden`（防止 radial gradient 溢出圓角邊界）
 - 內部垂直排列：狀態標籤 → H3 → 內文 → 圖表佔位區 → 數據標籤列
 
 ### 5.2 視覺調性（清晰、掌控）
@@ -171,11 +187,11 @@
 
 ### 5.4 數據標籤列
 
-- 容器：`flex gap-3 mt-6`
+- 容器：`flex flex-wrap gap-3 mt-6`
 - 每個標籤：
   - `px-3 py-1.5`
   - `rounded-md`
-  - `bg-aurora-cyan/8`
+  - `bg-aurora-cyan/10`
   - `border border-aurora-cyan/15`
   - `font-mono text-[11px] tracking-wider text-aurora-cyan/80`
 - 三個標籤內容：`3.4M+ 情境模擬` / `T+72h 預測深度` / `80% 行為洞察`
@@ -192,7 +208,7 @@
 | 數據標籤 1 | fade-in | 0.3s | 0.4s | stagger |
 | 數據標籤 2 | fade-in | 0.45s | 0.4s | stagger |
 | 數據標籤 3 | fade-in | 0.6s | 0.4s | stagger |
-| 漸層分隔線 | fade-in | 0.1s | 0.5s | 配合左右卡出現 |
+| 漸層分隔線 | fade-in | 0.1s | 0.5s | 不需獨立 ScrollReveal，隨 flex 容器一同顯示 |
 
 - 所有動畫遵守 `prefers-reduced-motion`
 - Easing：`cubic-bezier(0.22, 1, 0.36, 1)`（維持現有）
