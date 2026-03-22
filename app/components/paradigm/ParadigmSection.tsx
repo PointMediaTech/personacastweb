@@ -25,12 +25,13 @@ export function ParadigmSection() {
         <ComparisonPanel />
 
         {/* CTA */}
-        <div className="text-center mt-12 lg:mt-16">
+        <div className="text-center mt-14 lg:mt-20">
           <Link
             href="#authority"
-            className="font-mono text-sm tracking-wide text-strategic-blue hover:text-aurora-cyan transition-colors"
+            className="inline-flex items-center gap-2 font-mono text-sm tracking-wide text-strategic-blue hover:text-aurora-cyan transition-colors duration-200 border-b border-strategic-blue/30 hover:border-aurora-cyan/50 pb-1"
           >
-            了解預演算法如何運作 →
+            了解預演算法如何運作
+            <span aria-hidden="true">→</span>
           </Link>
         </div>
       </div>
