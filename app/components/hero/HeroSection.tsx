@@ -1,6 +1,5 @@
 'use client';
 import { useState, useCallback } from 'react';
-import { Navbar } from './Navbar';
 import { HeroContent } from './HeroContent';
 import { LiveBadge } from './LiveBadge';
 import { ChaosFlowCanvas } from './ChaosFlowCanvas';
@@ -22,7 +21,6 @@ export function HeroSection() {
   }, [theaterActive]);
 
   return (
-    <>
     <section className="relative h-screen bg-deep-space overflow-hidden">
       {/* Atmospheric glow — z-0 */}
       <div
@@ -75,7 +73,5 @@ export function HeroSection() {
 
       <LiveBadge />
     </section>
-    <Navbar />
-    </>
   );
 }
