@@ -1,6 +1,8 @@
 'use client';
 
 import { ScrollReveal } from '../shared/ScrollReveal';
+import { TraditionalChart } from './TraditionalChart';
+import { PredictionPath } from './PredictionPath';
 import { DataTags } from './DataTags';
 
 export function ComparisonPanel() {
@@ -33,11 +35,9 @@ export function ComparisonPanel() {
               傳統工具只記錄失敗。當負面聲量爆發，傷害已成定局 —— 您在盲目博弈，對手在看您失血。
             </p>
 
-            {/* Chart placeholder */}
-            <div className="h-40 lg:h-48 mt-6 flex items-center justify-center rounded-xl border border-dashed border-white/10 bg-red-950/10">
-              <span className="text-[11px] font-mono text-white/20 tracking-wider uppercase">
-                Reactive Chart
-              </span>
+            {/* Chart area — TraditionalChart preserved, to be redesigned later */}
+            <div className="h-40 lg:h-48 mt-6 rounded-xl border border-dashed border-white/10 bg-red-950/10 flex items-center justify-center overflow-hidden">
+              <TraditionalChart className="w-full h-full" />
             </div>
           </div>
         </div>
@@ -83,11 +83,9 @@ export function ComparisonPanel() {
               行動前推演千萬次。鎖定 T+36h 最佳反擊窗口，看穿 80% 利益關係人的底牌，贏得毫無懸念。
             </p>
 
-            {/* Chart placeholder */}
-            <div className="h-40 lg:h-48 mt-6 flex items-center justify-center rounded-xl border border-dashed border-aurora-cyan/15 bg-blue-950/15">
-              <span className="text-[11px] font-mono text-white/20 tracking-wider uppercase">
-                Proactive Chart
-              </span>
+            {/* Chart area — PredictionPath preserved, to be redesigned later */}
+            <div className="h-40 lg:h-48 mt-6 rounded-xl border border-dashed border-aurora-cyan/15 bg-blue-950/15 overflow-hidden">
+              <PredictionPath animate className="w-full h-full" />
             </div>
 
             {/* Data tags */}
