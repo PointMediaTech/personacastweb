@@ -65,8 +65,10 @@
 
 ```html
 <SectionWrapper className="!py-24 lg:!py-0">
+  <!-- SectionWrapper 內部已有 div.mx-auto.w-full.px-6.lg:px-8.2xl:px-16 -->
+  <!-- 以下是 children: -->
   <ScanlineBackground />              <!-- absolute z-0 -->
-  <div className="relative z-10 min-h-screen flex flex-col justify-center px-6 lg:px-8 2xl:px-16">
+  <div className="relative z-10 min-h-screen flex flex-col justify-center">
     <!-- 標題區 -->
     <!-- 對比區 (max-w-7xl mx-auto) -->
     <!-- CTA -->
@@ -74,7 +76,7 @@
 </SectionWrapper>
 ```
 
-`min-h-screen` 和 `flex flex-col justify-center` 放在 `relative z-10` 的內容容器上，而非 `<section>` 本身，避免影響 `ScanlineBackground` 的定位。
+注意：`SectionWrapper` 已有內部 `div` 提供 `px-6 lg:px-8 2xl:px-16` 水平內距，所以 `relative z-10` 的內容容器**不需要**再加 `px-*` 類別，避免雙重 padding。`min-h-screen` 和 `flex flex-col justify-center` 放在內容容器上，而非 `<section>` 本身，避免影響 `ScanlineBackground` 的定位。
 
 ### 3.2 標題區
 
@@ -140,7 +142,7 @@
 
 ### 4.2 視覺調性（褪色、過時）
 
-- 背景：`bg-red-950/15`，疊加 `radial-gradient(ellipse at center, rgba(255,77,77,0.05), transparent)`
+- 背景：`bg-red-950/15`（從現有的 `/20` 調低，配合「褪色」調性），疊加 `radial-gradient(ellipse at center, rgba(255,77,77,0.05), transparent)`
 - 不使用整卡 `opacity`，改為逐元素控制顏色以確保可預測性和 WCAG 對比度
 - 狀態標籤圓點：`bg-alert-red/40`
 - 狀態標籤文字：`text-alert-red/40`
@@ -257,3 +259,43 @@ components/paradigm/
 |------|------|----------|--------|
 | `>= 1024px` | 左右並排 45%/55% | 左卡 `rounded-l-2xl rounded-r-none`，右卡反之 | 垂直 `w-px` |
 | `< 1024px` | 上下堆疊，等寬 | 兩卡皆 `rounded-2xl` | 水平 `h-px`，`my-6` |
+
+---
+
+## 10. 現有程式碼 → 新設計 差異清單
+
+供實作時逐項確認：
+
+### ParadigmSection.tsx
+| 項目 | 現有 | 新設計 |
+|------|------|--------|
+| className | `!py-48` | `!py-24 lg:!py-0` |
+| H2 文案 | 別讓公眾定義您的結局。 | 輿論定型前，掌控您的劇本。 |
+| 副文案 | 當對手在猜測…戰利品。 | 當對手還在猜測…您的主場。 |
+| 副文案 max-w | `max-w-4xl` | `max-w-3xl` |
+| 內容容器 | 無 min-h-screen | 加 `min-h-screen flex flex-col justify-center` |
+| CTA | 無 | 新增 `了解預演算法如何運作 →`，`href="#authority"` |
+
+### ComparisonPanel.tsx
+| 項目 | 現有 | 新設計 |
+|------|------|--------|
+| 佈局方向 | 上下堆疊 (`flex-col`) | 左右並排 (`flex-col lg:flex-row`) |
+| 容器 max-w | `max-w-6xl` | `max-w-7xl` |
+| 容器 gap | `gap-10 lg:gap-12` | `gap-0` |
+| 左卡寬度 | 100% | `lg:w-[45%]` |
+| 右卡寬度 | 100% | `lg:w-[55%]` |
+| 卡片圓角 | `rounded-2xl` | 桌面：左卡 `rounded-l-2xl rounded-r-none`，右卡反之 |
+| 卡片 overflow | 未指定 | `overflow-hidden` |
+| 分隔線 | 無 | 漸層垂直/水平線 |
+| ScrollReveal 方向 | 兩卡皆 `up` | 左卡 `left`，右卡 `right` |
+| 左卡 H3 | 事後救火：昂貴的徒勞 | 不變 |
+| 右卡 H3 | 事前導航：上帝的劇本 | 預見式導航：寫好的勝局 |
+| 左卡狀態標籤色 | `bg-alert-red/60`, `text-alert-red/70` | `bg-alert-red/40`, `text-alert-red/40` |
+| 左卡 H3 色 | `text-[#999]` | `text-[#777]` |
+| 左卡背景 | `bg-red-950/20` | `bg-red-950/15` |
+| 數據標籤 | 無 | 新增 DataTags 元件（右卡底部） |
+
+### 新增檔案
+| 檔案 | 說明 |
+|------|------|
+| `DataTags.tsx` | 三個數據標籤（`3.4M+` / `T+72h` / `80%`） |
