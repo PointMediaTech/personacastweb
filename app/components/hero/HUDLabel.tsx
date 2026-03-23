@@ -58,13 +58,17 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
       transition={{ duration: 0.8, delay, ease: EASE }}
     >
       <div
-        className="flex items-start gap-2 rounded-md border border-white/[0.06] px-3 py-2 backdrop-blur-sm"
-        style={{ backgroundColor: 'rgba(2,6,23,0.55)' }}
+        className="flex items-start gap-2 rounded-md px-3 py-2 backdrop-blur-md"
+        style={{
+          backgroundColor: 'rgba(2,8,28,0.88)',
+          border: `1px solid ${config.accentColor}55`,
+          boxShadow: `0 0 14px ${config.accentColor}22, inset 0 1px 0 rgba(255,255,255,0.06)`,
+        }}
       >
         {/* Accent bar */}
         <div
-          className="w-1 self-stretch rounded-full flex-shrink-0"
-          style={{ backgroundColor: config.accentColor }}
+          className="w-[3px] self-stretch rounded-full flex-shrink-0"
+          style={{ backgroundColor: config.accentColor, boxShadow: `0 0 6px ${config.accentColor}` }}
         />
         <div className="flex flex-col gap-0.5">
           {/* Line 1: Chinese primary text with typewriter */}
@@ -72,7 +76,7 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
             className="font-mono text-[14px] leading-tight block"
             style={{
               letterSpacing: '0.08em',
-              color: 'rgba(100,200,255,0.78)',
+              color: 'rgba(180,230,255,0.95)',
               ...(reduced ? {} : {
                 clipPath: 'inset(0 0 0 0)',
                 animation: `hudTypewriter ${typewriterDuration}s steps(${fullTextZh.length}) ${typewriterDelay}s both`,
@@ -93,7 +97,7 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
             ) : config.valueZh ? (
               <>
                 {config.textZh}{' '}
-                <span style={{ color: 'rgba(100,200,255,0.85)' }}>
+                <span style={{ color: 'rgba(180,230,255,1.0)' }}>
                   {ZH_VARIANTS[variantIndex]}
                 </span>
               </>
@@ -107,7 +111,7 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
             className="font-mono text-[10px] uppercase leading-tight block"
             style={{
               letterSpacing: '0.15em',
-              color: 'rgba(100,200,255,0.4)',
+              color: 'rgba(140,210,255,0.70)',
             }}
             initial={reduced ? { opacity: 1 } : { opacity: 0 }}
             animate={{ opacity: typewriterDone ? 1 : 0 }}
@@ -121,7 +125,7 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
             ) : config.value ? (
               <>
                 {config.text}{' '}
-                <span style={{ color: 'rgba(100,200,255,0.5)' }}>
+                <span style={{ color: 'rgba(140,210,255,0.80)' }}>
                   {EN_VARIANTS[variantIndex]}
                 </span>
               </>

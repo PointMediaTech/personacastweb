@@ -42,7 +42,14 @@
       "Bash(taskkill /PID 21244 /F)",
       "Bash(find /d/Project/personacastweb -name tailwind.config.* -o -name globals.css -o -name *.module.css)",
       "Skill(update-config)",
-      "Skill(update-config:*)"
+      "Skill(update-config:*)",
+      "Bash(taskkill /PID 56924 /F)",
+      "Bash(taskkill /F /PID 56924)",
+      "Bash(cmd.exe /c 'taskkill /F /PID 56924 /T')",
+      "Bash(powershell -Command \"Stop-Process -Id 56924 -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 2; Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue | Select-Object -Property OwningProcess | Format-Table\")",
+      "Bash(npm ls:*)",
+      "Bash(grep -r \"motion.line\\\\|motion.text\\\\|motion.svg\\\\|motion.circle\\\\|motion.g\" app/components/ --include=*.tsx -l)",
+      "Bash(NEXT_LINT_DURING_BUILD=false npx next build)"
     ]
   }
 }
