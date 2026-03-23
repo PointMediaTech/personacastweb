@@ -60,7 +60,8 @@
       "Bash(curl -s http://localhost:3099/robots.txt)",
       "Bash(curl -s http://localhost:3099/sitemap.xml)",
       "Bash(curl -sI http://localhost:3099/opengraph-image)",
-      "Bash(taskkill //F //IM node.exe)"
+      "Bash(taskkill //F //IM node.exe)",
+      "Bash(git push:*)"
     ]
   }
 }
