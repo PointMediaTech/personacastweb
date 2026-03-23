@@ -12,9 +12,7 @@ export function HeroSection() {
   const [selectedDecision, setSelectedDecision] = useState<DecisionKey | null>(null);
 
   const handleToggleTheater = useCallback(() => {
-    console.log('[Theater] Button clicked! Current state:', theaterActive);
     setTheaterActive((prev) => {
-      console.log('[Theater] Toggling from', prev, 'to', !prev);
       if (prev) setSelectedDecision(null);
       return !prev;
     });

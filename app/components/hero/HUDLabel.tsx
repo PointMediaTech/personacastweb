@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
-import { EASE, type HUDLabelConfig } from './theaterData';
+import { useReducedMotion, useMountAnimation, EASE_CSS } from '@/app/lib/animations';
+import { type HUDLabelConfig } from './theaterData';
 
 const ZH_VARIANTS = ['2.0M 路徑', '2.1M 路徑', '2.2M 路徑'] as const;
 const EN_VARIANTS = ['2.0M PATHS', '2.1M PATHS', '2.2M PATHS'] as const;
@@ -13,6 +13,7 @@ interface HUDLabelProps {
 
 export function HUDLabel({ config, delay }: HUDLabelProps) {
   const reduced = useReducedMotion();
+  const mounted = useMountAnimation();
 
   // Label 2: fluctuating number — use index to keep zh/en in sync
   const [variantIndex, setVariantIndex] = useState(1); // default index=1 → "2.1M"
@@ -47,15 +48,15 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
   }, [typewriterDelay, typewriterDuration, reduced]);
 
   return (
-    <motion.div
+    <div
       className={`absolute ${config.hideBelow === 'lg' ? 'hidden lg:block' : ''}`}
       style={{
         ...config.position,
         maxWidth: '260px',
+        opacity: mounted ? 1 : 0,
+        transform: mounted || reduced ? 'translateX(0)' : 'translateX(20px)',
+        transition: `opacity 0.8s ${EASE_CSS} ${delay}s, transform 0.8s ${EASE_CSS} ${delay}s`,
       }}
-      initial={reduced ? { opacity: 1 } : { opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.8, delay, ease: EASE }}
     >
       <div
         className="flex items-start gap-2 rounded-md px-3 py-2 backdrop-blur-md"
@@ -86,13 +87,16 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
             {hasCheckmark ? (
               <>
                 {config.textZh.replace(' ✓', '')}{' '}
-                <motion.span
-                  animate={reduced ? {} : typewriterDone ? { opacity: [0.5, 1, 0.5] } : { opacity: 1 }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                  style={{ color: config.accentColor }}
+                <span
+                  style={{
+                    color: config.accentColor,
+                    animation: reduced || !typewriterDone
+                      ? 'none'
+                      : 'pulse-opacity 4s ease-in-out infinite',
+                  }}
                 >
                   ✓
-                </motion.span>
+                </span>
               </>
             ) : config.valueZh ? (
               <>
@@ -107,15 +111,14 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
           </span>
 
           {/* Line 2: English secondary text — fades in after typewriter */}
-          <motion.span
+          <span
             className="font-mono text-[10px] uppercase leading-tight block"
             style={{
               letterSpacing: '0.15em',
               color: 'rgba(140,210,255,0.70)',
+              opacity: typewriterDone ? 1 : 0,
+              transition: 'opacity 0.4s ease',
             }}
-            initial={reduced ? { opacity: 1 } : { opacity: 0 }}
-            animate={{ opacity: typewriterDone ? 1 : 0 }}
-            transition={{ duration: 0.4 }}
           >
             {hasCheckmark ? (
               <>
@@ -132,9 +135,9 @@ export function HUDLabel({ config, delay }: HUDLabelProps) {
             ) : (
               config.text
             )}
-          </motion.span>
+          </span>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

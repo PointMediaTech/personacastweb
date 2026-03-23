@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from '@/app/lib/animations';
 
 export function DecisionLockIcon() {
   const prefersReducedMotion = useReducedMotion();
@@ -28,17 +28,14 @@ export function DecisionLockIcon() {
       />
 
       {/* Rotating tick marks layer */}
-      <motion.svg
+      <svg
         viewBox="0 0 120 120"
         className="absolute inset-0 w-full h-full"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        animate={prefersReducedMotion ? undefined : { rotate: 360 }}
-        transition={
-          prefersReducedMotion
-            ? undefined
-            : { duration: 90, repeat: Infinity, ease: 'linear' }
-        }
+        style={{
+          animation: prefersReducedMotion ? 'none' : 'spin-slow 90s linear infinite',
+        }}
       >
         {/* Tick marks at cardinal points */}
         <line x1="60" y1="6" x2="60" y2="18" stroke="#00FFC2" strokeWidth="1" opacity="0.6" />
@@ -49,7 +46,7 @@ export function DecisionLockIcon() {
         {/* Minor tick marks at 45 deg */}
         <line x1="17.57" y1="17.57" x2="24.04" y2="24.04" stroke="#00FFC2" strokeWidth="0.5" opacity="0.3" />
         <line x1="95.96" y1="17.57" x2="102.43" y2="24.04" stroke="#00FFC2" strokeWidth="0.5" opacity="0.3" transform="rotate(90 60 60)" />
-      </motion.svg>
+      </svg>
 
       {/* Static crosshair structure */}
       <svg
@@ -112,30 +109,29 @@ export function DecisionLockIcon() {
       />
 
       {/* Center light pulse */}
-      <motion.div
+      <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full z-[3]"
         style={{
           backgroundColor: '#00FFC2',
           boxShadow:
             '0 0 8px #00FFC2, 0 0 24px #00F2FF, 0 0 70px rgba(0,255,194,0.45)',
+          animation: prefersReducedMotion
+            ? 'none'
+            : 'decision-lock-pulse 3s ease-in-out infinite',
         }}
-        animate={
-          prefersReducedMotion
-            ? undefined
-            : {
-                boxShadow: [
-                  '0 0 8px #00FFC2, 0 0 24px #00F2FF, 0 0 70px rgba(0,255,194,0.45)',
-                  '0 0 12px #00FFC2, 0 0 36px #00F2FF, 0 0 100px rgba(0,255,194,0.6)',
-                  '0 0 8px #00FFC2, 0 0 24px #00F2FF, 0 0 70px rgba(0,255,194,0.45)',
-                ],
-              }
-        }
-        transition={
-          prefersReducedMotion
-            ? undefined
-            : { duration: 3, repeat: Infinity, ease: 'easeInOut' }
-        }
       />
+
+      {/* Keyframes for pulse and spin */}
+      <style jsx>{`
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes decision-lock-pulse {
+          0%, 100% { box-shadow: 0 0 8px #00FFC2, 0 0 24px #00F2FF, 0 0 70px rgba(0,255,194,0.45); }
+          50% { box-shadow: 0 0 12px #00FFC2, 0 0 36px #00F2FF, 0 0 100px rgba(0,255,194,0.6); }
+        }
+      `}</style>
     </div>
   );
 }

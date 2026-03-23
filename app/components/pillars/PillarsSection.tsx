@@ -1,5 +1,3 @@
-'use client';
-
 import { PersonaLabCard } from './PersonaLabCard';
 import { StrategyGraphCard } from './StrategyGraphCard';
 import { CastingArenaCard } from './CastingArenaCard';

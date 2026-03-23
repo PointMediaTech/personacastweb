@@ -1,5 +1,5 @@
 'use client';
-import { motion } from 'framer-motion';
+import { useMountAnimation, cssTransition } from '@/app/lib/animations';
 
 /**
  * CoordinateOverlay — Faint "coordinate numbers" scattered around screen edges.
@@ -23,19 +23,23 @@ const COORDINATES = [
 ] as const;
 
 export function CoordinateOverlay() {
+  const mounted = useMountAnimation();
+
   return (
     <div className="absolute inset-0 z-[8] pointer-events-none overflow-hidden" aria-hidden="true">
       {COORDINATES.map((coord, i) => (
-        <motion.span
+        <span
           key={i}
           className="absolute font-mono text-[9px] text-mist-blue-gray/[0.12] tracking-wider"
-          style={{ left: coord.x, top: coord.y }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.5 + i * 0.1 }}
+          style={{
+            left: coord.x,
+            top: coord.y,
+            opacity: mounted ? 1 : 0,
+            transition: cssTransition(['opacity'], 1, 1.5 + i * 0.1),
+          }}
         >
           {coord.text}
-        </motion.span>
+        </span>
       ))}
     </div>
   );

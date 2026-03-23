@@ -1,5 +1,4 @@
 'use client';
-import { motion } from 'framer-motion';
 
 /**
  * NeuralField — Fills entire right wing (65vw x 100vh).
@@ -98,10 +97,9 @@ export function NeuralField({ parallaxX, parallaxY }: NeuralFieldProps) {
   const py = parallaxY * -8;
 
   return (
-    <motion.div
+    <div
       className="w-full h-full"
-      animate={{ scale: [1, 1.008, 1] }}
-      transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+      style={{ animation: 'breathe-scale 12s ease-in-out infinite' }}
     >
       <svg
         viewBox="0 0 1000 1000"
@@ -127,15 +125,15 @@ export function NeuralField({ parallaxX, parallaxY }: NeuralFieldProps) {
 
         {/* Flashpoint path — explicit gold lines, BOLD */}
         {FLASHPOINT_LINES.map((line, i) => (
-          <motion.line
+          <line
             key={`fp${i}`}
             x1={line.x1 * 1000} y1={line.y1 * 1000}
             x2={line.x2 * 1000} y2={line.y2 * 1000}
             stroke="#FFB800"
             strokeWidth="2"
-            animate={{ opacity: [0.3, 0.7, 0.3] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: i * 0.4 }}
-          />
+          >
+            <animate attributeName="opacity" values="0.3;0.7;0.3" dur="3s" repeatCount="indefinite" begin={`${i * 0.4}s`} />
+          </line>
         ))}
 
         {/* Flashpoint path nodes — strong gold dots at junctions */}
@@ -146,18 +144,13 @@ export function NeuralField({ parallaxX, parallaxY }: NeuralFieldProps) {
           { x: 0.72, y: 0.55 },
         ].map((pt, i) => (
           <g key={`fpn${i}`}>
-            <motion.circle
-              cx={pt.x * 1000} cy={pt.y * 1000} r="18"
-              fill="rgba(255,184,0,0.04)"
-              animate={{ r: [18, 25, 18], opacity: [0.04, 0.08, 0.04] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.3 }}
-            />
-            <motion.circle
-              cx={pt.x * 1000} cy={pt.y * 1000} r="5"
-              fill="#FFB800"
-              animate={{ opacity: [0.6, 1, 0.6] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: i * 0.3 }}
-            />
+            <circle cx={pt.x * 1000} cy={pt.y * 1000} r="18" fill="rgba(255,184,0,0.04)">
+              <animate attributeName="r" values="18;25;18" dur="4s" repeatCount="indefinite" begin={`${i * 0.3}s`} />
+              <animate attributeName="opacity" values="0.04;0.08;0.04" dur="4s" repeatCount="indefinite" begin={`${i * 0.3}s`} />
+            </circle>
+            <circle cx={pt.x * 1000} cy={pt.y * 1000} r="5" fill="#FFB800">
+              <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" begin={`${i * 0.3}s`} />
+            </circle>
           </g>
         ))}
 
@@ -170,18 +163,12 @@ export function NeuralField({ parallaxX, parallaxY }: NeuralFieldProps) {
           if (node.gold) {
             return (
               <g key={i}>
-                <motion.circle
-                  cx={cx} cy={cy} r={r * 4}
-                  fill="rgba(255,184,0,0.04)"
-                  animate={{ r: [r * 4, r * 6, r * 4] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: i * 0.15 }}
-                />
-                <motion.circle
-                  cx={cx} cy={cy} r={r}
-                  fill="#FFB800"
-                  animate={{ opacity: [0.6, 1, 0.6] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.15 }}
-                />
+                <circle cx={cx} cy={cy} r={r * 4} fill="rgba(255,184,0,0.04)">
+                  <animate attributeName="r" values={`${r * 4};${r * 6};${r * 4}`} dur="5s" repeatCount="indefinite" begin={`${i * 0.15}s`} />
+                </circle>
+                <circle cx={cx} cy={cy} r={r} fill="#FFB800">
+                  <animate attributeName="opacity" values="0.6;1;0.6" dur="4s" repeatCount="indefinite" begin={`${i * 0.15}s`} />
+                </circle>
               </g>
             );
           }
@@ -191,6 +178,6 @@ export function NeuralField({ parallaxX, parallaxY }: NeuralFieldProps) {
           );
         })}
       </svg>
-    </motion.div>
+    </div>
   );
 }

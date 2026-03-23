@@ -1,7 +1,5 @@
 'use client';
-import { motion, useReducedMotion } from 'framer-motion';
-
-const EASE = [0.22, 1, 0.36, 1] as const;
+import { useReducedMotion, useMountAnimation, cssTransition } from '@/app/lib/animations';
 
 interface AgentCardProps {
   readonly name: string;
@@ -21,6 +19,7 @@ function AgentCard({
   name, mbti, role, tag, tagVariant, delay, statusText, top, right, className = '',
 }: AgentCardProps) {
   const prefersReducedMotion = useReducedMotion();
+  const mounted = useMountAnimation();
 
   const accentColor = tagVariant === 'pro' ? '#769EDB' : '#B57D7D';
   const accentRgb = tagVariant === 'pro' ? '118,158,219' : '181,125,125';
@@ -30,21 +29,17 @@ function AgentCard({
     : 'bg-[#B57D7D]/15 text-[#B57D7D]';
 
   return (
-    <motion.div
+    <div
       className={`absolute ${className}`}
-      style={{ top, right }}
-      initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, x: 40 }}
-      animate={{
-        opacity: 1,
-        x: 0,
-        y: prefersReducedMotion ? 0 : [0, -12, 0],
-      }}
-      transition={{
-        opacity: { duration: 0.8, delay, ease: EASE },
-        x: { duration: 0.8, delay, ease: EASE },
-        y: prefersReducedMotion
-          ? undefined
-          : { duration: 6, delay: delay + 0.8, repeat: Infinity, ease: 'easeInOut' },
+      style={{
+        top,
+        right,
+        opacity: mounted ? 1 : (prefersReducedMotion ? 1 : 0),
+        transform: mounted
+          ? 'translateX(0)'
+          : (prefersReducedMotion ? 'none' : 'translateX(40px)'),
+        transition: cssTransition(['opacity', 'transform'], 0.8, delay),
+        animation: prefersReducedMotion || !mounted ? 'none' : `float-y 6s ease-in-out ${delay + 0.8}s infinite`,
       }}
     >
       {/* Card body */}
@@ -113,7 +108,7 @@ function AgentCard({
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

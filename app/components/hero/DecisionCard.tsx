@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
-import { EASE, type DecisionConfig, type DecisionKey } from './theaterData';
+import { useReducedMotion, EASE_CSS } from '@/app/lib/animations';
+import { type DecisionConfig, type DecisionKey } from './theaterData';
 
 /** Map risk text to color */
 function getRiskColor(risk: string): string {
@@ -36,6 +36,12 @@ export function DecisionCard({
   const [entranceComplete, setEntranceComplete] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
+  // Treat entrance as complete after the opacity transition duration (0.3s)
+  useEffect(() => {
+    const timer = setTimeout(() => setEntranceComplete(true), 300);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Progress bar count-up animation
   useEffect(() => {
     if (!entranceComplete || reduced) {
@@ -64,14 +70,13 @@ export function DecisionCard({
   const progressColor = getProgressColor(config.metrics.successRate);
 
   return (
-    <motion.div
+    <div
       className={`absolute ${config.hideBelow === 'lg' ? 'hidden lg:block' : ''}`}
-      style={position}
-      animate={{
+      style={{
+        ...position,
         opacity: isOtherSelected ? 0.3 : 1,
+        transition: `opacity 0.3s ${EASE_CSS}`,
       }}
-      transition={{ duration: 0.3, ease: EASE }}
-      onAnimationComplete={() => setEntranceComplete(true)}
     >
       <div
         role="button"
@@ -196,6 +201,6 @@ export function DecisionCard({
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

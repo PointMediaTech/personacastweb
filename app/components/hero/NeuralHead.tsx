@@ -1,6 +1,5 @@
 'use client';
 import { useRef, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
 
 /**
  * NeuralHead — A 3D floating neural head silhouette made of glowing nodes and connection lines.
@@ -93,8 +92,19 @@ export function NeuralHead() {
   const rafRef = useRef(0);
   const timeRef = useRef(0);
   const sizeRef = useRef(getCanvasSize());
+  const lastFrameRef = useRef(0);
+  const visibleRef = useRef(true);
 
-  const draw = useCallback(() => {
+  const FRAME_INTERVAL = 1000 / 30;
+
+  const draw = useCallback((timestamp: number) => {
+    if (!visibleRef.current) { rafRef.current = 0; return; }
+    if (timestamp - lastFrameRef.current < FRAME_INTERVAL) {
+      rafRef.current = requestAnimationFrame(draw);
+      return;
+    }
+    lastFrameRef.current = timestamp;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -196,10 +206,20 @@ export function NeuralHead() {
     document.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('resize', updateSize);
 
+    const io = new IntersectionObserver(([entry]) => {
+      visibleRef.current = entry.isIntersecting;
+      if (entry.isIntersecting && !rafRef.current) {
+        rafRef.current = requestAnimationFrame(draw);
+      }
+    }, { threshold: 0 });
+    io.observe(canvas);
+
     rafRef.current = requestAnimationFrame(draw);
 
     return () => {
       cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
+      io.disconnect();
       document.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', updateSize);
     };
@@ -208,13 +228,12 @@ export function NeuralHead() {
   return (
     <div className="relative flex items-center justify-center" aria-hidden="true">
       {/* Insight Gold halo behind the head */}
-      <motion.div
+      <div
         className="absolute w-[280px] h-[280px] md:w-[380px] md:h-[380px] rounded-full"
         style={{
           background: 'radial-gradient(circle, rgba(255,184,0,0.08) 0%, rgba(255,184,0,0.03) 35%, rgba(118,158,219,0.04) 55%, transparent 70%)',
+          animation: 'breathe-scale 5s ease-in-out infinite',
         }}
-        animate={{ scale: [1, 1.04, 1], opacity: [0.8, 1, 0.8] }}
-        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
       />
 
       {/* Strategic Blue depth glow */}

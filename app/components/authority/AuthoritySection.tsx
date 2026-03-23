@@ -2,11 +2,10 @@
 
 import { useRef } from 'react';
 import {
-  motion,
-  useScroll,
-  useTransform,
+  useScrollProgress,
   useReducedMotion,
-} from 'framer-motion';
+  interpolate,
+} from '@/app/lib/animations';
 import { CaseCard } from './CaseCard';
 import { caseStudies } from './strategicRecordsData';
 
@@ -88,33 +87,22 @@ function StickyCard({ study, index, total }: StickyCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ['start start', 'end start'],
-  });
+  const progress = useScrollProgress(cardRef);
 
   // Once this card scrolls past, dim + scale it so the next card stands out
   const hasNext = index < total - 1;
 
-  const dimOpacity = useTransform(
-    scrollYProgress,
-    hasNext ? [0.3, 0.8] : [0, 1],
-    hasNext ? [1, 0.35] : [1, 1]
-  );
-  const scale = useTransform(
-    scrollYProgress,
-    hasNext ? [0.3, 0.8] : [0, 1],
-    hasNext
-      ? (prefersReducedMotion ? [1, 1] : [1, 0.95])
-      : [1, 1]
-  );
-  const rotateX = useTransform(
-    scrollYProgress,
-    hasNext ? [0.3, 0.8] : [0, 1],
-    hasNext
-      ? (prefersReducedMotion ? [0, 0] : [0, -2])
-      : [0, 0]
-  );
+  const dimOpacity = hasNext
+    ? interpolate(progress, 0.3, 0.8, 1, 0.35)
+    : 1;
+
+  const scale = hasNext && !prefersReducedMotion
+    ? interpolate(progress, 0.3, 0.8, 1, 0.95)
+    : 1;
+
+  const rotateX = hasNext && !prefersReducedMotion
+    ? interpolate(progress, 0.3, 0.8, 0, -2)
+    : 0;
 
   // Each card sticks at an increasing top offset
   const stickyTop = 180 + index * 28;
@@ -124,24 +112,22 @@ function StickyCard({ study, index, total }: StickyCardProps) {
       ref={cardRef}
       className="h-[80vh] px-6 lg:px-8 2xl:px-16"
     >
-      <motion.div
+      <div
         className="sticky will-change-transform"
         style={{
           top: stickyTop,
-          scale,
-          rotateX,
-          transformPerspective: 1200,
+          transform: `perspective(1200px) scale(${scale}) rotateX(${rotateX}deg)`,
           transformOrigin: 'center top',
           zIndex: index + 1,
         }}
       >
-        <motion.div
+        <div
           style={{ opacity: dimOpacity }}
           className="max-w-5xl mx-auto"
         >
           <CaseCard study={study} index={index} />
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </div>
   );
 }

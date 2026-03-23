@@ -1,4 +1,4 @@
-'use client';
+import Image from 'next/image';
 
 export function CastingArenaCard() {
   return (
@@ -13,10 +13,12 @@ export function CastingArenaCard() {
 
       {/* Visual Area */}
       <div className="relative h-[260px] lg:h-[380px] mx-3 rounded-lg overflow-hidden">
-        <img
+        <Image
           src="/images/03_card.png"
           alt="Casting Arena 終局演習"
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          sizes="(max-width: 1024px) 100vw, 33vw"
+          className="object-cover"
         />
       </div>
 

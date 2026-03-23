@@ -1,15 +1,16 @@
 'use client';
-import { motion, useReducedMotion } from 'framer-motion';
-import { EASE, type DecisionResult } from './theaterData';
+import { useMountAnimation, EASE_CSS } from '@/app/lib/animations';
+import { type DecisionResult } from './theaterData';
 
 interface SimulationResultProps {
   readonly result: DecisionResult;
   readonly accentColor: string;
   readonly position: { top: string; right: string };
+  readonly isVisible: boolean;
 }
 
-export function SimulationResult({ result, accentColor, position }: SimulationResultProps) {
-  const reduced = useReducedMotion();
+export function SimulationResult({ result, accentColor, position, isVisible }: SimulationResultProps) {
+  const mounted = useMountAnimation();
 
   const rows = [
     { label: '成功率', value: `${result.successRate}%`, bar: result.successRate },
@@ -22,13 +23,15 @@ export function SimulationResult({ result, accentColor, position }: SimulationRe
   const resultTop = `calc(${position.top} + 120px)`;
 
   return (
-    <motion.div
+    <div
       className="absolute"
-      style={{ top: resultTop, right: position.right }}
-      initial={reduced ? { opacity: 1 } : { opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 5, transition: { duration: 0.3, ease: EASE } }}
-      transition={{ duration: 0.5, ease: EASE }}
+      style={{
+        top: resultTop,
+        right: position.right,
+        opacity: isVisible && mounted ? 1 : 0,
+        transform: isVisible && mounted ? 'translateY(0)' : 'translateY(10px)',
+        transition: `opacity 0.5s ${EASE_CSS}, transform 0.5s ${EASE_CSS}`,
+      }}
       aria-live="polite"
     >
       <div
@@ -54,12 +57,13 @@ export function SimulationResult({ result, accentColor, position }: SimulationRe
               <div className="flex items-center gap-2">
                 {row.bar !== undefined && (
                   <div className="w-16 h-1 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
-                    <motion.div
+                    <div
                       className="h-full rounded-full"
-                      style={{ backgroundColor: accentColor }}
-                      initial={{ width: 0 }}
-                      animate={{ width: `${row.bar}%` }}
-                      transition={{ duration: 0.6, delay: 0.2, ease: EASE }}
+                      style={{
+                        backgroundColor: accentColor,
+                        width: mounted && isVisible ? `${row.bar}%` : '0%',
+                        transition: `width 0.6s ${EASE_CSS} 0.2s`,
+                      }}
                     />
                   </div>
                 )}
@@ -77,6 +81,6 @@ export function SimulationResult({ result, accentColor, position }: SimulationRe
           </p>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

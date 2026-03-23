@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { useInView, useReducedMotion, EASE_CSS } from '@/app/lib/animations';
 
 const tags = [
   { value: '340萬+', label: '模擬規模' },
@@ -21,6 +21,7 @@ export function DataTags() {
         style={{ gridTemplateColumns: 'auto 1px auto 1px auto' }}
       >
         {tags.map((tag, i) => {
+          const delay = 0.3 + i * 0.15;
           const cell = (
             <div className="flex flex-col pr-6 lg:pr-8">
               <span className="font-heading text-3xl lg:text-4xl font-extrabold text-aurora-cyan tabular-nums tracking-tight leading-none">
@@ -35,17 +36,15 @@ export function DataTags() {
           const animated = prefersReducedMotion ? (
             cell
           ) : (
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-              transition={{
-                duration: 0.4,
-                delay: 0.3 + i * 0.15,
-                ease: [0.22, 1, 0.36, 1],
+            <div
+              style={{
+                opacity: isInView ? 1 : 0,
+                transform: isInView ? 'translateY(0)' : 'translateY(8px)',
+                transition: `opacity 0.4s ${EASE_CSS} ${delay}s, transform 0.4s ${EASE_CSS} ${delay}s`,
               }}
             >
               {cell}
-            </motion.div>
+            </div>
           );
 
           return (

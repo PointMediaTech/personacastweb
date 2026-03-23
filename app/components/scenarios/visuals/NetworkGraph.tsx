@@ -1,5 +1,6 @@
 'use client';
-import { motion, useReducedMotion } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
+import { useInView, useReducedMotion } from '@/app/lib/animations';
 import type { ScenarioVisualProps } from './index';
 import { GlowFilter } from './GlowFilter';
 
@@ -31,10 +32,22 @@ const CENTER_Y = 140;
 
 export function NetworkGraph({ accentRgb, accentHex }: ScenarioVisualProps) {
   const reduced = useReducedMotion();
+  const svgRef = useRef<SVGSVGElement>(null);
+  const inView = useInView(svgRef, { once: true, margin: '-80px', threshold: 0.3 });
   const filterId = 'network-glow';
 
+  // Scan sector: brief one-shot effect via state timers
+  const [scanActive, setScanActive] = useState(false);
+  useEffect(() => {
+    if (inView && !reduced) {
+      const startTimer = setTimeout(() => setScanActive(true), 800);
+      const endTimer = setTimeout(() => setScanActive(false), 3300);
+      return () => { clearTimeout(startTimer); clearTimeout(endTimer); };
+    }
+  }, [inView, reduced]);
+
   return (
-    <svg viewBox="0 0 560 280" className="w-full h-full" role="img" aria-label="利益網絡節點掃描示意圖">
+    <svg ref={svgRef} viewBox="0 0 560 280" className="w-full h-full" role="img" aria-label="利益網絡節點掃描示意圖">
       <defs>
         <GlowFilter rgb={accentRgb} id={filterId} stdDeviation={4} floodOpacity={0.5} />
         <clipPath id="scan-sector">
@@ -43,31 +56,31 @@ export function NetworkGraph({ accentRgb, accentHex }: ScenarioVisualProps) {
       </defs>
 
       {EDGES.map(([a, b], i) => (
-        <motion.line
+        <line
           key={`edge-${i}`}
           x1={NODES[a].x} y1={NODES[a].y}
           x2={NODES[b].x} y2={NODES[b].y}
           stroke="white"
           strokeWidth={1.5}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 0.4 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={reduced ? { duration: 0 } : { duration: 0.5, delay: i * 0.02 }}
+          opacity={inView ? 0.4 : 0}
+          style={{
+            transition: reduced ? 'none' : `opacity 0.5s ease-out ${i * 0.02}s`,
+          }}
         />
       ))}
 
       {!reduced && (
-        <motion.g
-          style={{ transformOrigin: `${CENTER_X}px ${CENTER_Y}px` }}
-          initial={{ rotate: 0, opacity: 0 }}
-          whileInView={{ rotate: 360, opacity: [0, 0.6, 0.6, 0] }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 2.5, delay: 0.8, ease: 'linear' }}
+        <g
+          style={{
+            transformOrigin: `${CENTER_X}px ${CENTER_Y}px`,
+            opacity: scanActive ? 0.6 : 0,
+            transition: 'opacity 0.3s ease',
+          }}
           clipPath="url(#scan-sector)"
         >
           <circle cx={CENTER_X} cy={CENTER_Y} r={250} fill={`rgba(${accentRgb},0.08)`} />
           <line x1={CENTER_X} y1={CENTER_Y} x2={CENTER_X + 300} y2={CENTER_Y} stroke={accentHex} strokeWidth={1} opacity={0.3} />
-        </motion.g>
+        </g>
       )}
 
       {NODES.map((node, i) => {
@@ -75,49 +88,52 @@ export function NetworkGraph({ accentRgb, accentHex }: ScenarioVisualProps) {
         const baseDelay = i * 0.05;
         return (
           <g key={`node-${i}`}>
-            <motion.circle
+            <circle
               cx={node.x} cy={node.y} r={r}
               fill={node.critical ? accentHex : 'rgba(255,255,255,0.45)'}
-              style={{ transformOrigin: `${node.x}px ${node.y}px` }}
+              style={{
+                transformOrigin: `${node.x}px ${node.y}px`,
+                opacity: inView ? 1 : 0,
+                transform: inView ? 'scale(1)' : 'scale(0.5)',
+                transition: reduced ? 'none' : `opacity 0.4s ease-out ${baseDelay}s, transform 0.4s ease-out ${baseDelay}s`,
+              }}
               {...(node.critical ? { filter: `url(#${filterId})` } : {})}
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={reduced ? { duration: 0 } : { duration: 0.4, delay: baseDelay }}
             />
             {node.critical && (
-              <motion.circle
+              <circle
                 cx={node.x} cy={node.y} r={r + 4}
                 fill="none" stroke={accentHex} strokeWidth={1}
-                style={{ transformOrigin: `${node.x}px ${node.y}px` }}
-                initial={{ opacity: 0 }}
-                animate={
-                  reduced
-                    ? { opacity: 0.5 }
-                    : { opacity: [0.3, 0.6, 0.3], scale: [1, 1.08, 1] }
-                }
-                transition={
-                  reduced
-                    ? { duration: 0 }
-                    : { duration: 2, repeat: Infinity, ease: 'easeInOut', delay: 3.5 + i * 0.2 }
-                }
-              />
+                style={{
+                  transformOrigin: `${node.x}px ${node.y}px`,
+                }}
+                opacity={reduced ? 0.5 : undefined}
+              >
+                {!reduced && (
+                  <animate
+                    attributeName="opacity"
+                    values="0.3;0.6;0.3"
+                    dur="2s"
+                    repeatCount="indefinite"
+                    begin={`${3.5 + i * 0.2}s`}
+                  />
+                )}
+              </circle>
             )}
           </g>
         );
       })}
 
-      <motion.text
+      <text
         x={520} y={268}
         fill="#FFFFFF" fontSize={20}
         fontFamily="'JetBrains Mono', monospace" textAnchor="end"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={reduced ? { duration: 0 } : { duration: 0.5, delay: 1.5 }}
+        opacity={inView ? 1 : 0}
+        style={{
+          transition: reduced ? 'none' : 'opacity 0.5s ease-out 1.5s',
+        }}
       >
         80+ 節點掃描中
-      </motion.text>
+      </text>
     </svg>
   );
 }

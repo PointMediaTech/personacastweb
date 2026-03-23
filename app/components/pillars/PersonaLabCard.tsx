@@ -1,4 +1,4 @@
-'use client';
+import Image from 'next/image';
 
 export function PersonaLabCard() {
   return (
@@ -13,10 +13,12 @@ export function PersonaLabCard() {
 
       {/* Visual Area */}
       <div className="relative h-[260px] lg:h-[380px] mx-3 rounded-lg overflow-hidden">
-        <img
+        <Image
           src="/images/01_card.png"
           alt="PersonaLab 人格逆向建模"
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          sizes="(max-width: 1024px) 100vw, 33vw"
+          className="object-cover"
         />
       </div>
 

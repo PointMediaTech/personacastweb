@@ -1,6 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { useInView } from '@/app/lib/animations';
 import { type ScenarioData } from './scenarioData';
 import { TimelineComparison, NetworkGraph, ConvergenceFunnel } from './visuals';
 
@@ -13,20 +14,6 @@ function ModuleVisual({ type, rgb, hex }: { type: ScenarioData['visualType']; rg
     default:         return null;
   }
 }
-
-/* ── Stagger animation variants ── */
-const cardVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.22,
-      duration: 0.75,
-      ease: [0.25, 0.46, 0.45, 0.94] as const,
-    },
-  }),
-};
 
 /* ── Highlight data numbers in description text ── */
 function HighlightedDescription({ text, color }: { text: string; color: string }) {
@@ -45,6 +32,8 @@ function HighlightedDescription({ text, color }: { text: string; color: string }
   );
 }
 
+const EASE = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+
 /* ================================================================
    SCENARIO CARD
    ================================================================ */
@@ -55,21 +44,25 @@ interface ScenarioCardProps {
 
 export function ScenarioCard({ data, index }: ScenarioCardProps) {
   const { accentHex, accentRgb } = data;
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: '-60px', threshold: 0.15 });
+  const [hovered, setHovered] = useState(false);
+
+  const delay = index * 0.22;
 
   return (
-    <motion.div
-      custom={index}
-      variants={cardVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.15 }}
-      whileHover={{
-        boxShadow: `0 0 40px rgba(${accentRgb},0.2)`,
-      }}
-      className="group relative flex flex-col rounded-xl px-7 lg:px-9 xl:px-11 pt-3 lg:pt-4 pb-3 lg:pb-4 transition-shadow duration-300"
+    <div
+      ref={ref}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="group relative flex flex-col rounded-xl px-7 lg:px-9 xl:px-11 pt-3 lg:pt-4 pb-3 lg:pb-4"
       style={{
         background: 'rgba(255,255,255,0.02)',
         border: '1px solid rgba(255,255,255,0.04)',
+        opacity: isInView ? 1 : 0,
+        transform: isInView ? 'translateY(0)' : 'translateY(50px)',
+        transition: `opacity 0.75s ${EASE} ${delay}s, transform 0.75s ${EASE} ${delay}s, box-shadow 0.3s ease`,
+        boxShadow: hovered ? `0 0 40px rgba(${accentRgb},0.2)` : 'none',
       }}
     >
       {/* ── Large background number — outline/stroke style ── */}
@@ -117,6 +110,6 @@ export function ScenarioCard({ data, index }: ScenarioCardProps) {
         <ModuleVisual type={data.visualType} rgb={accentRgb} hex={accentHex} />
       </div>
 
-    </motion.div>
+    </div>
   );
 }

@@ -9,6 +9,8 @@ import { useEffect, useRef } from 'react';
 export function ScanlineBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
+  const lastFrameRef = useRef<number>(0);
+  const visibleRef = useRef(true);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -46,7 +48,16 @@ export function ScanlineBackground() {
       { x: 0.74, y: 0.14, left: false }, { x: 0.81, y: 0.61, left: false },
     ];
 
+    const FRAME_INTERVAL = 1000 / 24; // 24fps is plenty for wave animation
+
     function draw(time: number) {
+      if (!visibleRef.current) { rafRef.current = 0; return; }
+      if (time - lastFrameRef.current < FRAME_INTERVAL) {
+        rafRef.current = requestAnimationFrame(draw);
+        return;
+      }
+      lastFrameRef.current = time;
+
       const t = time * 0.001; // seconds
       ctx!.clearRect(0, 0, w, h);
 
@@ -194,10 +205,20 @@ export function ScanlineBackground() {
     resize();
     rafRef.current = requestAnimationFrame(draw);
 
+    const io = new IntersectionObserver(([entry]) => {
+      visibleRef.current = entry.isIntersecting;
+      if (entry.isIntersecting && !rafRef.current) {
+        rafRef.current = requestAnimationFrame(draw);
+      }
+    }, { threshold: 0 });
+    io.observe(canvas);
+
     window.addEventListener('resize', resize);
     return () => {
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
+      io.disconnect();
     };
   }, []);
 

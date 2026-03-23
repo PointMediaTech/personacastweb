@@ -13,7 +13,7 @@ function getDeviceTier(w: number) {
 }
 
 const TIER_CONFIG = {
-  desktop: { lineCount: 350, controlPoints: 20, particles: 50 },
+  desktop: { lineCount: 250, controlPoints: 20, particles: 35 },
   tablet: { lineCount: 150, controlPoints: 14, particles: 20 },
   mobile: { lineCount: 0, controlPoints: 0, particles: 0 },
 } as const;
@@ -177,6 +177,8 @@ export function ChaosFlowCanvas({
   const timeOffsetRef = useRef(0);
   const noise2DRef = useRef<ReturnType<typeof createNoise2D> | null>(null);
   const lastFrameRef = useRef(0);
+  const visibleRef = useRef(true);
+  const rectRef = useRef({ width: 0, height: 0 });
   const simulationActiveRef = useRef(simulationActive);
   const selectedDecisionRef = useRef(selectedDecision);
   const brightnessRef = useRef(1.0);
@@ -256,6 +258,7 @@ export function ChaosFlowCanvas({
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
       const rect = canvas.getBoundingClientRect();
+      rectRef.current = { width: rect.width, height: rect.height };
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -270,18 +273,30 @@ export function ChaosFlowCanvas({
     document.addEventListener('mousemove', handleMouse);
     window.addEventListener('resize', resize);
 
+    // Pause when off-screen
+    const io = new IntersectionObserver(([entry]) => {
+      visibleRef.current = entry.isIntersecting;
+      if (entry.isIntersecting && !rafRef.current) {
+        rafRef.current = requestAnimationFrame(animate);
+      }
+    }, { threshold: 0 });
+    io.observe(canvas);
+
     const FRAME_INTERVAL = 1000 / 30;
 
     const animate = (timestamp: number) => {
+      if (!visibleRef.current) {
+        rafRef.current = 0;
+        return;
+      }
       if (timestamp - lastFrameRef.current < FRAME_INTERVAL) {
         rafRef.current = requestAnimationFrame(animate);
         return;
       }
       lastFrameRef.current = timestamp;
 
-      const rect = canvas.getBoundingClientRect();
-      const w = rect.width;
-      const h = rect.height;
+      const w = rectRef.current.width;
+      const h = rectRef.current.height;
       const dpr = window.devicePixelRatio || 1;
       const noise2D = noise2DRef.current;
       const lines = linesRef.current;
@@ -471,6 +486,8 @@ export function ChaosFlowCanvas({
 
     return () => {
       cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
+      io.disconnect();
       document.removeEventListener('mousemove', handleMouse);
       window.removeEventListener('resize', resize);
     };

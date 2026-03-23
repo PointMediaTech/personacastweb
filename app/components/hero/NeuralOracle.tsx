@@ -1,5 +1,5 @@
 'use client';
-import { motion } from 'framer-motion';
+import { useReducedMotion, useMountAnimation, EASE_CSS } from '@/app/lib/animations';
 
 /**
  * NeuralOracle — A clean, moderate-sized neural network visualization.
@@ -56,14 +56,16 @@ const EDGES: readonly [number, number][] = [
 const SIZE = 300;
 
 export function NeuralOracle() {
+  const reduced = useReducedMotion();
+  const mounted = useMountAnimation();
+
   return (
-    <motion.div
+    <div
       className="relative"
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: [1, 1.015, 1] }}
-      transition={{
-        opacity: { duration: 2, ease: [0.22, 1, 0.36, 1] },
-        scale: { duration: 10, repeat: Infinity, ease: 'easeInOut' },
+      style={{
+        opacity: mounted ? 1 : 0,
+        transition: `opacity 2s ${EASE_CSS}`,
+        animation: reduced ? 'none' : 'breathe-scale 10s ease-in-out infinite',
       }}
     >
       <svg
@@ -98,18 +100,13 @@ export function NeuralOracle() {
           if (node.gold) {
             return (
               <g key={i}>
-                <motion.circle
-                  cx={cx} cy={cy} r="10"
-                  fill="rgba(255,184,0,0.05)"
-                  animate={{ r: [10, 14, 10], opacity: [0.05, 0.1, 0.05] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: i * 0.3 }}
-                />
-                <motion.circle
-                  cx={cx} cy={cy} r="3.5"
-                  fill="#FFB800"
-                  animate={{ opacity: [0.6, 1, 0.6] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: i * 0.3 }}
-                />
+                <circle cx={cx} cy={cy} r="10" fill="rgba(255,184,0,0.05)">
+                  <animate attributeName="r" values="10;14;10" dur="5s" repeatCount="indefinite" begin={`${i * 0.3}s`} />
+                  <animate attributeName="opacity" values="0.05;0.1;0.05" dur="5s" repeatCount="indefinite" begin={`${i * 0.3}s`} />
+                </circle>
+                <circle cx={cx} cy={cy} r="3.5" fill="#FFB800">
+                  <animate attributeName="opacity" values="0.6;1;0.6" dur="5s" repeatCount="indefinite" begin={`${i * 0.3}s`} />
+                </circle>
               </g>
             );
           }
@@ -124,6 +121,6 @@ export function NeuralOracle() {
           );
         })}
       </svg>
-    </motion.div>
+    </div>
   );
 }

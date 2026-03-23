@@ -1,13 +1,13 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { HUDLabel } from './HUDLabel';
 import { DecisionCard } from './DecisionCard';
 import { SimulationResult } from './SimulationResult';
 import {
-  HUD_LABELS, DECISIONS, DECISION_RESULTS, EASE,
+  HUD_LABELS, DECISIONS, DECISION_RESULTS,
   type DecisionKey,
 } from './theaterData';
+import { useReducedMotion, useAnimatePresence, EASE_CSS } from '@/app/lib/animations';
 
 interface SimulationTheaterProps {
   readonly theaterActive: boolean;
@@ -26,6 +26,14 @@ export function SimulationTheater({
     if (!theaterActive) setCardsInteractive(false);
   }, [theaterActive]);
 
+  // When theater activates, set cards interactive after transition completes
+  useEffect(() => {
+    if (theaterActive) {
+      const timer = setTimeout(() => setCardsInteractive(true), 600);
+      return () => clearTimeout(timer);
+    }
+  }, [theaterActive]);
+
   // Countdown timer state
   const [countdown, setCountdown] = useState(68);
   useEffect(() => {
@@ -36,10 +44,6 @@ export function SimulationTheater({
     return () => clearInterval(interval);
   }, [theaterActive, reduced]);
 
-  const handleMorphComplete = useCallback(() => {
-    setCardsInteractive(true);
-  }, []);
-
   // Find the selected decision config for result panel positioning
   const selectedConfig = selectedDecision
     ? DECISIONS.find((d) => d.key === selectedDecision)
@@ -47,6 +51,9 @@ export function SimulationTheater({
   const selectedLabel = selectedConfig
     ? HUD_LABELS[DECISIONS.indexOf(selectedConfig)]
     : null;
+
+  const showResult = selectedDecision !== null;
+  const { shouldRender, isVisible } = useAnimatePresence(showResult, 300);
 
   return (
     <div
@@ -62,29 +69,30 @@ export function SimulationTheater({
 
       {/* Phase 1: HUD Labels — opacity-based show/hide */}
       {HUD_LABELS.map((label, i) => (
-        <motion.div
+        <div
           key={`hud-${label.id}`}
-          animate={{ opacity: theaterActive ? 0 : 1 }}
-          transition={{ duration: 0.3, ease: EASE }}
-          style={{ pointerEvents: 'none' }}
+          style={{
+            opacity: theaterActive ? 0 : 1,
+            transition: `opacity 0.3s ${EASE_CSS}`,
+            pointerEvents: 'none',
+          }}
         >
           <HUDLabel
             config={label}
             delay={1.8 + i * 0.3}
           />
-        </motion.div>
+        </div>
       ))}
 
       {/* Phase 2: Decision Cards — opacity-based show/hide */}
       {DECISIONS.map((decision, i) => (
-        <motion.div
+        <div
           key={`card-${decision.key}`}
-          animate={{ opacity: theaterActive ? 1 : 0 }}
-          transition={{ duration: 0.6, delay: theaterActive ? 0.1 : 0, ease: EASE }}
-          onAnimationComplete={() => {
-            if (theaterActive && i === 0) handleMorphComplete();
+          style={{
+            opacity: theaterActive ? 1 : 0,
+            transition: `opacity 0.6s ${EASE_CSS} ${theaterActive ? '0.1s' : '0s'}`,
+            pointerEvents: theaterActive && cardsInteractive ? 'auto' : 'none',
           }}
-          style={{ pointerEvents: theaterActive && cardsInteractive ? 'auto' : 'none' }}
         >
           <DecisionCard
             config={decision}
@@ -93,32 +101,34 @@ export function SimulationTheater({
             onSelect={onSelectDecision}
             position={HUD_LABELS[i].cardPosition}
           />
-        </motion.div>
+        </div>
       ))}
 
       {/* Countdown Timer — always in DOM, opacity-controlled */}
-      <motion.div
+      <div
         className="fixed top-28 right-6 md:right-10 z-50 flex items-center gap-2"
-        animate={{ opacity: theaterActive ? 1 : 0, x: theaterActive ? 0 : 20 }}
-        transition={{ duration: 0.5, delay: theaterActive ? 0.3 : 0, ease: EASE }}
+        style={{
+          opacity: theaterActive ? 1 : 0,
+          transform: theaterActive ? 'translateX(0)' : 'translateX(20px)',
+          transition: `opacity 0.5s ${EASE_CSS} ${theaterActive ? '0.3s' : '0s'}, transform 0.5s ${EASE_CSS} ${theaterActive ? '0.3s' : '0s'}`,
+        }}
         aria-hidden="true"
       >
         <span className="font-mono text-[10px] font-bold tracking-[0.2em] text-insight-gold uppercase">
           72H CRISIS WINDOW: T-{countdown}H
         </span>
-      </motion.div>
+      </div>
 
       {/* Result Panel */}
-      <AnimatePresence mode="wait">
-        {selectedDecision && selectedConfig && selectedLabel && (
-          <SimulationResult
-            key={selectedDecision}
-            result={DECISION_RESULTS[selectedDecision]}
-            accentColor={selectedConfig.accentColor}
-            position={selectedLabel.cardPosition}
-          />
-        )}
-      </AnimatePresence>
+      {shouldRender && selectedConfig && selectedLabel && (
+        <SimulationResult
+          key={selectedDecision}
+          result={DECISION_RESULTS[selectedDecision!]}
+          accentColor={selectedConfig.accentColor}
+          position={selectedLabel.cardPosition}
+          isVisible={isVisible}
+        />
+      )}
     </div>
   );
 }

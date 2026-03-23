@@ -1,7 +1,5 @@
 'use client';
-import { motion, useReducedMotion } from 'framer-motion';
-
-const EASE = [0.22, 1, 0.36, 1] as const;
+import { useReducedMotion, useMountAnimation, cssTransition, EASE_CSS } from '@/app/lib/animations';
 
 function CleanRadar({ values, color }: { readonly values: readonly number[]; readonly color: string }) {
   const cx = 28, cy = 28, r = 22, axes = 5;
@@ -43,19 +41,17 @@ function Dossier({
   radarValues, conflictIndex, timeLabel, actionDesc, delay,
 }: DossierProps) {
   const reduced = useReducedMotion();
+  const mounted = useMountAnimation();
   const accentColor = tagVariant === 'pro' ? '#769EDB' : '#B57D7D';
   const accentRgb = tagVariant === 'pro' ? '118,158,219' : '181,125,125';
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{
-        opacity: 1,
-        y: reduced ? 0 : [0, -3, 0],
-      }}
-      transition={{
-        opacity: { duration: 1, delay, ease: EASE },
-        y: reduced ? undefined : { duration: 8, delay: delay + 1, repeat: Infinity, ease: 'easeInOut' },
+    <div
+      style={{
+        opacity: mounted ? 1 : 0,
+        transform: mounted ? 'translateY(0)' : 'translateY(10px)',
+        transition: cssTransition(['opacity', 'transform'], 1, delay),
+        animation: reduced || !mounted ? 'none' : `float-y 8s ease-in-out ${delay + 1}s infinite`,
       }}
     >
       <div
@@ -116,12 +112,14 @@ function Dossier({
                   </span>
                 </div>
                 <div className="h-[3px] rounded-full bg-white/[0.06] overflow-hidden">
-                  <motion.div
+                  <div
                     className="h-full rounded-full"
-                    style={{ backgroundColor: accentColor, opacity: 0.8 }}
-                    initial={{ width: 0 }}
-                    animate={{ width: `${conflictIndex}%` }}
-                    transition={{ duration: 1.5, delay: delay + 0.5, ease: EASE }}
+                    style={{
+                      backgroundColor: accentColor,
+                      opacity: 0.8,
+                      width: mounted ? `${conflictIndex}%` : '0%',
+                      transition: `width 1.5s ${EASE_CSS} ${delay + 0.5}s`,
+                    }}
                   />
                 </div>
               </div>
@@ -145,7 +143,7 @@ function Dossier({
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

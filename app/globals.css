@@ -153,6 +153,48 @@ body {
   50% { box-shadow: 0 4px 28px rgba(118,158,219,0.45), 0 0 50px rgba(118,158,219,0.15); }
 }
 
+/* ── Animation utilities (framer-motion replacement) ─────────────── */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes pulse-opacity {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes breathe-scale {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-slow-reverse {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes breathe-glow {
+  0%, 100% { opacity: 0.4; box-shadow: 0 0 12px currentColor; }
+  50% { opacity: 0.7; box-shadow: 0 0 20px currentColor; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nav-link::after {
     transition: none;
@@ -183,6 +225,12 @@ body {
 
   /* Disable radar chart rotation */
   .animate-spin, [style*="spin"] {
+    animation: none !important;
+  }
+
+  /* Disable all custom motion keyframes */
+  .anim-float, .anim-pulse-dot, .anim-pulse-opacity,
+  .anim-breathe, .anim-spin-slow {
     animation: none !important;
   }
 }

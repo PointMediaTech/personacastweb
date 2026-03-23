@@ -1,7 +1,4 @@
 'use client';
-import { motion } from 'framer-motion';
-
-const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
  * SimulationSphere — The "AI Heart" central visual.
@@ -24,52 +21,38 @@ export function SimulationSphere() {
       />
 
       {/* Outer orbital ring — slow rotation, tilted on X axis */}
-      <motion.div
+      <div
         className="absolute w-52 h-52 md:w-64 md:h-64 rounded-full border border-strategic-blue/20"
-        style={{ rotateX: '65deg' }}
-        animate={{ rotate: 360 }}
-        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+        style={{
+          transform: 'rotateX(65deg)',
+          animation: 'spin-slow 20s linear infinite',
+        }}
       />
 
       {/* Inner orbital ring — faster counter-rotation, different tilt */}
-      <motion.div
+      <div
         className="absolute w-36 h-36 md:w-44 md:h-44 rounded-full border border-dried-rose/15"
-        style={{ rotateX: '72deg', rotateZ: '30deg' }}
-        animate={{ rotate: -360 }}
-        transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}
+        style={{
+          transform: 'rotateX(72deg) rotateZ(30deg)',
+          animation: 'spin-slow-reverse 14s linear infinite',
+        }}
       />
 
       {/* Core orb — glowing, pulsing sphere */}
-      <motion.div
+      <div
         className="relative w-24 h-24 md:w-32 md:h-32 rounded-full"
         style={{
           background: 'radial-gradient(circle at 35% 35%, rgba(118,158,219,0.4) 0%, rgba(118,158,219,0.15) 40%, rgba(15,23,42,0.6) 100%)',
           boxShadow: '0 0 60px 15px rgba(118,158,219,0.15), 0 0 120px 40px rgba(118,158,219,0.06)',
-        }}
-        animate={{
-          scale: [1, 1.06, 1],
-          opacity: [0.85, 1, 0.85],
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          ease: EASE,
+          animation: 'breathe-scale 4s cubic-bezier(0.22, 1, 0.36, 1) infinite',
         }}
       >
         {/* Inner bright core — the "calculation" heart */}
-        <motion.div
+        <div
           className="absolute inset-4 md:inset-5 rounded-full"
           style={{
             background: 'radial-gradient(circle at 40% 40%, rgba(118,158,219,0.6) 0%, rgba(181,125,125,0.15) 60%, transparent 100%)',
-          }}
-          animate={{
-            opacity: [0.6, 1, 0.6],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            ease: 'easeInOut',
-            delay: 0.5,
+            animation: 'pulse-opacity 3s ease-in-out 0.5s infinite',
           }}
         />
 
@@ -80,7 +63,7 @@ export function SimulationSphere() {
             background: 'radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%)',
           }}
         />
-      </motion.div>
+      </div>
     </div>
   );
 }

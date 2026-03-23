@@ -1,22 +1,24 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { useInView, useReducedMotion } from '@/app/lib/animations';
 
 const CTA_HREF = 'https://calendly.com/personacast/demo';
+
+const EASE = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
 
 export function CTASection() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-120px' });
   const prefersReducedMotion = useReducedMotion();
 
-  const fadeUp = (delay: number) =>
+  const fadeUpStyle = (delay: number) =>
     prefersReducedMotion
-      ? { opacity: 1 }
+      ? { opacity: 1 as const }
       : {
-          initial: { opacity: 0, y: 24 },
-          animate: isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 },
-          transition: { duration: 0.9, delay, ease: [0.25, 0.46, 0.45, 0.94] as const },
+          opacity: isInView ? 1 : 0,
+          transform: isInView ? 'translateY(0)' : 'translateY(24px)',
+          transition: `opacity 0.9s ${EASE} ${delay}s, transform 0.9s ${EASE} ${delay}s`,
         };
 
   return (
@@ -64,34 +66,34 @@ export function CTASection() {
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center text-center px-6">
         {/* Main headline */}
-        <motion.h2
+        <h2
           className="font-heading font-extrabold text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] leading-[1.05] tracking-tighter text-white"
           style={{
             textShadow: '0 0 40px rgba(255,255,255,0.08), 0 0 80px rgba(255,255,255,0.03)',
+            ...fadeUpStyle(0.1),
           }}
-          {...fadeUp(0.1)}
         >
           讓現實，成為排演好的勝局
-        </motion.h2>
+        </h2>
 
         {/* Subtitle — tight to headline, forms a text cluster */}
-        <motion.p
+        <p
           className="font-body text-base md:text-lg mt-6 md:mt-8 mb-20 md:mb-24 max-w-md leading-relaxed"
           style={{
             color: '#9ca3af',
             letterSpacing: '0.06em',
+            ...fadeUpStyle(0.4),
           }}
-          {...fadeUp(0.4)}
         >
           領先{' '}
           <span className="font-bold" style={{ color: '#00FFC2' }}>
             72
           </span>{' '}
           小時鎖定路徑。在這裡，沒有意外。
-        </motion.p>
+        </p>
 
         {/* CTA Button */}
-        <motion.div {...fadeUp(0.6)}>
+        <div style={fadeUpStyle(0.6)}>
           <a
             href={CTA_HREF}
             target="_blank"
@@ -125,7 +127,7 @@ export function CTASection() {
               [ 立即預約專屬展示 ]
             </span>
           </a>
-        </motion.div>
+        </div>
       </div>
 
       {/* SEO hidden text */}

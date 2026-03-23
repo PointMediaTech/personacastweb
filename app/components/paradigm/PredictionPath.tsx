@@ -1,7 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
-
 interface PredictionPathProps {
   animate: boolean;
   className?: string;
@@ -86,141 +84,148 @@ export function PredictionPath({ animate, className }: PredictionPathProps) {
       ))}
 
       {/* Ultra-wide glow underlay */}
-      <motion.path
+      <path
         d={pathD}
         fill="none"
         stroke="rgba(118,158,219,0.08)"
         strokeWidth="18"
         strokeLinecap="round"
-        initial={{ strokeDasharray: PATH_LENGTH, strokeDashoffset: PATH_LENGTH }}
-        animate={animate ? { strokeDashoffset: 0 } : { strokeDashoffset: PATH_LENGTH }}
-        transition={{ duration: 1.8, ease: 'easeOut' }}
+        strokeDasharray={PATH_LENGTH}
+        strokeDashoffset={animate ? 0 : PATH_LENGTH}
+        style={{ transition: 'stroke-dashoffset 1.8s ease-out' }}
       />
 
       {/* Main prediction line */}
-      <motion.path
+      <path
         d={pathD}
         fill="none"
         stroke="url(#predLineGrad)"
         strokeWidth="3.5"
         strokeLinecap="round"
         filter="url(#predGlow)"
-        initial={{ strokeDasharray: PATH_LENGTH, strokeDashoffset: PATH_LENGTH }}
-        animate={animate ? { strokeDashoffset: 0 } : { strokeDashoffset: PATH_LENGTH }}
-        transition={{ duration: 1.8, ease: 'easeOut' }}
+        strokeDasharray={PATH_LENGTH}
+        strokeDashoffset={animate ? 0 : PATH_LENGTH}
+        style={{ transition: 'stroke-dashoffset 1.8s ease-out' }}
       />
 
       {/* Flowing highlight */}
       {animate && (
-        <motion.path
+        <path
           d={pathD}
           fill="none"
           stroke="url(#predFlowGrad)"
           strokeWidth="2.5"
           strokeLinecap="round"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2.0, duration: 0.6 }}
+          style={{
+            opacity: 1,
+            animation: 'pred-flow-fade 0.6s ease-out 2.0s both',
+          }}
         />
       )}
 
       {/* Nodes */}
-      {nodes.map((node, i) => (
-        <motion.g
-          key={node.label}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={animate ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
-          transition={{ duration: 0.5, delay: 1.2 + i * 0.35, ease: 'backOut' }}
-          style={{ transformOrigin: `${node.cx}px ${node.cy}px` }}
-        >
-          {/* Pulse rings */}
-          {node.isFlashpoint ? (
-            <>
-              {/* Red breathing rings for flashpoint */}
-              <circle cx={node.cx} cy={node.cy} r="10" fill="none" stroke="rgba(255,77,77,0.4)" strokeWidth="1.5">
-                <animate attributeName="r" values="10;22;10" dur="1.8s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.6;0;0.6" dur="1.8s" repeatCount="indefinite" />
-              </circle>
-              <circle cx={node.cx} cy={node.cy} r="16" fill="none" stroke="rgba(255,77,77,0.2)" strokeWidth="0.8">
-                <animate attributeName="r" values="16;28;16" dur="2.2s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.4;0;0.4" dur="2.2s" repeatCount="indefinite" />
-              </circle>
-              <circle cx={node.cx} cy={node.cy} r="22" fill="none" stroke="rgba(255,77,77,0.08)" strokeWidth="0.5">
-                <animate attributeName="r" values="22;34;22" dur="2.8s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.2;0;0.2" dur="2.8s" repeatCount="indefinite" />
-              </circle>
-            </>
-          ) : (
-            <circle cx={node.cx} cy={node.cy} r="8" fill="none" stroke="rgba(0,242,255,0.12)" strokeWidth="1">
-              <animate attributeName="r" values="8;14;8" dur="3s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.3;0;0.3" dur="3s" repeatCount="indefinite" />
-            </circle>
-          )}
-
-          {/* Node dot */}
-          <circle
-            cx={node.cx}
-            cy={node.cy}
-            r={node.isFlashpoint ? 7 : 4.5}
-            fill={node.isFlashpoint ? '#FF4D4D' : '#00F2FF'}
-            filter={node.isFlashpoint ? 'url(#flashpointGlow)' : 'url(#predNodeGlow)'}
+      {nodes.map((node, i) => {
+        const nodeDelay = 1.2 + i * 0.35;
+        return (
+          <g
+            key={node.label}
+            style={{
+              opacity: animate ? 1 : 0,
+              transform: animate ? 'scale(1)' : 'scale(0)',
+              transformOrigin: `${node.cx}px ${node.cy}px`,
+              transition: `opacity 0.5s ease ${nodeDelay}s, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) ${nodeDelay}s`,
+            }}
           >
-            {node.isFlashpoint && (
-              <animate attributeName="r" values="7;8.5;7" dur="1.5s" repeatCount="indefinite" />
+            {/* Pulse rings */}
+            {node.isFlashpoint ? (
+              <>
+                {/* Red breathing rings for flashpoint */}
+                <circle cx={node.cx} cy={node.cy} r="10" fill="none" stroke="rgba(255,77,77,0.4)" strokeWidth="1.5">
+                  <animate attributeName="r" values="10;22;10" dur="1.8s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.6;0;0.6" dur="1.8s" repeatCount="indefinite" />
+                </circle>
+                <circle cx={node.cx} cy={node.cy} r="16" fill="none" stroke="rgba(255,77,77,0.2)" strokeWidth="0.8">
+                  <animate attributeName="r" values="16;28;16" dur="2.2s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.4;0;0.4" dur="2.2s" repeatCount="indefinite" />
+                </circle>
+                <circle cx={node.cx} cy={node.cy} r="22" fill="none" stroke="rgba(255,77,77,0.08)" strokeWidth="0.5">
+                  <animate attributeName="r" values="22;34;22" dur="2.8s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" values="0.2;0;0.2" dur="2.8s" repeatCount="indefinite" />
+                </circle>
+              </>
+            ) : (
+              <circle cx={node.cx} cy={node.cy} r="8" fill="none" stroke="rgba(0,242,255,0.12)" strokeWidth="1">
+                <animate attributeName="r" values="8;14;8" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.3;0;0.3" dur="3s" repeatCount="indefinite" />
+              </circle>
             )}
-          </circle>
-          <circle cx={node.cx} cy={node.cy} r={node.isFlashpoint ? 3 : 2} fill="white" />
 
-          {/* Time label below */}
-          <text
-            x={node.cx} y={node.cy + 18}
-            fontSize="8"
-            fill={node.isFlashpoint ? '#FF4D4D' : '#00F2FF'}
-            textAnchor="middle"
-            fontFamily="var(--font-mono), monospace" fontWeight="600"
-          >
-            {node.label}
-          </text>
+            {/* Node dot */}
+            <circle
+              cx={node.cx}
+              cy={node.cy}
+              r={node.isFlashpoint ? 7 : 4.5}
+              fill={node.isFlashpoint ? '#FF4D4D' : '#00F2FF'}
+              filter={node.isFlashpoint ? 'url(#flashpointGlow)' : 'url(#predNodeGlow)'}
+            >
+              {node.isFlashpoint && (
+                <animate attributeName="r" values="7;8.5;7" dur="1.5s" repeatCount="indefinite" />
+              )}
+            </circle>
+            <circle cx={node.cx} cy={node.cy} r={node.isFlashpoint ? 3 : 2} fill="white" />
 
-          {/* Flashpoint annotation — red, bold */}
-          {node.isFlashpoint && (
-            <>
-              <text
-                x={node.cx} y={node.cy - 22}
-                fontSize="5" fill="rgba(255,77,77,0.5)" textAnchor="middle"
-                fontFamily="var(--font-mono), monospace" fontWeight="400"
-                letterSpacing="1.5"
-              >
-                戰略引爆點
-              </text>
-              <text
-                x={node.cx} y={node.cy - 15}
-                fontSize="4.5" fill="rgba(255,77,77,0.35)" textAnchor="middle"
-                fontFamily="var(--font-mono), monospace" fontWeight="400"
-                letterSpacing="1"
-              >
-                FLASHPOINT INTERVENTION
-              </text>
-            </>
-          )}
+            {/* Time label below */}
+            <text
+              x={node.cx} y={node.cy + 18}
+              fontSize="8"
+              fill={node.isFlashpoint ? '#FF4D4D' : '#00F2FF'}
+              textAnchor="middle"
+              fontFamily="var(--font-mono), monospace" fontWeight="600"
+            >
+              {node.label}
+            </text>
 
-          {/* Floating agent code */}
-          <motion.text
-            x={node.cx + (i === 0 ? 28 : i === 1 ? 34 : -34)}
-            y={node.cy + (i === 0 ? -6 : i === 1 ? 6 : 2)}
-            fontSize="4.5"
-            fill={node.isFlashpoint ? 'rgba(255,77,77,0.3)' : 'rgba(0,242,255,0.3)'}
-            textAnchor={i === 2 ? 'end' : 'start'}
-            fontFamily="var(--font-mono), monospace"
-            fontWeight="400"
-            initial={{ opacity: 0 }}
-            animate={animate ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ delay: 2.5 + i * 0.3, duration: 0.8 }}
-          >
-            {node.code}
-          </motion.text>
-        </motion.g>
-      ))}
+            {/* Flashpoint annotation — red, bold */}
+            {node.isFlashpoint && (
+              <>
+                <text
+                  x={node.cx} y={node.cy - 22}
+                  fontSize="5" fill="rgba(255,77,77,0.5)" textAnchor="middle"
+                  fontFamily="var(--font-mono), monospace" fontWeight="400"
+                  letterSpacing="1.5"
+                >
+                  戰略引爆點
+                </text>
+                <text
+                  x={node.cx} y={node.cy - 15}
+                  fontSize="4.5" fill="rgba(255,77,77,0.35)" textAnchor="middle"
+                  fontFamily="var(--font-mono), monospace" fontWeight="400"
+                  letterSpacing="1"
+                >
+                  FLASHPOINT INTERVENTION
+                </text>
+              </>
+            )}
+
+            {/* Floating agent code */}
+            <text
+              x={node.cx + (i === 0 ? 28 : i === 1 ? 34 : -34)}
+              y={node.cy + (i === 0 ? -6 : i === 1 ? 6 : 2)}
+              fontSize="4.5"
+              fill={node.isFlashpoint ? 'rgba(255,77,77,0.3)' : 'rgba(0,242,255,0.3)'}
+              textAnchor={i === 2 ? 'end' : 'start'}
+              fontFamily="var(--font-mono), monospace"
+              fontWeight="400"
+              style={{
+                opacity: animate ? 1 : 0,
+                transition: `opacity 0.8s ease ${2.5 + i * 0.3}s`,
+              }}
+            >
+              {node.code}
+            </text>
+          </g>
+        );
+      })}
     </svg>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { useInView, useReducedMotion, EASE_CSS } from '@/app/lib/animations';
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -35,26 +35,18 @@ export function ScrollReveal({
   }
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial={{
-        opacity: 0,
-        x: d.x * distance,
-        y: d.y * distance,
-      }}
-      animate={
-        isInView
-          ? { opacity: 1, x: 0, y: 0 }
-          : { opacity: 0, x: d.x * distance, y: d.y * distance }
-      }
-      transition={{
-        duration: 0.6,
-        delay,
-        ease: [0.22, 1, 0.36, 1],
-      }}
       className={className}
+      style={{
+        opacity: isInView ? 1 : 0,
+        transform: isInView
+          ? 'translate(0, 0)'
+          : `translate(${d.x * distance}px, ${d.y * distance}px)`,
+        transition: `opacity 0.6s ${EASE_CSS} ${delay}s, transform 0.6s ${EASE_CSS} ${delay}s`,
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

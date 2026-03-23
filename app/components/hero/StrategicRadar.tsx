@@ -1,8 +1,12 @@
 'use client';
 import { useRef, useEffect, useCallback, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
-
-const EASE = [0.22, 1, 0.36, 1] as const;
+import {
+  useReducedMotion,
+  useMountAnimation,
+  useSvgPointsMorph,
+  cssTransition,
+  EASE_CSS,
+} from '@/app/lib/animations';
 
 // --- Colors ---
 const BLUE = { r: 118, g: 158, b: 219 };
@@ -33,6 +37,21 @@ function hexVertex(cx: number, cy: number, r: number, i: number) {
   return { x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) };
 }
 
+// --- Device tier for canvas performance ---
+type DeviceTier = 'mobile' | 'tablet' | 'desktop';
+
+function getDeviceTier(w: number): DeviceTier {
+  if (w < 768) return 'mobile';
+  if (w < 1280) return 'tablet';
+  return 'desktop';
+}
+
+const TIER_CONFIG = {
+  mobile:  { maxParticles: 0,   connectionDist: 0,   drawConnections: false },
+  tablet:  { maxParticles: 60,  connectionDist: 80,  drawConnections: false },
+  desktop: { maxParticles: 120, connectionDist: 100, drawConnections: true },
+} as const;
+
 // --- Canvas hook: particles + crystal core ---
 interface Particle {
   x: number; y: number; vx: number; vy: number;
@@ -45,14 +64,26 @@ function useRadarCanvas(
   centerRef: React.RefObject<{ x: number; y: number; r: number } | null>,
 ) {
   const particlesRef = useRef<Particle[]>([]);
+  const tierRef = useRef<DeviceTier>('desktop');
   const rafRef = useRef(0);
   const timeRef = useRef(0);
   const mouseRef = useRef({ x: -9999, y: -9999 });
+  const lastFrameRef = useRef(0);
+  const visibleRef = useRef(true);
 
   const init = useCallback((w: number, h: number) => {
+    const tier = getDeviceTier(w);
+    tierRef.current = tier;
+    const { maxParticles } = TIER_CONFIG[tier];
+
+    if (maxParticles === 0) {
+      particlesRef.current = [];
+      return;
+    }
+
     const cx = w * 0.5;
     const cy = h * 0.5;
-    const count = Math.min(Math.floor((w * h) / 6000), 160);
+    const count = Math.min(Math.floor((w * h) / 6000), maxParticles);
     const particles: Particle[] = [];
 
     for (let i = 0; i < count; i++) {
@@ -97,9 +128,36 @@ function useRadarCanvas(
     document.addEventListener('mousemove', handleMouse);
     window.addEventListener('resize', resize);
 
-    const CONNECTION_DIST = 100;
+    // Pause when off-screen
+    const io = new IntersectionObserver(([entry]) => {
+      visibleRef.current = entry.isIntersecting;
+      if (entry.isIntersecting && !rafRef.current) {
+        rafRef.current = requestAnimationFrame(animate);
+      }
+    }, { threshold: 0 });
+    io.observe(canvas);
 
-    const animate = () => {
+    const FRAME_INTERVAL = 1000 / 24; // 24fps cap
+
+    const animate = (timestamp: number) => {
+      if (!visibleRef.current) {
+        rafRef.current = 0;
+        return;
+      }
+      if (timestamp - lastFrameRef.current < FRAME_INTERVAL) {
+        rafRef.current = requestAnimationFrame(animate);
+        return;
+      }
+      lastFrameRef.current = timestamp;
+
+      const tier = tierRef.current;
+
+      // Mobile: skip canvas entirely, only crystal core uses SVG
+      if (tier === 'mobile') {
+        rafRef.current = requestAnimationFrame(animate);
+        return;
+      }
+
       const rect = canvas.getBoundingClientRect();
       const w = rect.width;
       const h = rect.height;
@@ -114,6 +172,7 @@ function useRadarCanvas(
       const center = centerRef.current;
       const particles = particlesRef.current;
       const mouse = mouseRef.current;
+      const tierConfig = TIER_CONFIG[tier];
 
       // Draw crystal core (octahedron-like inner geometry)
       if (center) {
@@ -222,22 +281,25 @@ function useRadarCanvas(
         if (p.y > h + 20) p.y = -20;
       }
 
-      // Connections
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const a = particles[i];
-          const b = particles[j];
-          const ddx = a.x - b.x;
-          const ddy = a.y - b.y;
-          const d = Math.sqrt(ddx * ddx + ddy * ddy);
-          if (d < CONNECTION_DIST) {
-            const alpha = (1 - d / CONNECTION_DIST) * 0.15;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(${BLUE.r},${BLUE.g},${BLUE.b},${alpha})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
+      // Connections — only on desktop, skip when particle count > 80
+      if (tierConfig.drawConnections && particles.length <= 80) {
+        const connDist = tierConfig.connectionDist;
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const a = particles[i];
+            const b = particles[j];
+            const ddx = a.x - b.x;
+            const ddy = a.y - b.y;
+            const d = Math.sqrt(ddx * ddx + ddy * ddy);
+            if (d < connDist) {
+              const alpha = (1 - d / connDist) * 0.15;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.strokeStyle = `rgba(${BLUE.r},${BLUE.g},${BLUE.b},${alpha})`;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
           }
         }
       }
@@ -271,6 +333,8 @@ function useRadarCanvas(
 
     return () => {
       cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
+      io.disconnect();
       document.removeEventListener('mousemove', handleMouse);
       window.removeEventListener('resize', resize);
     };
@@ -285,6 +349,7 @@ function HexRadarSVG({
   onLayout: (info: { x: number; y: number; r: number }) => void;
 }) {
   const reduced = useReducedMotion();
+  const mounted = useMountAnimation();
 
   // Report center to canvas layer
   useEffect(() => {
@@ -311,6 +376,28 @@ function HexRadarSVG({
 
   // Label positions (offset outward)
   const labelOffset = radius + 45;
+
+  // Morph animations for polygons
+  const withoutPCAnimated = useSvgPointsMorph(
+    reduced ? withoutPCPoints : centerPoint,
+    withoutPCPoints,
+    1800,
+    1400,
+  );
+
+  const withPCAnimated = useSvgPointsMorph(
+    reduced ? withPCPoints : centerPoint,
+    withPCPoints,
+    2000,
+    800,
+  );
+
+  const goldAccentAnimated = useSvgPointsMorph(
+    reduced ? withPCPoints : centerPoint,
+    withPCPoints,
+    2000,
+    800,
+  );
 
   return (
     <g>
@@ -348,10 +435,8 @@ function HexRadarSVG({
       })}
 
       {/* ===== WITHOUT PersonaCast — inner polygon (rose, renders first = behind) ===== */}
-      <motion.polygon
-        points={reduced ? withoutPCPoints : centerPoint}
-        animate={{ points: withoutPCPoints }}
-        transition={{ duration: 1.8, delay: 1.4, ease: EASE }}
+      <polygon
+        points={withoutPCAnimated}
         fill={`rgba(${ROSE.r},${ROSE.g},${ROSE.b},0.06)`}
         stroke={`rgba(${ROSE.r},${ROSE.g},${ROSE.b},0.35)`}
         strokeWidth="1.5"
@@ -362,33 +447,30 @@ function HexRadarSVG({
       {AXES.map((axis, i) => {
         const v = hexVertex(cx, cy, radius * axis.withoutPC, i);
         return (
-          <motion.g
+          <g
             key={`without-${i}`}
-            initial={reduced ? {} : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 2.0 + i * 0.08, ease: EASE }}
+            style={{
+              opacity: mounted ? 1 : (reduced ? 1 : 0),
+              transition: `opacity 0.5s ease ${2.0 + i * 0.08}s`,
+            }}
           >
             <circle cx={v.x} cy={v.y} r="3" fill={`rgba(${ROSE.r},${ROSE.g},${ROSE.b},0.5)`} />
             <circle cx={v.x} cy={v.y} r="1.5" fill={`rgba(${ROSE.r},${ROSE.g},${ROSE.b},0.9)`} />
-          </motion.g>
+          </g>
         );
       })}
 
       {/* ===== WITH PersonaCast — outer polygon (blue/gold, renders on top) ===== */}
-      <motion.polygon
-        points={reduced ? withPCPoints : centerPoint}
-        animate={{ points: withPCPoints }}
-        transition={{ duration: 2, delay: 0.8, ease: EASE }}
+      <polygon
+        points={withPCAnimated}
         fill="rgba(118,158,219,0.08)"
         stroke="rgba(118,158,219,0.4)"
         strokeWidth="2"
       />
 
       {/* Gold accent stroke overlay */}
-      <motion.polygon
-        points={reduced ? withPCPoints : centerPoint}
-        animate={{ points: withPCPoints }}
-        transition={{ duration: 2, delay: 0.8, ease: EASE }}
+      <polygon
+        points={goldAccentAnimated}
         fill="none"
         stroke={`rgba(${GOLD.r},${GOLD.g},${GOLD.b},0.3)`}
         strokeWidth="1"
@@ -399,16 +481,17 @@ function HexRadarSVG({
       {AXES.map((axis, i) => {
         const v = hexVertex(cx, cy, radius * axis.withPC, i);
         return (
-          <motion.g
+          <g
             key={`with-${i}`}
-            initial={reduced ? {} : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 1.2 + i * 0.1, ease: EASE }}
+            style={{
+              opacity: mounted ? 1 : (reduced ? 1 : 0),
+              transition: `opacity 0.5s ease ${1.2 + i * 0.1}s`,
+            }}
           >
             <circle cx={v.x} cy={v.y} r="8" fill={`rgba(${GOLD.r},${GOLD.g},${GOLD.b},0.08)`} />
             <circle cx={v.x} cy={v.y} r="3.5" fill={`rgba(${GOLD.r},${GOLD.g},${GOLD.b},0.7)`} />
             <circle cx={v.x} cy={v.y} r="2" fill={`rgba(${GOLD.r},${GOLD.g},${GOLD.b},1)`} />
-          </motion.g>
+          </g>
         );
       })}
 
@@ -417,16 +500,17 @@ function HexRadarSVG({
         const vWith = hexVertex(cx, cy, radius * axis.withPC, i);
         const vWithout = hexVertex(cx, cy, radius * axis.withoutPC, i);
         return (
-          <motion.line
+          <line
             key={`diff-${i}`}
             x1={vWithout.x} y1={vWithout.y}
             x2={vWith.x} y2={vWith.y}
             stroke={`rgba(${GOLD.r},${GOLD.g},${GOLD.b},0.15)`}
             strokeWidth="1"
             strokeDasharray="2 3"
-            initial={reduced ? {} : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 2.4 + i * 0.05, ease: EASE }}
+            style={{
+              opacity: mounted ? 1 : (reduced ? 1 : 0),
+              transition: `opacity 0.6s ease ${2.4 + i * 0.05}s`,
+            }}
           />
         );
       })}
@@ -451,11 +535,12 @@ function HexRadarSVG({
         const anchor = isLeft ? 'end' : isRight ? 'start' : 'middle';
 
         return (
-          <motion.g
+          <g
             key={`label-${i}`}
-            initial={reduced ? {} : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1.5 + i * 0.08, ease: EASE }}
+            style={{
+              opacity: mounted ? 1 : (reduced ? 1 : 0),
+              transition: `opacity 0.8s ease ${1.5 + i * 0.08}s`,
+            }}
           >
             <text
               x={v.x} y={v.y - 6}
@@ -476,15 +561,16 @@ function HexRadarSVG({
             >
               {axis.en}
             </text>
-          </motion.g>
+          </g>
         );
       })}
 
       {/* ===== Legend ===== */}
-      <motion.g
-        initial={reduced ? {} : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 2.8, ease: EASE }}
+      <g
+        style={{
+          opacity: mounted ? 1 : (reduced ? 1 : 0),
+          transition: `opacity 0.8s ease 2.8s`,
+        }}
       >
         {/* With PersonaCast */}
         <line x1={cx - 70} y1={cy + radius + 50} x2={cx - 50} y2={cy + radius + 50}
@@ -503,7 +589,7 @@ function HexRadarSVG({
           fill="rgba(255,255,255,0.45)" fontSize="11" fontFamily="Inter, sans-serif">
           Without PersonaCast
         </text>
-      </motion.g>
+      </g>
     </g>
   );
 }
@@ -511,13 +597,16 @@ function HexRadarSVG({
 // --- Bottom metrics display ---
 function MetricsBar() {
   const reduced = useReducedMotion();
+  const mounted = useMountAnimation();
 
   return (
-    <motion.div
+    <div
       className="absolute bottom-[8%] right-[8%] z-20 flex flex-col items-end gap-1"
-      initial={reduced ? {} : { opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 2.2, ease: EASE }}
+      style={{
+        opacity: mounted && !reduced ? 1 : (reduced ? 1 : 0),
+        transform: mounted || reduced ? 'translateY(0)' : 'translateY(10px)',
+        transition: cssTransition(['opacity', 'transform'], 0.8, 2.2),
+      }}
     >
       {METRICS.map((m) => (
         <div key={m.label} className="flex items-baseline gap-2">
@@ -530,7 +619,7 @@ function MetricsBar() {
           </span>
         </div>
       ))}
-    </motion.div>
+    </div>
   );
 }
 

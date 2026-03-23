@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useInView, useReducedMotion } from 'framer-motion';
+import { useInView, useReducedMotion } from '@/app/lib/animations';
 
 interface AnimatedCounterProps {
   readonly value: number;
