@@ -32,14 +32,14 @@ export function TimelineComparison({ accentRgb, accentHex }: ScenarioVisualProps
 
       {/* Time axis */}
       <motion.line x1={40} y1={240} x2={520} y2={240} stroke="rgba(255,255,255,0.1)" strokeWidth={1} {...fadeAnim(0)} />
-      <motion.text x={40} y={260} fill="rgba(255,255,255,0.3)" fontSize={11} fontFamily="'JetBrains Mono', monospace" {...fadeAnim(0)}>T-72hr</motion.text>
-      <motion.text x={500} y={260} fill="rgba(255,255,255,0.3)" fontSize={11} fontFamily="'JetBrains Mono', monospace" {...fadeAnim(0)}>T+0</motion.text>
+      <motion.text x={40} y={260} fill="#FFFFFF" fontSize={20} fontFamily="'JetBrains Mono', monospace" {...fadeAnim(0)}>T-72hr</motion.text>
+      <motion.text x={500} y={260} fill="#FFFFFF" fontSize={20} fontFamily="'JetBrains Mono', monospace" {...fadeAnim(0)}>T+0</motion.text>
 
       {/* Uncontrolled curve — red dashed, dim (fade only, no pathLength — strokeDasharray conflicts with pathLength animation) */}
       <motion.path
         d={UNCONTROLLED_PATH}
         fill="none"
-        stroke="#E53E3E"
+        stroke="#FF8C00"
         strokeWidth={1.5}
         strokeDasharray="6 4"
         {...fadeAnim(0)}
@@ -65,8 +65,8 @@ export function TimelineComparison({ accentRgb, accentHex }: ScenarioVisualProps
       />
       <motion.text
         x={196} y={42}
-        fill="rgba(255,255,255,0.5)"
-        fontSize={11}
+        fill="#FFFFFF"
+        fontSize={20}
         fontFamily="'JetBrains Mono', monospace"
         textAnchor="middle"
         {...fadeAnim(0.6)}
@@ -89,8 +89,8 @@ export function TimelineComparison({ accentRgb, accentHex }: ScenarioVisualProps
       )}
 
       {/* Labels */}
-      <motion.text x={505} y={33} fill="rgba(229,62,62,0.5)" fontSize={11} fontFamily="'JetBrains Mono', monospace" textAnchor="end" {...fadeAnim(1.0)}>未攔截</motion.text>
-      <motion.text x={505} y={153} fill={accentHex} fontSize={11} fontFamily="'JetBrains Mono', monospace" textAnchor="end" {...fadeAnim(1.3)}>攔截後</motion.text>
+      <motion.text x={505} y={33} fill="#FFFFFF" fontSize={20} fontFamily="'JetBrains Mono', monospace" textAnchor="end" {...fadeAnim(1.0)}>未攔截</motion.text>
+      <motion.text x={505} y={153} fill={accentHex} fontSize={20} fontFamily="'JetBrains Mono', monospace" textAnchor="end" {...fadeAnim(1.3)}>攔截後</motion.text>
     </svg>
   );
 }

@@ -42,15 +42,14 @@ export function AuthoritySection() {
           background: 'linear-gradient(to bottom, #05070A 60%, transparent)',
         }}
       >
-        <p className="text-[11px] font-mono font-medium tracking-[4px] text-alert-red uppercase mb-3">
-          STRATEGIC RECORDS
-        </p>
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-heading font-extrabold text-white mb-3 leading-tight max-w-3xl">
-          被驗證的預演：從數據到結局的轉化
-        </h2>
-        <p className="text-sm md:text-base text-zinc-300 max-w-2xl leading-relaxed">
-          我們不談論可能性。我們記錄的是如何透過算力，將不確定性從現實中肅清。
-        </p>
+        <div className="text-center">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold text-white mb-3 tracking-tight leading-[1.1]">
+            被驗證的預演：從數據到結局的轉化
+          </h2>
+          <p className="text-sm md:text-base text-zinc-300 max-w-2xl mx-auto leading-relaxed">
+            我們不談論可能性。我們記錄的是如何透過算力，將不確定性從現實中肅清。
+          </p>
+        </div>
       </div>
 
       {/* Mobile: simple vertical stack */}

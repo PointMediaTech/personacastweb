@@ -28,12 +28,12 @@ function EliminationMark({ x, y, delay, reduced }: { x: number; y: number; delay
   return (
     <motion.g
       initial={{ opacity: 0 }}
-      whileInView={{ opacity: 0.5 }}
+      whileInView={{ opacity: 0.8 }}
       viewport={{ once: true, amount: 0.3 } as const}
       transition={reduced ? { duration: 0 } : { duration: 0.15, delay }}
     >
-      <line x1={x - half} y1={y - half} x2={x + half} y2={y + half} stroke="rgba(255,255,255,0.5)" strokeWidth={1.5} />
-      <line x1={x + half} y1={y - half} x2={x - half} y2={y + half} stroke="rgba(255,255,255,0.5)" strokeWidth={1.5} />
+      <line x1={x - half} y1={y - half} x2={x + half} y2={y + half} stroke="rgba(255,255,255,0.8)" strokeWidth={2} />
+      <line x1={x + half} y1={y - half} x2={x - half} y2={y + half} stroke="rgba(255,255,255,0.8)" strokeWidth={2} />
     </motion.g>
   );
 }
@@ -53,10 +53,10 @@ export function ConvergenceFunnel({ accentRgb, accentHex }: ScenarioVisualProps)
           key={`elim-${i}`}
           d={p.d}
           fill="none"
-          stroke={`rgba(${accentRgb},0.35)`}
-          strokeWidth={1.5}
-          initial={{ pathLength: reduced ? 1 : 0, opacity: reduced ? 0.35 : 0.15 }}
-          whileInView={{ pathLength: 1, opacity: 0.35 }}
+          stroke={`rgba(${accentRgb},0.6)`}
+          strokeWidth={2}
+          initial={{ pathLength: reduced ? 1 : 0, opacity: reduced ? 0.6 : 0.15 }}
+          whileInView={{ pathLength: 1, opacity: 0.6 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={reduced ? { duration: 0 } : { duration: 0.8, delay: i * 0.08, ease: 'easeOut' as const }}
         />
@@ -96,10 +96,10 @@ export function ConvergenceFunnel({ accentRgb, accentHex }: ScenarioVisualProps)
 
       <motion.text
         x={45} y={268}
-        fill="rgba(255,255,255,0.4)" fontSize={11}
+        fill="#FFFFFF" fontSize={20}
         fontFamily="'JetBrains Mono', monospace"
         initial={{ opacity: 0 }}
-        whileInView={{ opacity: 0.4 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={reduced ? { duration: 0 } : { duration: 0.5, delay: 0.5 }}
       >
@@ -107,7 +107,7 @@ export function ConvergenceFunnel({ accentRgb, accentHex }: ScenarioVisualProps)
       </motion.text>
       <motion.text
         x={515} y={268}
-        fill={accentHex} fontSize={11}
+        fill={accentHex} fontSize={20}
         fontFamily="'JetBrains Mono', monospace" textAnchor="end"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}

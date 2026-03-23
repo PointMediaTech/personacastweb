@@ -21,9 +21,9 @@ export const scenarios: ScenarioData[] = [
     title: '敘事攔截：奪回議題主導權',
     description:
       '數位模擬對手的決策邏輯，精準捕捉危機發酵前的關鍵窗口。透過逆向路徑演算，預先部署論點，在輿論成型前完成全面攔截。',
-    accentHex: '#E53E3E',
-    accentRgb: '229,62,62',
-    highlightColor: '#E53E3E',
+    accentHex: '#FF8C00',
+    accentRgb: '255,140,0',
+    highlightColor: '#FF8C00',
     statusTag: 'ALERT｜議題置換率 > 89%',
     ctaLabel: '執行模擬：奪回主導權',
     bottomLabel: '[ 啟動攔截 ]',

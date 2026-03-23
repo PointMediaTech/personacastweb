@@ -48,9 +48,9 @@ export function NetworkGraph({ accentRgb, accentHex }: ScenarioVisualProps) {
           x1={NODES[a].x} y1={NODES[a].y}
           x2={NODES[b].x} y2={NODES[b].y}
           stroke="white"
-          strokeWidth={1}
+          strokeWidth={1.5}
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 0.12 }}
+          whileInView={{ opacity: 0.4 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={reduced ? { duration: 0 } : { duration: 0.5, delay: i * 0.02 }}
         />
@@ -77,7 +77,7 @@ export function NetworkGraph({ accentRgb, accentHex }: ScenarioVisualProps) {
           <g key={`node-${i}`}>
             <motion.circle
               cx={node.x} cy={node.y} r={r}
-              fill={node.critical ? accentHex : 'rgba(255,255,255,0.15)'}
+              fill={node.critical ? accentHex : 'rgba(255,255,255,0.45)'}
               style={{ transformOrigin: `${node.x}px ${node.y}px` }}
               {...(node.critical ? { filter: `url(#${filterId})` } : {})}
               initial={{ opacity: 0, scale: 0.5 }}
@@ -109,10 +109,10 @@ export function NetworkGraph({ accentRgb, accentHex }: ScenarioVisualProps) {
 
       <motion.text
         x={520} y={268}
-        fill="rgba(255,255,255,0.4)" fontSize={11}
+        fill="#FFFFFF" fontSize={20}
         fontFamily="'JetBrains Mono', monospace" textAnchor="end"
         initial={{ opacity: 0 }}
-        whileInView={{ opacity: 0.4 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={reduced ? { duration: 0 } : { duration: 0.5, delay: 1.5 }}
       >

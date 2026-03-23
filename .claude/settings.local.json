@@ -49,7 +49,18 @@
       "Bash(powershell -Command \"Stop-Process -Id 56924 -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 2; Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue | Select-Object -Property OwningProcess | Format-Table\")",
       "Bash(npm ls:*)",
       "Bash(grep -r \"motion.line\\\\|motion.text\\\\|motion.svg\\\\|motion.circle\\\\|motion.g\" app/components/ --include=*.tsx -l)",
-      "Bash(NEXT_LINT_DURING_BUILD=false npx next build)"
+      "Bash(NEXT_LINT_DURING_BUILD=false npx next build)",
+      "Bash(node -e \"import\\(''schema-dts''\\).then\\(\\(\\) => console.log\\(''OK''\\)\\)\")",
+      "Bash(curl -L --retry 3 --retry-delay 2 -o /d/Project/personacastweb/public/fonts/NotoSansTC-Bold.ttf \"https://github.com/google/fonts/raw/main/ofl/notosanstc/NotoSansTC%5Bwght%5D.ttf\")",
+      "Bash(gh api:*)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:fonts.googleapis.com)",
+      "Bash(curl -L --retry 3 -o /d/Project/personacastweb/public/fonts/NotoSansTC-Bold.ttf \"https://fonts.gstatic.com/s/notosanstc/v39/-nFuOG829Oofr2wohFbTp9ifNAn722rq0MXz70e1_Co.ttf\")",
+      "Bash(curl -s http://localhost:3099)",
+      "Bash(curl -s http://localhost:3099/robots.txt)",
+      "Bash(curl -s http://localhost:3099/sitemap.xml)",
+      "Bash(curl -sI http://localhost:3099/opengraph-image)",
+      "Bash(taskkill //F //IM node.exe)"
     ]
   }
 }
