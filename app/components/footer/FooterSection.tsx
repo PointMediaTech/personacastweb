@@ -1,4 +1,5 @@
 import { footerColumns } from './footerData';
+import { SEO_CONFIG } from '../../lib/seo-config';
 
 export function FooterSection() {
   return (
@@ -19,10 +20,16 @@ export function FooterSection() {
                 領先 72 小時，掌握變數，定義結局。
               </p>
               <div className="flex gap-2.5">
-                {['𝕏', 'in', 'GH'].map((icon) => (
+                {[
+                  { icon: '𝕏', href: SEO_CONFIG.socialLinks.twitter },
+                  { icon: 'in', href: SEO_CONFIG.socialLinks.linkedin },
+                  { icon: 'GH', href: SEO_CONFIG.socialLinks.github },
+                ].map(({ icon, href }) => (
                   <a
                     key={icon}
-                    href="#"
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex h-7 w-7 items-center justify-center rounded-md bg-white/[0.04] border border-white/[0.06] text-xs text-[#555] hover:text-white hover:border-white/10 transition-colors"
                   >
                     {icon}
@@ -40,12 +47,21 @@ export function FooterSection() {
                 <ul className="space-y-2">
                   {col.links.map((link) => (
                     <li key={link.label}>
-                      <a
-                        href={link.href}
-                        className="text-sm text-mist-blue-gray hover:text-white transition-colors"
-                      >
-                        {link.label}
-                      </a>
+                      {link.disabled ? (
+                        <span
+                          className="text-sm text-mist-blue-gray/50 cursor-default"
+                          aria-disabled="true"
+                        >
+                          {link.label}
+                        </span>
+                      ) : (
+                        <a
+                          href={link.href}
+                          className="text-sm text-mist-blue-gray hover:text-white transition-colors"
+                        >
+                          {link.label}
+                        </a>
+                      )}
                     </li>
                   ))}
                 </ul>
