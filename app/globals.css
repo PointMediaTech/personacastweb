@@ -111,6 +111,43 @@ body {
   outline-offset: 4px;
 }
 
+/* Scanline overlay for strategic records section */
+.scanline-overlay {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.015) 2px,
+    rgba(255, 255, 255, 0.015) 4px
+  );
+  pointer-events: none;
+}
+
+/* CTA void section — breathing glow button */
+@keyframes ctaVoidBreathing {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(0,255,194,0.2), 0 0 40px rgba(0,255,194,0.08), inset 0 0 12px rgba(0,255,194,0.04);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0,255,194,0.35), 0 0 60px rgba(0,255,194,0.14), inset 0 0 20px rgba(0,255,194,0.06);
+  }
+}
+
+.cta-void-button {
+  animation: ctaVoidBreathing 3.5s ease-in-out infinite;
+}
+
+.cta-void-button:hover,
+.cta-void-button:focus-visible {
+  box-shadow: 0 0 30px rgba(0,255,194,0.5), 0 0 80px rgba(0,255,194,0.2), inset 0 0 24px rgba(0,255,194,0.08) !important;
+  animation: none;
+}
+
+.cta-void-button:focus-visible {
+  outline: 2px solid #00FFC2;
+  outline-offset: 4px;
+}
+
 @keyframes ctaGlow {
   0%, 100% { box-shadow: 0 4px 20px rgba(118,158,219,0.3), 0 0 40px rgba(118,158,219,0.1); }
   50% { box-shadow: 0 4px 28px rgba(118,158,219,0.45), 0 0 50px rgba(118,158,219,0.15); }
@@ -138,6 +175,10 @@ body {
   /* Disable CTA glow */
   [style*="ctaGlow"] {
     animation: none !important;
+  }
+
+  .cta-void-button {
+    animation: none;
   }
 
   /* Disable radar chart rotation */
