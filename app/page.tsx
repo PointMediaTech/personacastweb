@@ -18,9 +18,6 @@ const AuthoritySection = dynamic(
 const CTASection = dynamic(
   () => import('./components/cta/CTASection').then(m => ({ default: m.CTASection })),
 );
-const FooterSection = dynamic(
-  () => import('./components/footer/FooterSection').then(m => ({ default: m.FooterSection })),
-);
 
 export default function HomePage() {
   const schemas = generateHomePageSchemas();
@@ -42,7 +39,6 @@ export default function HomePage() {
         <AuthoritySection />
         <CTASection />
       </main>
-      <FooterSection />
     </>
   );
 }

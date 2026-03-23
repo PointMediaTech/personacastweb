@@ -1,23 +1,29 @@
 'use client';
 
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useRef, useState, useEffect, useCallback, useSyncExternalStore } from 'react';
 
 /* ── useReducedMotion ──────────────────────────────────────────────── */
 
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
+function rmSubscribe(callback: () => void): () => void {
+  const mql = window.matchMedia(REDUCED_MOTION_QUERY);
+  mql.addEventListener('change', callback);
+  return () => mql.removeEventListener('change', callback);
+}
+
+/**
+ * SSR-safe via useSyncExternalStore.
+ * Server snapshot → false; client snapshot → real matchMedia value.
+ * Both sides agree on `false` during hydration, then the store
+ * subscription updates the value after mount without CLS.
+ */
 export function useReducedMotion(): boolean {
-  const [reduced, setReduced] = useState(false);
-
-  useEffect(() => {
-    const mql = window.matchMedia(REDUCED_MOTION_QUERY);
-    setReduced(mql.matches);
-    const handler = (e: MediaQueryListEvent) => setReduced(e.matches);
-    mql.addEventListener('change', handler);
-    return () => mql.removeEventListener('change', handler);
-  }, []);
-
-  return reduced;
+  return useSyncExternalStore(
+    rmSubscribe,
+    () => window.matchMedia(REDUCED_MOTION_QUERY).matches,
+    () => false,
+  );
 }
 
 /* ── useInView ─────────────────────────────────────────────────────── */
@@ -64,6 +70,9 @@ export function useInView(
  * Tracks scroll progress of `target` relative to viewport.
  * Returns a value from 0 → 1 as the element scrolls from
  * "start hitting viewport top" to "end leaving viewport top".
+ *
+ * Uses passive scroll + resize listeners (event-driven) instead of a
+ * continuous rAF loop, so it does not consume frame budget when idle.
  */
 export function useScrollProgress(
   target: React.RefObject<Element | null>,
@@ -74,18 +83,21 @@ export function useScrollProgress(
     const el = target.current;
     if (!el) return;
 
-    let raf = 0;
-    const update = () => {
+    const compute = () => {
       const rect = el.getBoundingClientRect();
       const viewH = window.innerHeight;
       // 0 when element top is at viewport bottom, 1 when element top is above viewport top
       const raw = (viewH - rect.top) / (viewH + rect.height);
       setProgress(Math.max(0, Math.min(1, raw)));
-      raf = requestAnimationFrame(update);
     };
 
-    raf = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(raf);
+    compute(); // initial value
+    window.addEventListener('scroll', compute, { passive: true });
+    window.addEventListener('resize', compute, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', compute);
+      window.removeEventListener('resize', compute);
+    };
   }, [target]);
 
   return progress;

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "./components/shared/Navbar";
+import { MinimalFooter } from "./components/footer/MinimalFooter";
+import { FooterSection } from "./components/footer/FooterSection";
 import { SEO_CONFIG } from './lib/seo-config';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -84,6 +86,7 @@ export default function RootLayout({
       <body>
         <Navbar />
         {children}
+        <FooterSection />
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
 'use client';
 
-import { useRef } from 'react';
-import { useInView, useReducedMotion, EASE_CSS } from '@/app/lib/animations';
+import { useRef, useState, useEffect, useCallback } from 'react';
+import { useReducedMotion, EASE_CSS } from '@/app/lib/animations';
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -25,26 +25,61 @@ export function ScrollReveal({
   distance = 20,
   className,
 }: ScrollRevealProps) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-80px' });
   const prefersReducedMotion = useReducedMotion();
+  const [hydrated, setHydrated] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  useEffect(() => { setHydrated(true); }, []);
+
+  // Callback ref ensures the observer is created when the DOM node mounts,
+  // regardless of render phase (fixes the hydration-guard timing bug).
+  const setRef = useCallback((node: HTMLDivElement | null) => {
+    // Disconnect previous observer
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+      observerRef.current = null;
+    }
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '-80px', threshold: 0 },
+    );
+    observer.observe(node);
+    observerRef.current = observer;
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => { observerRef.current?.disconnect(); };
+  }, []);
+
   const d = directionMap[direction];
 
-  if (prefersReducedMotion) {
-    return <div className={className}>{children}</div>;
-  }
+  // Before hydration or with reduced motion: render fully visible (no opacity:0 in SSR).
+  const skipAnimation = prefersReducedMotion || !hydrated;
 
   return (
     <div
-      ref={ref}
+      ref={skipAnimation ? undefined : setRef}
       className={className}
-      style={{
-        opacity: isInView ? 1 : 0,
-        transform: isInView
-          ? 'translate(0, 0)'
-          : `translate(${d.x * distance}px, ${d.y * distance}px)`,
-        transition: `opacity 0.6s ${EASE_CSS} ${delay}s, transform 0.6s ${EASE_CSS} ${delay}s`,
-      }}
+      style={
+        skipAnimation
+          ? undefined
+          : {
+              opacity: isInView ? 1 : 0,
+              transform: isInView
+                ? 'translate(0, 0)'
+                : `translate(${d.x * distance}px, ${d.y * distance}px)`,
+              transition: `opacity 0.6s ${EASE_CSS} ${delay}s, transform 0.6s ${EASE_CSS} ${delay}s`,
+            }
+      }
     >
       {children}
     </div>

@@ -8,7 +8,7 @@ export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export default async function OGImage() {
-  const fontPath = join(process.cwd(), 'public/fonts/NotoSansTC-Bold.ttf');
+  const fontPath = join(process.cwd(), 'app/fonts/NotoSansTC-Bold.ttf');
   const fontBuffer = await readFile(fontPath);
   // Convert Node.js Buffer to ArrayBuffer for Satori compatibility
   const fontData = fontBuffer.buffer.slice(
