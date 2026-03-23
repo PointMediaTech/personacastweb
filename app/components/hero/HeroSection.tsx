@@ -21,7 +21,7 @@ export function HeroSection() {
   }, [theaterActive]);
 
   return (
-    <section className="relative h-screen bg-deep-space overflow-hidden">
+    <section aria-label="英雄區：AI 戰略預演平台" className="relative h-screen bg-deep-space overflow-hidden">
       {/* Atmospheric glow — z-0 */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
