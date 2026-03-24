@@ -68,7 +68,7 @@ const bentoUseCases = [
   },
   {
     title: '新品擴散市場探測',
-    description: '精準定位「種子傳播者」，放大行銷 ROI。不再盲目投放廣告，找到最願意主動幫你分享的核心聚落。',
+    description: '精準定位「種子傳播者」，放大行銷 ROI。不再盲目投放廣告，找到最願意主動幫您分享的核心聚落。',
     stat: '首波擴散率提升 150%',
     style: 'md:col-span-3 lg:col-span-3 flex flex-col md:flex-row items-center gap-6 bg-gradient-to-r from-[#0A0E1A] via-[#111827] to-[#1E293B] border-[#1F2937] p-8 lg:p-12 text-center md:text-left'
   }

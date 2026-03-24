@@ -5,6 +5,7 @@ import { Navbar } from "./components/shared/Navbar";
 import { MinimalFooter } from "./components/footer/MinimalFooter";
 import { FooterSection } from "./components/footer/FooterSection";
 import { SEO_CONFIG } from './lib/seo-config';
+import { GoogleAnalytics } from './components/shared/GoogleAnalytics';
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -84,6 +85,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body>
+        <GoogleAnalytics />
         <Navbar />
         {children}
         <FooterSection />

@@ -18,7 +18,7 @@ export function MinimalFooter() {
               Persona
             </span>
             <span
-              className="text-lg font-extrabold text-slate-600 hover:text-[#00E0C2] transition-colors"
+              className="text-lg font-extrabold text-slate-600 hover:text-brand-teal transition-colors"
               style={{ fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif" }}
             >
               Cast

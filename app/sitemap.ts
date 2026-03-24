@@ -33,5 +33,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/resources`, lastModified: now, changeFrequency: 'weekly', priority: 0.6 },
     { url: `${baseUrl}/resources/case-studies`, lastModified: now, changeFrequency: 'weekly', priority: 0.6 },
     { url: `${baseUrl}/resources/whitepapers`, lastModified: now, changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${baseUrl}/resources/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.5 },
+
+    // ── Legal ──
+    { url: `${baseUrl}/legal/privacy`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
+    { url: `${baseUrl}/legal/terms`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
   ];
 }

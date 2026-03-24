@@ -9,6 +9,13 @@ export const metadata: Metadata = {
   title: '資源中心 — 輿情預測洞察、案例與白皮書',
   description:
     '探索 PersonaCast 的輿情預測知識庫：深度部落格文章、客戶成功案例、可下載白皮書。掌握 AI 輿情分析的最新趨勢與最佳實踐。',
+  alternates: { canonical: '/resources' },
+  openGraph: {
+    title: '資源中心 — 輿情預測洞察、案例與白皮書',
+    description:
+      '探索 PersonaCast 的輿情預測知識庫：深度部落格文章、客戶成功案例、可下載白皮書。',
+    url: '/resources',
+  },
 };
 
 const resourceTypes = [
@@ -43,7 +50,7 @@ export default function ResourcesPage() {
     <>
       <PageHero
         h1="掌握輿論的知識武器庫。"
-        h2="深度洞察、實戰案例與研究白皮書——持續武裝你的輿情預判能力。"
+        h2="深度洞察、實戰案例與研究白皮書——持續武裝您的輿情預判能力。"
       />
 
       {/* Resource Type Nav Cards */}
@@ -127,7 +134,7 @@ export default function ResourcesPage() {
               <Mail size={24} />
             </div>
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-              每週一份輿情洞察，直達你的信箱。
+              每週一份輿情洞察，直達您的信箱。
             </h2>
             <p className="text-[#94A3B8] text-sm mb-8">
               訂閱我們的電子報，獲取最新輿情分析趨勢與產業洞察。

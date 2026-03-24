@@ -71,15 +71,15 @@ export function PageHero({
               {h1}
             </h1>
 
-            <p
-              className="mt-6 text-lg md:text-xl text-[#94A3B8] leading-relaxed max-w-2xl"
+            <h2
+              className="mt-6 text-lg md:text-xl text-[#94A3B8] font-normal leading-relaxed max-w-2xl"
               style={{
                 ...fadeUp(0.15),
                 ...(isSplit ? {} : { marginLeft: 'auto', marginRight: 'auto' }),
               }}
             >
               {h2}
-            </p>
+            </h2>
 
               <div
                 className={`mt-10 flex flex-wrap gap-4 ${isSplit ? '' : 'justify-center'}`}

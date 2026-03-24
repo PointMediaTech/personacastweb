@@ -8,6 +8,13 @@ export const metadata: Metadata = {
   title: '聯絡我們 & 預約 Demo',
   description:
     '預約 PersonaCast 一對一產品演示，或聯繫我們的團隊討論您的輿情預判需求。我們通常在 24 小時內回覆。',
+  alternates: { canonical: '/contact' },
+  openGraph: {
+    title: '聯絡我們 & 預約 Demo | PersonaCast',
+    description:
+      '預約 PersonaCast 一對一產品演示，或聯繫我們的團隊討論您的輿情預判需求。',
+    url: '/contact',
+  },
 };
 
 const roleOptions = [
@@ -233,8 +240,8 @@ export default function ContactPage() {
     <>
       <PageHero
         layout="split"
-        h1="讓我們為你預演一場輿論戰。"
-        h2="預約一對一 Demo，我們的團隊將根據你的真實場景，現場演示 PersonaCast 的推演能力。不是罐頭簡報——是用你的議題，跑你的推演。"
+        h1="讓我們為您預演一場輿論戰。"
+        h2="預約一對一 Demo，我們的團隊將根據您的真實場景，現場演示 PersonaCast 的推演能力。不是罐頭簡報——是用您的議題，跑您的推演。"
         rightContent={<ContactForm />}
       />
 

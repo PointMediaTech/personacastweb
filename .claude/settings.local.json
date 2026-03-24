@@ -61,6 +61,19 @@
       "Bash(curl -s http://localhost:3099/sitemap.xml)",
       "Bash(curl -sI http://localhost:3099/opengraph-image)",
       "Bash(taskkill //F //IM node.exe)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(f''''{k}: {v}''''\\) for k,v in sorted\\(d.get\\(''''dependencies'''',{}\\).items\\(\\)\\)]\")",
+      "Bash(mkdir -p app/fonts)",
+      "Bash(mv public/fonts/NotoSansTC-Bold.ttf app/fonts/NotoSansTC-Bold.ttf)",
+      "Bash(taskkill /PID 69592 /F)",
+      "Bash(cmd /c \"taskkill /PID 69592 /F\")",
+      "Bash(cmd /c \"taskkill /PID 69592 /F 2>&1\")",
+      "Bash(cmd /c \"netstat -ano | findstr :3000\")",
+      "Bash(powershell -Command \"Stop-Process -Id 69592 -Force -ErrorAction SilentlyContinue; Get-Process -Id 69592 -ErrorAction SilentlyContinue\")",
+      "Bash(powershell -Command \"Get-Process node | Where-Object {$_Id -eq 69592} | ForEach-Object { $_Kill\\(\\) }; Start-Sleep -Milliseconds 500; Get-Process node -ErrorAction SilentlyContinue | Select-Object Id, CPU, WorkingSet\")",
+      "Bash(powershell -Command \"taskkill /PID 69592 /F\")",
+      "Bash(powershell -Command \"Remove-Item ''D:\\\\Project\\\\personacastweb\\\\.next\\\\dev\\\\logs\\\\next-development.log'' -ErrorAction SilentlyContinue; Write-Output ''done''\")",
+      "Bash(node -e \"require\\(''schema-dts''\\)\")",
+      "Bash(curl -s http://localhost:3000/product/data-assets)",
       "Bash(git push:*)"
     ]
   }

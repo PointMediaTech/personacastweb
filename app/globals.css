@@ -9,6 +9,7 @@
   --color-logo-navy: #0A3D7A;
   --color-logo-cyan: #00A3E0;
   --color-aurora-cyan: #00F2FF;
+  --color-brand-teal: #00E0C2;
   --color-amber-warn: #FFAD00;
   --color-alert-red: #FF4D4D;
 
@@ -224,6 +225,44 @@ body {
   opacity: 0;
 }
 
+/* ── Case study card scroll reveal (CSS-only) ──────────────────── */
+
+@keyframes caseCardReveal {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.case-study-card {
+  animation: caseCardReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--delay, 0s);
+}
+
+@supports (animation-timeline: view()) {
+  .case-study-card {
+    animation-timeline: view();
+    animation-range: entry 0% entry 30%;
+  }
+}
+
+/* ── Pricing card glow pulse ────────────────────────────────────── */
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* ── Policy Simulation page animations ─────────────────────────── */
+
+@keyframes policyNodePulse {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.4); }
+}
+
+@keyframes policySlideNetwork {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nav-link::after {
     transition: none;
@@ -261,6 +300,11 @@ body {
   .anim-float, .anim-pulse-dot, .anim-pulse-opacity,
   .anim-breathe, .anim-spin-slow {
     animation: none !important;
+  }
+
+  /* Disable case study card reveal */
+  .case-study-card {
+    animation: none;
   }
 
   /* Disable seed simulation animations */

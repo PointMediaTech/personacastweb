@@ -41,7 +41,7 @@ const capabilities = [
   {
     title: '精準捕捉「沉默螺旋」斷裂點',
     description:
-      '視覺化即時情緒曲線與立場轉變。當你看到某個群體的情緒指標急遽攀升，讓你知道何時該按兵不動，何時必須立刻止血。',
+      '視覺化即時情緒曲線與立場轉變。當您看到某個群體的情緒指標急遽攀升，讓您知道何時該按兵不動，何時必須立刻止血。',
   },
   {
     title: '平行宇宙 A/B 測試',
@@ -136,7 +136,7 @@ export default function SimulationTheaterPage() {
         <ScrollReveal>
           <div className="text-center max-w-3xl mx-auto mb-16 px-4">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">那些在真實世界不敢做的測試，<br className="hidden md:block" />在這裡都能大膽演練</h2>
-            <p className="text-lg text-[#94A3B8]">不再依賴直覺或會議室裡的爭論。將你的決策放進高擬真的虛擬社會，讓數據告訴你答案。</p>
+            <p className="text-lg text-[#94A3B8]">不再依賴直覺或會議室裡的爭論。將您的決策放進高擬真的虛擬社會，讓數據告訴您答案。</p>
           </div>
           
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto px-4">

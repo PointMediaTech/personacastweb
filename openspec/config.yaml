@@ -1,0 +1,25 @@
+schema: spec-driven
+
+context: |
+  Tech stack: Next.js 15 (App Router), TypeScript, Tailwind CSS v4 (@theme), React 19
+  Language: zh-Hant (Traditional Chinese)
+  Domain: AI strategic simulation marketing website
+  Styling: CSS variables via @theme in globals.css, no tailwind.config.js
+  Fonts: Plus Jakarta Sans (headings), Inter (body), JetBrains Mono (mono)
+  Animation: Pure CSS animations + custom React hooks (no framer-motion)
+  Icons: lucide-react
+  SEO: JSON-LD structured data, schema-dts
+  Deployment target: personacast.io
+
+rules:
+  proposal:
+    - Keep proposals under 500 words
+    - Always include a "Non-goals" section
+    - Reference affected pages/components explicitly
+  tasks:
+    - Break tasks into chunks of max 2 hours
+    - Each task should be independently testable
+  design:
+    - Follow existing design token system in globals.css
+    - Never introduce colors outside the brand palette
+    - All animations must respect prefers-reduced-motion

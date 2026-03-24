@@ -8,6 +8,13 @@ export const metadata: Metadata = {
   title: '解決方案 — 公關危機、品牌聲譽、政治推演 | PersonaCast',
   description:
     '無論您面對公關危機、品牌聲譽管理、政治議題推演或政策輿論模擬，PersonaCast 都能在輿論定型前給您掌控權。探索適合您的解決方案。',
+  alternates: { canonical: '/solutions' },
+  openGraph: {
+    title: '解決方案 — 公關危機、品牌聲譽、政治推演 | PersonaCast',
+    description:
+      '無論您面對公關危機、品牌聲譽管理、政治議題推演或政策輿論模擬，PersonaCast 都能在輿論定型前給您掌控權。',
+    url: '/solutions',
+  },
 };
 
 const solutions = [
@@ -15,7 +22,7 @@ const solutions = [
     title: '公關危機預判',
     subtitle: '在風暴登陸前建好防線',
     description:
-      '模擬負面事件在不同人群中的擴散路徑，預判最壞情境，提前準備應對劇本。當危機真正來臨——你的團隊已經排練過了。',
+      '模擬負面事件在不同人群中的擴散路徑，預判最壞情境，提前準備應對劇本。當危機真正來臨——您的團隊已經排練過了。',
     href: '/solutions/crisis-pr',
     accent: '#769EDB',
   },
@@ -57,7 +64,7 @@ export default function SolutionsPage() {
       <PageHero
         layout="center"
         h1="每一場輿論戰，我們都已預演過。"
-        h2="無論你身處哪個戰場——公關風暴、政治議題、品牌危機或政策推動——PersonaCast 讓你在第一槍響前就看清全局。不是運氣，是推演。"
+        h2="無論您身處哪個戰場——公關風暴、政治議題、品牌危機或政策推動——PersonaCast 讓您在第一槍響前就看清全局。不是運氣，是推演。"
         ctaPrimary={{ label: '找到您的解決方案 ↓', href: '#solutions' }}
       />
 

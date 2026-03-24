@@ -1,14 +1,33 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { GlowButton } from '@/app/components/shared/GlowButton';
 import { ShieldAlert, Clock, Activity, ArrowRight, Play, CheckCircle2, AlertTriangle, ShieldCheck, BarChart3, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 
+// === Intersection Observer Hook ===
+function useInView(options?: IntersectionObserverInit) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setInView(true); },
+      { threshold: 0.1, ...options }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, inView };
+}
+
 // === Hero Section ===
 function HeroSection() {
   const [particles, setParticles] = useState<Array<{ w: number, h: number, t: number, l: number, d: number, y: number }>>([]);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setParticles([...Array(20)].map(() => ({
@@ -19,6 +38,8 @@ function HeroSection() {
       d: Math.random() * 5 + 5,
       y: Math.random() * -100 - 50,
     })));
+    // Trigger staggered entrance after mount
+    requestAnimationFrame(() => setMounted(true));
   }, []);
 
   return (
@@ -26,69 +47,62 @@ function HeroSection() {
       <div className="absolute inset-0 z-0">
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-red-900/20 rounded-full blur-[120px] mix-blend-screen animate-pulse" />
         <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-blue-900/20 rounded-full blur-[150px] mix-blend-screen" />
-        
-        {/* Abstract particles */}
+
+        {/* Abstract particles — CSS keyframe animation */}
         {particles.map((p, i) => (
-          <motion.div
+          <div
             key={i}
-            className="absolute bg-white/10 rounded-full"
+            className="absolute bg-white/10 rounded-full animate-float-up"
             style={{
               width: p.w,
               height: p.h,
               top: `${p.t}%`,
               left: `${p.l}%`,
-            }}
-            animate={{
-              y: [0, p.y],
-              opacity: [0, 0.5, 0],
-            }}
-            transition={{
-              duration: p.d,
-              repeat: Infinity,
-              ease: "linear",
+              animationDuration: `${p.d}s`,
+              animationDelay: `${i * 0.2}s`,
             }}
           />
         ))}
       </div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium mb-8"
+        <div
+          className={cn(
+            "inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium mb-8 transition-all duration-700 ease-out",
+            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          )}
         >
           <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
           主動防禦框架 2.0
-        </motion.div>
+        </div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-          className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-8 leading-tight max-w-5xl mx-auto font-heading"
+        <h1
+          className={cn(
+            "text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-8 leading-tight max-w-5xl mx-auto font-heading transition-all duration-700 ease-out delay-100",
+            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          )}
         >
           掌握輿論的下一步。<br className="hidden md:block" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-600">
             在危機引爆前，提早 72 小時寫好完美劇本。
           </span>
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-12 leading-relaxed"
+        <p
+          className={cn(
+            "text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-12 leading-relaxed transition-all duration-700 ease-out delay-200",
+            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          )}
         >
           透過 AI 深度推演，PersonaCast 幫助頂尖公關團隊從「被動救火」轉為「主動防禦」。
           精準預判輿論走向，讓每一次危機都成為展現品牌格局的轉機。
-        </motion.p>
+        </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+        <div
+          className={cn(
+            "flex flex-col sm:flex-row items-center justify-center gap-4 transition-all duration-700 ease-out delay-300",
+            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          )}
         >
           <GlowButton href="/contact" label="預約專屬危機推演展示 →" variant="primary" />
           <Link
@@ -98,7 +112,7 @@ function HeroSection() {
             <Play className="w-4 h-4" />
             觀看 2 分鐘實機操作
           </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -110,7 +124,7 @@ const painPoints = [
     icon: AlertTriangle,
     before: {
       title: '傳統作法：盲目滅火',
-      desc: '當品牌登上熱搜榜，輿論早已失控，只能被動挨打。你看到的永遠是已經燒起來的火。',
+      desc: '當品牌登上熱搜榜，輿論早已失控，只能被動挨打。您看到的永遠是已經燒起來的火。',
     },
     after: {
       title: 'PersonaCast：精準預警',
@@ -143,19 +157,21 @@ const painPoints = [
 
 function PainPointCard({ point, index }: { point: typeof painPoints[0]; index: number }) {
   const [isHovered, setIsHovered] = useState(false);
+  const { ref, inView } = useInView();
   const Icon = point.icon;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.6, delay: index * 0.15 }}
+    <div
+      ref={ref}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative h-[280px] rounded-2xl cursor-pointer group perspective-1000"
+      className={cn(
+        "relative h-[280px] rounded-2xl cursor-pointer group perspective-1000 transition-all duration-600 ease-out",
+        inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+      )}
+      style={{ transitionDelay: `${index * 150}ms` }}
     >
-      <div 
+      <div
         className={cn(
           "relative w-full h-full transition-transform duration-700 preserve-3d",
           isHovered ? "rotate-y-180" : ""
@@ -186,7 +202,7 @@ function PainPointCard({ point, index }: { point: typeof painPoints[0]; index: n
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -196,7 +212,7 @@ function PainPointsSection() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">為什麼傳統公關工具總是慢半拍？</h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">因為它們只能告訴你「過去發生了什麼」，而 PersonaCast 能告訴你「未來會發生什麼」。</p>
+          <p className="text-slate-400 max-w-2xl mx-auto">因為它們只能告訴您「過去發生了什麼」，而 PersonaCast 能告訴您「未來會發生什麼」。</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {painPoints.map((pt, i) => (
@@ -243,16 +259,17 @@ const steps = [
     desc: '如同開啟上帝視角。觀看 AI 模擬 KOL 帶風向、對手攻擊與消費者情緒發酵。每一種反應都基於深度大語言模型生成，真實可靠。',
     mockup: (
       <div className="bg-slate-900 border border-slate-700 rounded-xl p-6 shadow-2xl h-full flex flex-col items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+        <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay"></div>
         <div className="w-full flex items-end h-48 gap-2 border-b border-slate-700 pb-2 z-10">
           {[40, 60, 45, 80, 110, 90, 140, 180, 140, 100, 70, 50].map((h, i) => (
-            <motion.div 
-              key={i} 
-              className="flex-1 rounded-t-sm"
-              style={{ backgroundColor: h > 120 ? '#ef4444' : h > 80 ? '#f59e0b' : '#3b82f6' }}
-              initial={{ height: 0 }}
-              animate={{ height: `${(h/200)*100}%` }}
-              transition={{ duration: 1, delay: i * 0.05 }}
+            <div
+              key={i}
+              className="flex-1 rounded-t-sm animate-bar-grow"
+              style={{
+                backgroundColor: h > 120 ? '#ef4444' : h > 80 ? '#f59e0b' : '#3b82f6',
+                height: `${(h/200)*100}%`,
+                animationDelay: `${i * 50}ms`,
+              }}
             />
           ))}
         </div>
@@ -280,19 +297,19 @@ const steps = [
             <p className="text-white text-lg font-bold">今晚 19:30 前 <span className="text-slate-400 text-sm font-normal ml-2">(可降低 68% 負面聲量擴散)</span></p>
           </div>
         </div>
-        
+
         <div className="flex-1 bg-slate-800/50 rounded-lg border border-slate-700 p-4">
           <div className="flex items-center justify-between mb-4">
-             <span className="text-sm font-medium text-slate-300">💡 溝通切入點建議</span>
+             <span className="text-sm font-medium text-slate-300">溝通切入點建議</span>
              <span className="text-xs text-blue-400 bg-blue-500/10 px-2 py-1 rounded">AI 信心度 94%</span>
           </div>
           <ul className="space-y-3 text-sm text-slate-400">
-            <li className="flex gap-2 items-start"><span className="text-green-400">✓</span> 承認硬體問題，但不提過熱，改稱「充電保護機制作動」</li>
-            <li className="flex gap-2 items-start"><span className="text-green-400">✓</span> 承諾無條件退換貨，建立負責任形象</li>
-            <li className="flex gap-2 items-start"><span className="text-red-400">✗</span> 切勿將問題推給使用者操作不當（模擬顯示此舉會引發炎上）</li>
+            <li className="flex gap-2 items-start"><span className="text-green-400">&#10003;</span> 承認硬體問題，但不提過熱，改稱「充電保護機制作動」</li>
+            <li className="flex gap-2 items-start"><span className="text-green-400">&#10003;</span> 承諾無條件退換貨，建立負責任形象</li>
+            <li className="flex gap-2 items-start"><span className="text-red-400">&#10007;</span> 切勿將問題推給使用者操作不當（模擬顯示此舉會引發炎上）</li>
           </ul>
         </div>
-        
+
         <button className="w-full py-3 bg-white text-slate-900 font-medium rounded-lg hover:bg-slate-200 transition-colors flex items-center justify-center gap-2">
           <MessageSquare className="w-4 h-4" /> 產生公關聲明草案
         </button>
@@ -303,36 +320,42 @@ const steps = [
 
 function StepFlowSection() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
   const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
-    return scrollYProgress.onChange((latest) => {
-      if (latest < 0.33) setActiveStep(0);
-      else if (latest < 0.66) setActiveStep(1);
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const rect = container.getBoundingClientRect();
+      const containerHeight = container.offsetHeight;
+      const scrolled = -rect.top;
+      const progress = Math.max(0, Math.min(1, scrolled / (containerHeight - window.innerHeight)));
+
+      if (progress < 0.33) setActiveStep(0);
+      else if (progress < 0.66) setActiveStep(1);
       else setActiveStep(2);
-    });
-  }, [scrollYProgress]);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <section ref={containerRef} className="relative h-[300vh]">
       <div className="sticky top-0 h-screen w-full flex items-center py-20">
         <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-          
+
           {/* Left Text content */}
           <div className="space-y-12">
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-12">
               PersonaCast 的解法
             </h2>
-            
+
             <div className="space-y-16">
               {steps.map((step, i) => (
-                <div 
-                   key={i} 
+                <div
+                   key={i}
                    className={cn(
                      "transition-all duration-500",
                      activeStep === i ? "opacity-100 translate-x-0" : "opacity-30 -translate-x-4"
@@ -348,19 +371,20 @@ function StepFlowSection() {
 
           {/* Right Mockup Display */}
           <div className="hidden lg:block h-[500px] w-full relative">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeStep}
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="absolute inset-0 w-full h-full"
+            {steps.map((step, i) => (
+              <div
+                key={i}
+                className={cn(
+                  "absolute inset-0 w-full h-full transition-all duration-500 ease-out",
+                  activeStep === i
+                    ? "opacity-100 translate-y-0 scale-100"
+                    : "opacity-0 translate-y-5 scale-95 pointer-events-none"
+                )}
               >
-                {steps[activeStep].mockup}
-              </motion.div>
-            </AnimatePresence>
-            
+                {step.mockup}
+              </div>
+            ))}
+
             {/* Background decorative glow */}
             <div className="absolute inset-0 bg-blue-500/10 blur-[100px] rounded-full -z-10" />
           </div>
@@ -390,13 +414,13 @@ function StatsSection() {
             <div className="text-slate-400">跨國品牌與頂尖公關機構信任</div>
           </div>
         </div>
-        
+
         <div className="mt-20 max-w-4xl mx-auto bg-slate-800/40 rounded-2xl p-8 md:p-12 border border-slate-700/50 text-center relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
-          <svg className="w-10 h-10 text-slate-600 mx-auto mb-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
-          <p className="text-xl md:text-2xl text-slate-300 italic leading-relaxed mb-8">
-            "PersonaCast 讓我們在一場本可能毀滅品牌的危機中，提前 72 小時準備好了完美的回應策略。當新聞真的爆出來的那天，我們的聲明在 47 分鐘內上線——比所有競爭對手預期的都快。輿論從來沒有失控過。"
-          </p>
+          <svg className="w-10 h-10 text-slate-600 mx-auto mb-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+          <blockquote className="text-xl md:text-2xl text-slate-300 italic leading-relaxed mb-8">
+            &ldquo;PersonaCast 讓我們在一場本可能毀滅品牌的危機中，提前 72 小時準備好了完美的回應策略。當新聞真的爆出來的那天，我們的聲明在 47 分鐘內上線。輿論從來沒有失控過。&rdquo;
+          </blockquote>
           <div className="text-white font-medium">科技公司公關副總裁</div>
           <div className="text-sm text-slate-500">匿名受訪者 (財星 500 大企業)</div>
         </div>
@@ -438,6 +462,32 @@ export default function CrisisPRClient() {
         .preserve-3d { transform-style: preserve-3d; }
         .backface-hidden { backface-visibility: hidden; }
         .rotate-y-180 { transform: rotateY(180deg); }
+
+        @keyframes float-up {
+          0% { transform: translateY(0); opacity: 0; }
+          10% { opacity: 0.5; }
+          90% { opacity: 0.5; }
+          100% { transform: translateY(var(--float-y, -80px)); opacity: 0; }
+        }
+        .animate-float-up {
+          animation: float-up var(--duration, 6s) linear infinite;
+        }
+
+        @keyframes bar-grow {
+          from { transform: scaleY(0); }
+          to { transform: scaleY(1); }
+        }
+        .animate-bar-grow {
+          transform-origin: bottom;
+          animation: bar-grow 1s ease-out forwards;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .animate-float-up,
+          .animate-bar-grow {
+            animation: none;
+          }
+        }
       `}} />
       <HeroSection />
       <PainPointsSection />

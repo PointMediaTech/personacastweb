@@ -18,9 +18,9 @@ export const footerColumns: FooterColumn[] = [
       { label: '平台概覽', href: '/product' },
       { label: '種子注入', href: '/product/seed-injection' },
       { label: '圖譜建構', href: '/product/graph-engine' },
-      { label: '推演劇場', href: '/product/simulation-theater' },
+      { label: '全境模擬', href: '/product/simulation-theater' },
       { label: '預測解碼', href: '/product/predictive-decoder' },
-      { label: '數據資產', href: '/product/data-assets' },
+      { label: '輿情資產', href: '/product/data-assets' },
     ],
   },
   {

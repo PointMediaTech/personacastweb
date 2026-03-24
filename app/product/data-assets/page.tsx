@@ -117,7 +117,7 @@ export default function DataAssetsPage() {
                 告別公關斷層，<br className="md:hidden" />把經驗轉變成<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00F2FF] to-[#769EDB]">防彈級的組織大腦</span>。
               </h2>
               <p className="text-[#94A3B8] text-lg md:text-xl leading-relaxed mb-10 max-w-3xl mx-auto">
-                每一次的輿論交鋒不該只留在員工的記憶裡。你的組織需要一個專屬的策略防護網，它將隨著每一次推演與實戰，化無形知識為有形資產。
+                每一次的輿論交鋒不該只留在員工的記憶裡。您的組織需要一個專屬的策略防護網，它將隨著每一次推演與實戰，化無形知識為有形資產。
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a

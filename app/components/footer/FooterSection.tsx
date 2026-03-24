@@ -9,7 +9,7 @@ import { ArrowRight } from 'lucide-react';
 function ChevronIcon({ open }: { open: boolean }) {
   return (
     <svg
-      className={`w-4 h-4 transition-transform duration-300 text-slate-400 ${open ? 'rotate-180 text-[#00E0C2]' : ''}`}
+      className={`w-4 h-4 transition-transform duration-300 text-slate-400 ${open ? 'rotate-180 text-brand-teal' : ''}`}
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -46,7 +46,7 @@ function AccordionColumn({ title, children }: { title: string; children: React.R
         onClick={() => setOpen((prev) => !prev)}
         className="flex w-full items-center justify-between py-4 text-left group"
       >
-        <span className={`text-lg font-semibold tracking-wide transition-colors duration-300 ${open ? 'text-[#00E0C2]' : 'text-slate-300 group-hover:text-white'}`}>
+        <span className={`text-sm font-semibold tracking-wide transition-colors duration-300 ${open ? 'text-brand-teal' : 'text-slate-300 group-hover:text-white'}`}>
           {title}
         </span>
         <ChevronIcon open={open} />
@@ -64,12 +64,12 @@ function AccordionColumn({ title, children }: { title: string; children: React.R
 
 function LinkList({ links }: { links: typeof footerColumns[number]['links'] }) {
   return (
-    <ul className="space-y-3 lg:space-y-4">
+    <ul className="space-y-2 lg:space-y-2.5">
       {links.map((link) => (
         <li key={link.label}>
           {link.disabled ? (
             <span
-              className="text-base text-slate-600 cursor-not-allowed flex items-center gap-2 font-medium"
+              className="text-sm text-slate-600 cursor-not-allowed flex items-center gap-2 font-medium"
               aria-disabled="true"
             >
               {link.label}
@@ -80,11 +80,11 @@ function LinkList({ links }: { links: typeof footerColumns[number]['links'] }) {
           ) : (
             <Link
               href={link.href}
-              className="text-base text-slate-400 hover:text-[#00E0C2] transition-colors duration-300 inline-flex items-center group font-medium"
+              className="text-sm text-slate-400 hover:text-brand-teal transition-colors duration-300 inline-flex items-center group font-medium"
             >
               <span className="relative">
                 {link.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#00E0C2]/40 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-px bg-brand-teal/40 transition-all duration-300 group-hover:w-full"></span>
               </span>
             </Link>
           )}
@@ -103,11 +103,11 @@ export function FooterSection() {
   return (
     <footer className="relative bg-[#060A14] overflow-hidden mt-20 border-t border-white/[0.04]">
       {/* Decorative top glow sweeping border */}
-      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#00E0C2]/20 to-transparent"></div>
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-brand-teal/20 to-transparent"></div>
       
       {/* Ambient background glows */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-72 bg-[#769EDB]/5 blur-[120px] pointer-events-none rounded-full"></div>
-      <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#00E0C2]/[0.02] blur-[100px] pointer-events-none rounded-full"></div>
+      <div className="absolute -top-24 -left-24 w-96 h-96 bg-brand-teal/[0.02] blur-[100px] pointer-events-none rounded-full"></div>
 
       <div className="relative mx-auto w-full max-w-7xl px-6 lg:px-8 2xl:px-16 pt-16 pb-12 lg:pt-20 lg:pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-6 gap-12 lg:gap-8 xl:gap-16">
@@ -122,26 +122,26 @@ export function FooterSection() {
                 Persona
               </span>
               <span 
-                className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#00E0C2] to-[#769EDB]" 
+                className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-brand-teal to-[#769EDB]" 
                 style={{ fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif" }}
               >
                 Cast
               </span>
             </Link>
             
-            <p className="text-slate-300 leading-relaxed text-lg mb-8">
+            <p className="text-slate-400 leading-relaxed text-sm mb-6">
               領先 72 小時的 AI 戰略預演。<br />
-              <span className="text-slate-200 font-medium">在輿論定型前，拿回劇本掌控權。</span>
+              <span className="text-slate-300 font-medium">在輿論定型前，拿回劇本掌控權。</span>
             </p>
             
             <Link
               href="/contact"
-              className="group relative inline-flex items-center justify-center px-6 py-3 text-lg font-semibold text-white transition-all duration-300"
+              className="group relative inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white transition-all duration-300"
             >
-              <div className="absolute inset-0 w-full h-full rounded-lg bg-white/5 border border-white/10 group-hover:border-[#00E0C2]/40 group-hover:bg-[#00E0C2]/10 transition-all duration-300 shadow-[0_0_0_rgba(0,224,194,0)] group-hover:shadow-[0_0_20px_rgba(0,224,194,0.15)] backdrop-blur-sm"></div>
+              <div className="absolute inset-0 w-full h-full rounded-lg bg-white/5 border border-white/10 group-hover:border-brand-teal/40 group-hover:bg-brand-teal/10 transition-all duration-300 shadow-[0_0_0_rgba(0,224,194,0)] group-hover:shadow-[0_0_20px_rgba(0,224,194,0.15)] backdrop-blur-sm"></div>
               <span className="relative flex items-center gap-2">
-                Book a Demo
-                <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#00E0C2] group-hover:translate-x-1 transition-all duration-300" />
+                預約演示
+                <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-brand-teal group-hover:translate-x-1 transition-all duration-300" />
               </span>
             </Link>
           </div>
@@ -150,7 +150,7 @@ export function FooterSection() {
           <div className="hidden lg:grid lg:col-span-4 lg:grid-cols-4 gap-8">
             {footerColumns.map((col) => (
               <div key={col.title}>
-                <h3 className="text-lg font-bold text-white tracking-widest uppercase mb-6 opacity-90">
+                <h3 className="text-xs font-bold text-slate-400 tracking-widest uppercase mb-4 opacity-90">
                   {col.title}
                 </h3>
                 <LinkList links={col.links} />
@@ -172,7 +172,7 @@ export function FooterSection() {
       {/* Bottom bar */}
       <div className="relative border-t border-white/[0.04] bg-[#060A14]/60 backdrop-blur-xl">
         <div className="mx-auto w-full max-w-7xl px-6 lg:px-8 2xl:px-16 py-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <p className="text-base text-slate-500 order-2 md:order-1 font-medium">
+          <p className="text-xs text-slate-500 order-2 md:order-1 font-medium">
             &copy; {new Date().getFullYear()} PersonaCast Inc. All rights reserved.
           </p>
 
@@ -180,14 +180,14 @@ export function FooterSection() {
             <div className="flex items-center gap-6">
               <Link
                 href="/legal/privacy"
-                className="text-base font-medium text-slate-500 hover:text-[#769EDB] transition-colors duration-300"
+                className="text-xs font-medium text-slate-500 hover:text-[#769EDB] transition-colors duration-300"
               >
                 隱私權政策
               </Link>
               <span className="text-slate-800">|</span>
               <Link
                 href="/legal/terms"
-                className="text-base font-medium text-slate-500 hover:text-[#769EDB] transition-colors duration-300"
+                className="text-xs font-medium text-slate-500 hover:text-[#769EDB] transition-colors duration-300"
               >
                 服務條款
               </Link>
@@ -203,7 +203,7 @@ export function FooterSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-white/[0.03] border border-white/[0.05] text-slate-400 hover:bg-[#00E0C2]/10 hover:text-[#00E0C2] hover:border-[#00E0C2]/30 transition-all duration-300 group"
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-white/[0.03] border border-white/[0.05] text-slate-400 hover:bg-brand-teal/10 hover:text-brand-teal hover:border-brand-teal/30 transition-all duration-300 group"
                 >
                   <span className="transform group-hover:scale-110 transition-transform duration-300">
                     {icon}

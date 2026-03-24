@@ -28,7 +28,7 @@ const dimensions = [
     id: 'edges',
     label: '透視戰局',
     title: '精準拆解輿論的擴散佈局',
-    description: '藍線是擴散跳板，紅線是公關地雷。系統為你揭露誰在拉攏誰，在輿論戰中清楚判斷影響力走向，不再盲目作戰。',
+    description: '藍線是擴散跳板，紅線是公關地雷。系統為您揭露誰在拉攏誰，在輿論戰中清楚判斷影響力走向，不再盲目作戰。',
     visualNode: (
       <div className="relative w-full h-full">
         {/* Connecting lines */}
@@ -51,7 +51,7 @@ const dimensions = [
     id: 'clusters',
     label: '攻破壁壘',
     title: '跨越同溫層的溝通橋樑',
-    description: '精準識別堅不可摧的同溫層，並找出能跨越圈層的「邊界傳播者」。打破資訊壁壘，讓你的訊息不再石沉大海。',
+    description: '精準識別堅不可摧的同溫層，並找出能跨越圈層的「邊界傳播者」。打破資訊壁壘，讓您的訊息不再石沉大海。',
     visualNode: (
       <div className="relative w-full h-full flex items-center justify-center">
         {/* Left Cluster — no backdrop-blur for perf */}
@@ -78,7 +78,7 @@ const dimensions = [
     id: 'dynamics',
     label: '預判風暴',
     title: '即時攔截病毒式爆發',
-    description: '從第一篇破口貼文到全網引爆，即時追蹤輿論的病毒式傳播路徑，幫助你搶佔公關回應的「黃金三小時」。',
+    description: '從第一篇破口貼文到全網引爆，即時追蹤輿論的病毒式傳播路徑，幫助您搶佔公關回應的「黃金三小時」。',
     visualNode: (
       <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
         {/* Ripple effect — 2 rings to reduce composite layers */}

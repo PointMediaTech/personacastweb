@@ -224,7 +224,7 @@ export function BentoTech() {
             公關操盤手的秘密武器
           </h2>
           <p className="mt-7 text-lg lg:text-xl text-[#F8FAFC]/80 max-w-3xl mx-auto leading-relaxed">
-            當別人還在疲於「事後滅火」，你已經在 PersonaCast 跑過了一萬次「未來局勢」。從被動防守，進化為掌控全局的風向工程師。
+            當別人還在疲於「事後滅火」，您已經在 PersonaCast 跑過了一萬次「未來局勢」。從被動防守，進化為掌控全局的風向工程師。
           </p>
         </div>
 
@@ -277,7 +277,7 @@ export function BentoTech() {
                   沙盤推演危機防護網
                 </h3>
                 <p className="text-base lg:text-lg text-[#F8FAFC]/70 leading-relaxed max-w-xl">
-                  在把敏感聲明稿發佈給百萬粉絲前，先交給系統進行十萬次壓力測試。成千上萬名具備真實政治傾向、年齡與價值的虛擬網民，將對你的文案進行「炎上攻擊」，讓你提前預判公關災難與完美回擊點。
+                  在把敏感聲明稿發佈給百萬粉絲前，先交給系統進行十萬次壓力測試。成千上萬名具備真實政治傾向、年齡與價值的虛擬網民，將對您的文案進行「炎上攻擊」，讓您提前預判公關災難與完美回擊點。
                 </p>
               </div>
             </div>
@@ -317,7 +317,7 @@ export function BentoTech() {
                     同溫層與斷裂線解碼
                   </h3>
                   <p className="text-sm lg:text-md text-[#F8FAFC]/60 leading-relaxed">
-                    公眾輿論沒有「平均值」。系統為你自動描出死忠鐵粉、激進反對派與沉默多數的拓撲圖，一眼看穿是誰在帶風向，以及哪裡是能夠被說服的「遊離票」。
+                    公眾輿論沒有「平均值」。系統為您自動描出死忠鐵粉、激進反對派與沉默多數的拓撲圖，一眼看穿是誰在帶風向，以及哪裡是能夠被說服的「遊離票」。
                   </p>
                 </div>
               </div>
@@ -345,7 +345,7 @@ export function BentoTech() {
                     演算級的風向工程
                   </h3>
                   <p className="text-sm lg:text-md text-[#F8FAFC]/60 leading-relaxed">
-                    不再訴諸直覺與運氣。演算出不同切入點的蝴蝶效應，用數學公式計算你的政治籌碼。
+                    不再訴諸直覺與運氣。演算出不同切入點的蝴蝶效應，用數學公式計算您的政治籌碼。
                   </p>
                 </div>
 

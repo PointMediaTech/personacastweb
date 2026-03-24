@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, ReactNode } from 'react';
 import { useInView, useReducedMotion, cssTransition } from '@/app/lib/animations';
 import { ChevronDown } from 'lucide-react';
 
 interface FAQItem {
   readonly question: string;
-  readonly answer: string;
+  readonly answer: ReactNode;
 }
 
 interface FAQAccordionProps {
@@ -48,11 +48,11 @@ function AccordionItem({ question, answer, index }: FAQItem & { index: number })
       <div
         className="overflow-hidden transition-all duration-300"
         style={{
-          maxHeight: open ? '500px' : '0px',
+          maxHeight: open ? '800px' : '0px',
           opacity: open ? 1 : 0,
         }}
       >
-        <div className="pb-5 text-sm text-[#94A3B8] leading-relaxed whitespace-pre-line">
+        <div className="pb-5 text-sm text-[#94A3B8] leading-relaxed">
           {answer}
         </div>
       </div>

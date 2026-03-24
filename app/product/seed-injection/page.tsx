@@ -42,17 +42,17 @@ const features = [
   {
     title: '多維議題定義',
     description:
-      '用你習慣的方式描述議題——自然語言就好。系統自動解析核心爭議點、利害關係人與潛在輿論斷裂線。不需要結構化表單，不需要技術知識。說人話，AI 聽得懂。',
+      '用您習慣的方式描述議題——自然語言就好。系統自動解析核心爭議點、利害關係人與潛在輿論斷裂線。不需要結構化表單，不需要技術知識。說人話，AI 聽得懂。',
   },
   {
     title: '情境變數控制',
     description:
-      '輿論不是在真空中傳播的。你可以調整模擬環境的「溫度」：媒體關注度高還是低？時間壓力是 24 小時還是一週？既有民意偏正還是偏負？每個旋鈕都影響推演的走向——而你掌握所有旋鈕。',
+      '輿論不是在真空中傳播的。您可以調整模擬環境的「溫度」：媒體關注度高還是低？時間壓力是 24 小時還是一週？既有民意偏正還是偏負？每個旋鈕都影響推演的走向——而您掌握所有旋鈕。',
   },
   {
     title: '角色種子庫',
     description:
-      '從預建的社會人格模板庫中選取：記者、KOL、沉默的中產消費者、激進的社運人士⋯⋯或者自訂特定角色的背景、價值觀與發聲風格。你定義誰在這場輿論戰中登場。',
+      '從預建的社會人格模板庫中選取：記者、KOL、沉默的中產消費者、激進的社運人士⋯⋯或者自訂特定角色的背景、價值觀與發聲風格。您定義誰在這場輿論戰中登場。',
   },
 ] as const;
 
@@ -75,7 +75,7 @@ export default function SeedInjectionPage() {
       />
       <PageHero
         h1="一切推演，始於一顆精準的種子。"
-        h2="你的競爭對手還在等輿論爆發才開會。你只需要 90 秒，就能把一個議題、新聞、傳言——注入 PersonaCast，讓數百位 AI 為你預演接下來的民意走向。"
+        h2="您的競爭對手還在等輿論爆發才開會。您只需要 90 秒，就能把一個議題、新聞、傳言——注入 PersonaCast，讓數百位 AI 為您預演接下來的民意走向。"
         layout="split"
         rightContent={<SeedSimulationGraphic />}
         ctaPrimary={{ label: '觀看實機展演 →', href: '/product' }}
@@ -96,10 +96,10 @@ export default function SeedInjectionPage() {
                   每一場輿論風暴都有起源：一篇報導、一則推文、一句失言。
                 </p>
                 <p>
-                  問題不在於事件本身——而在於你能不能在它擴散之前，看見它會如何被解讀、被扭曲、被放大。
+                  問題不在於事件本身——而在於您能不能在它擴散之前，看見它會如何被解讀、被扭曲、被放大。
                 </p>
                 <p>
-                  <strong className="text-white">種子注入引擎</strong>讓你定義「如果這件事發生了」的起點，接著讓 AI 推演所有可能的劇本，讓你永遠領先輿論一步。
+                  <strong className="text-white">種子注入引擎</strong>讓您定義「如果這件事發生了」的起點，接著讓 AI 推演所有可能的劇本，讓您永遠領先輿論一步。
                 </p>
               </div>
             </div>
@@ -137,10 +137,10 @@ export default function SeedInjectionPage() {
         <ScrollReveal>
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-              定義你的沙盒環境
+              定義您的沙盒環境
             </h2>
             <p className="text-lg text-[#94A3B8]">
-              不寫程式碼，不填複雜表單。你的任務是描述情境，AI 的任務是理解並模擬。
+              不寫程式碼，不填複雜表單。您的任務是描述情境，AI 的任務是理解並模擬。
             </p>
           </div>
         </ScrollReveal>
@@ -165,7 +165,7 @@ export default function SeedInjectionPage() {
               公關實戰：新聞上線前的 4 小時
             </h2>
             <p className="text-lg text-[#94A3B8]">
-              快速注入議題，預覽不同角色群體的連鎖反應。在危機爆發前，你的策略早已準備就緒。
+              快速注入議題，預覽不同角色群體的連鎖反應。在危機爆發前，您的策略早已準備就緒。
             </p>
           </div>
         </ScrollReveal>
