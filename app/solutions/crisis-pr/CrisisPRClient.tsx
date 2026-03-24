@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { GlowButton } from '@/app/components/shared/GlowButton';
 import { ShieldAlert, Clock, Activity, ArrowRight, Play, CheckCircle2, AlertTriangle, ShieldCheck, BarChart3, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
@@ -27,7 +27,6 @@ function useInView(options?: IntersectionObserverInit) {
 // === Hero Section ===
 function HeroSection() {
   const [particles, setParticles] = useState<Array<{ w: number, h: number, t: number, l: number, d: number, y: number }>>([]);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setParticles([...Array(20)].map(() => ({
@@ -38,8 +37,6 @@ function HeroSection() {
       d: Math.random() * 5 + 5,
       y: Math.random() * -100 - 50,
     })));
-    // Trigger staggered entrance after mount
-    requestAnimationFrame(() => setMounted(true));
   }, []);
 
   return (
@@ -66,44 +63,24 @@ function HeroSection() {
       </div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 text-center">
-        <div
-          className={cn(
-            "inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium mb-8 transition-all duration-700 ease-out",
-            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          )}
-        >
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium mb-8">
           <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
           主動防禦框架 2.0
         </div>
 
-        <h1
-          className={cn(
-            "text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-8 leading-tight max-w-5xl mx-auto font-heading transition-all duration-700 ease-out delay-100",
-            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          )}
-        >
+        <h1 className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-8 leading-tight max-w-5xl mx-auto font-heading">
           掌握輿論的下一步。<br className="hidden md:block" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-600">
             在危機引爆前，提早 72 小時寫好完美劇本。
           </span>
         </h1>
 
-        <p
-          className={cn(
-            "text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-12 leading-relaxed transition-all duration-700 ease-out delay-200",
-            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          )}
-        >
+        <p className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-12 leading-relaxed">
           透過 AI 深度推演，PersonaCast 幫助頂尖公關團隊從「被動救火」轉為「主動防禦」。
           精準預判輿論走向，讓每一次危機都成為展現品牌格局的轉機。
         </p>
 
-        <div
-          className={cn(
-            "flex flex-col sm:flex-row items-center justify-center gap-4 transition-all duration-700 ease-out delay-300",
-            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          )}
-        >
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <GlowButton href="/contact" label="預約專屬危機推演展示 →" variant="primary" />
           <Link
             href="#demo"
