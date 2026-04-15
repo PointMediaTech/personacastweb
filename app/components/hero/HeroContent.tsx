@@ -56,17 +56,16 @@ export function HeroContent({ theaterActive, onToggleTheater, selectedDecision }
 
   // Memoize slide-left entrance styles (depend on mounted + reduced)
   const slideLeft01 = useMemo(() => slideLeftStyle(mounted, reduced, 0.1), [mounted, reduced]);
-  const slideLeft02 = useMemo(() => slideLeftStyle(mounted, reduced, 0.2), [mounted, reduced]);
   const slideLeft04 = useMemo(() => slideLeftStyle(mounted, reduced, 0.4), [mounted, reduced]);
   const slideLeft06 = useMemo(() => slideLeftStyle(mounted, reduced, 0.6), [mounted, reduced]);
 
-  // Memoize composite H1 style (static typography + entrance animation)
+  // H1 uses a CSS-only entrance animation (.hero-intro-h1) that fires at first
+  // paint instead of waiting for hydration — critical for LCP.
   const h1Style = useMemo(() => ({
     fontSize: 'clamp(3.5rem, 8vw, 7.5rem)' as const,
     lineHeight: 1.2,
     letterSpacing: '-0.02em',
-    ...slideLeft02,
-  }), [slideLeft02]);
+  }), []);
 
   // Memoize subtitle style (static color/margin + entrance animation)
   const subtitleStyle = useMemo(() => ({
@@ -110,7 +109,7 @@ export function HeroContent({ theaterActive, onToggleTheater, selectedDecision }
 
         {/* H1 — line-height: 1.2, clear gap between lines */}
         <h1
-          className="font-body font-black mb-10"
+          className="font-body font-black mb-10 hero-intro-h1"
           style={h1Style}
         >
           <span className="text-white block">
