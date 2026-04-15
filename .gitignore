@@ -24,3 +24,15 @@ out/
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code — local-only configuration
+.claude/settings.local.json
+.claude/commands/
+.claude/skills/
+
+# OpenSpec (individual tooling, not team-shared)
+.agent/
+
+# Lint / build output logs
+lint-output.txt
+*-output.txt
