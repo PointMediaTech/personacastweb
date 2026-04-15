@@ -1,11 +1,20 @@
 'use client';
 import { useState, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import { HeroContent } from './HeroContent';
 import { LiveBadge } from './LiveBadge';
-import { ChaosFlowCanvas } from './ChaosFlowCanvas';
-import { DataRainCanvas } from './DataRainCanvas';
 import { SimulationTheater } from './SimulationTheater';
 import type { DecisionKey } from './theaterData';
+
+// Heavy canvas/animation components — defer past LCP so the H1 paints first.
+const ChaosFlowCanvas = dynamic(
+  () => import('./ChaosFlowCanvas').then((m) => ({ default: m.ChaosFlowCanvas })),
+  { ssr: false },
+);
+const DataRainCanvas = dynamic(
+  () => import('./DataRainCanvas').then((m) => ({ default: m.DataRainCanvas })),
+  { ssr: false },
+);
 
 export function HeroSection() {
   const [theaterActive, setTheaterActive] = useState(false);
