@@ -4,6 +4,8 @@ import { SEO_CONFIG } from './lib/seo-config';
 
 const { baseUrl } = SEO_CONFIG;
 
+export const dynamic = 'force-static';
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 

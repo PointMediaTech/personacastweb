@@ -6,6 +6,7 @@ import { join } from 'node:path';
 export const alt = 'PersonaCast — AI 戰略推演平台';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
+export const dynamic = 'force-static';
 
 export default async function OGImage() {
   const fontPath = join(process.cwd(), 'app/fonts/NotoSansTC-Bold.ttf');
