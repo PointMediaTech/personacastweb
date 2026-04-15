@@ -14,7 +14,7 @@ export function CastingArenaCard() {
       {/* Visual Area */}
       <div className="relative h-[260px] lg:h-[380px] mx-3 rounded-lg overflow-hidden">
         <Image
-          src="/images/03_card.png"
+          src="/images/03_card.webp"
           alt="Casting Arena 終局演習"
           fill
           sizes="(max-width: 1024px) 100vw, 33vw"

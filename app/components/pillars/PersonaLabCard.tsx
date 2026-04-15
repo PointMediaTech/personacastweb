@@ -14,7 +14,7 @@ export function PersonaLabCard() {
       {/* Visual Area */}
       <div className="relative h-[260px] lg:h-[380px] mx-3 rounded-lg overflow-hidden">
         <Image
-          src="/images/01_card.png"
+          src="/images/01_card.webp"
           alt="PersonaLab 人格逆向建模"
           fill
           sizes="(max-width: 1024px) 100vw, 33vw"

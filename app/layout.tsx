@@ -69,7 +69,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: '/point_ico.ico',
-    apple: '/PersonaCast_Logo.png',
+    apple: '/PersonaCast_Logo-180.png',
   },
   manifest: '/manifest.webmanifest',
 };

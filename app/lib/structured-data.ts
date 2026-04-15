@@ -18,7 +18,7 @@ export function generateOrganizationSchema(): WithContext<Organization> {
     '@type': 'Organization',
     name: SEO_CONFIG.siteName,
     url: SEO_CONFIG.baseUrl,
-    logo: `${SEO_CONFIG.baseUrl}/PersonaCast_Logo.png`,
+    logo: `${SEO_CONFIG.baseUrl}/PersonaCast_Logo-512.png`,
     sameAs: [
       SEO_CONFIG.socialLinks.twitter,
       SEO_CONFIG.socialLinks.linkedin,

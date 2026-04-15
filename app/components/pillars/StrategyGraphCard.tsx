@@ -14,7 +14,7 @@ export function StrategyGraphCard() {
       {/* Visual Area */}
       <div className="relative h-[260px] lg:h-[380px] mx-3 rounded-lg overflow-hidden">
         <Image
-          src="/images/02_card.png"
+          src="/images/02_card.webp"
           alt="Strategy Graph 全局利益掃描"
           fill
           sizes="(max-width: 1024px) 100vw, 33vw"
