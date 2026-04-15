@@ -44,12 +44,12 @@ const jsonLd = {
     '即時捕捉 KOL 隱形連結與社群同溫層邊界的 AI 圖譜分析系統。協助企業在危機引爆前搶先佈局，精準鎖定傳播源頭。',
   offers: {
     '@type': 'Offer',
-    url: 'https://personacast.io/pricing',
+    url: 'https://www.personacast.ai/pricing',
   },
   provider: {
     '@type': 'Organization',
     name: 'PersonaCast',
-    url: 'https://personacast.io',
+    url: 'https://www.personacast.ai',
   },
 };
 

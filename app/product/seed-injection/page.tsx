@@ -60,9 +60,9 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: '首頁', item: 'https://personacast.io' },
-    { '@type': 'ListItem', position: 2, name: '產品', item: 'https://personacast.io/product' },
-    { '@type': 'ListItem', position: 3, name: '種子注入引擎', item: 'https://personacast.io/product/seed-injection' },
+    { '@type': 'ListItem', position: 1, name: '首頁', item: 'https://www.personacast.ai' },
+    { '@type': 'ListItem', position: 2, name: '產品', item: 'https://www.personacast.ai/product' },
+    { '@type': 'ListItem', position: 3, name: '種子注入引擎', item: 'https://www.personacast.ai/product/seed-injection' },
   ],
 };
 

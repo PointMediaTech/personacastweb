@@ -1,7 +1,7 @@
 // app/lib/seo-config.ts
 
 export const SEO_CONFIG = {
-  baseUrl: 'https://personacast.io',
+  baseUrl: 'https://www.personacast.ai',
   siteName: 'PersonaCast',
   defaultLocale: 'zh-TW' as const,
 

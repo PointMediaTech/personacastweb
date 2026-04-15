@@ -76,24 +76,24 @@ const jsonLd = {
   '@graph': [
     {
       '@type': 'WebPage',
-      '@id': 'https://personacast.io/product/predictive-decoder',
-      url: 'https://personacast.io/product/predictive-decoder',
+      '@id': 'https://www.personacast.ai/product/predictive-decoder',
+      url: 'https://www.personacast.ai/product/predictive-decoder',
       name: '預測解碼器 — 將推演結果轉化為可行動的輿情預測',
       description:
         'PersonaCast 預測解碼器將 AI 推演結果轉化為帶有信心指數的輿情走向預測、風險評分與策略建議，直接對接您的決策流程。',
       inLanguage: 'zh-TW',
-      isPartOf: { '@id': 'https://personacast.io' },
+      isPartOf: { '@id': 'https://www.personacast.ai' },
     },
     {
       '@type': 'BreadcrumbList',
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: '首頁', item: 'https://personacast.io' },
-        { '@type': 'ListItem', position: 2, name: '產品', item: 'https://personacast.io/product' },
+        { '@type': 'ListItem', position: 1, name: '首頁', item: 'https://www.personacast.ai' },
+        { '@type': 'ListItem', position: 2, name: '產品', item: 'https://www.personacast.ai/product' },
         {
           '@type': 'ListItem',
           position: 3,
           name: '預測解碼器',
-          item: 'https://personacast.io/product/predictive-decoder',
+          item: 'https://www.personacast.ai/product/predictive-decoder',
         },
       ],
     },

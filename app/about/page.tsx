@@ -83,7 +83,7 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'PersonaCast',
-  url: 'https://personacast.io',
+  url: 'https://www.personacast.ai',
   description: 'PersonaCast 結合頂尖 AI 技術與公關傳播學，為企業打造專屬的虛擬輿論風洞。',
   foundingDate: '2024',
   sameAs: [

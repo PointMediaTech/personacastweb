@@ -89,9 +89,9 @@ const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: '首頁', item: 'https://personacast.io' },
-    { '@type': 'ListItem', position: 2, name: '資源中心', item: 'https://personacast.io/resources' },
-    { '@type': 'ListItem', position: 3, name: '客戶成功案例', item: 'https://personacast.io/resources/case-studies' },
+    { '@type': 'ListItem', position: 1, name: '首頁', item: 'https://www.personacast.ai' },
+    { '@type': 'ListItem', position: 2, name: '資源中心', item: 'https://www.personacast.ai/resources' },
+    { '@type': 'ListItem', position: 3, name: '客戶成功案例', item: 'https://www.personacast.ai/resources/case-studies' },
   ],
 };
 
