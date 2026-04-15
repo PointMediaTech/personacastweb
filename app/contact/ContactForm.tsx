@@ -127,18 +127,11 @@ export function ContactForm() {
           }}
         />
         <h3 className="text-xl font-bold text-white mb-3">已收到您的預約申請</h3>
-        <p className="text-sm text-[#94A3B8] mb-6 leading-relaxed">
+        <p className="text-sm text-[#94A3B8] leading-relaxed">
           感謝您的來信。我們的團隊將在 1 個工作天內與您聯繫，
           <br />
           安排一對一 Demo 時間。
         </p>
-        <button
-          type="button"
-          onClick={() => setStatus('idle')}
-          className="text-sm text-[color:var(--color-aurora-cyan)] hover:underline"
-        >
-          再送一份 →
-        </button>
       </div>
     );
   }
