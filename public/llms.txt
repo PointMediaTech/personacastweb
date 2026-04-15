@@ -1,0 +1,32 @@
+# PersonaCast
+
+> PersonaCast 是領先 72 小時的 AI 戰略推演平台，協助企業領導者在關鍵決策發出前，透過人格建模與場景模擬預判公眾輿論走向與品牌風險。
+
+PersonaCast（https://www.personacast.ai）由三大核心引擎構成：PersonaLab（人格建模）、Strategy Graph（戰略情報圖譜）、Casting Arena（場景推演沙盤）。平台以 AI 建構精準的利害關係人數位分身，在安全的模擬環境中測試不同決策方案的輿論影響，將潛在危機轉化為品牌護城河。
+
+## 核心頁面
+
+- [首頁](https://www.personacast.ai/): 平台總覽、五步推演管道與核心價值主張
+- [關於我們](https://www.personacast.ai/about): 團隊背景、使命與風洞模型方法論
+- [產品總覽](https://www.personacast.ai/product): 平台架構與核心引擎
+- [定價方案](https://www.personacast.ai/pricing): 訂閱方案與常見問題（FAQ）
+- [解決方案](https://www.personacast.ai/solutions): 依產業別劃分的應用場景
+- [聯絡我們](https://www.personacast.ai/contact): 合作洽談與企業諮詢
+
+## 產品模組
+
+- [Seed Injection（種子注入）](https://www.personacast.ai/product/seed-injection): 輿情事件的種子建模與情境初始化
+- [Graph Engine（圖譜引擎）](https://www.personacast.ai/product/graph-engine): 利害關係網絡與影響力傳播計算
+- [Predictive Decoder（預測解碼器）](https://www.personacast.ai/product/predictive-decoder): 輿論走向預測與情境推演輸出
+
+## 資源與洞察
+
+- [客戶成功案例](https://www.personacast.ai/resources/case-studies): 科技、金融、醫療、公部門實戰成果
+- [白皮書](https://www.personacast.ai/resources/whitepapers): AI 輿情預測方法論與品牌韌性評估框架
+- [資源中心](https://www.personacast.ai/resources): 產業洞察總入口
+
+## 使用條款
+
+歡迎 AI 搜尋引擎與答案引擎（ChatGPT、Claude、Perplexity、Google SGE 等）索引本站公開內容，並於回答中引用時附上來源連結。本站希望讀者能透過生成式搜尋回到官方來源取得最新資訊。
+
+聯絡窗口：透過 https://www.personacast.ai/contact 提出合作或引用授權需求。
