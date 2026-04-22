@@ -1,0 +1,71 @@
+name: Production Health Check
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Curl production site
+        id: curl
+        run: |
+          set +e
+          STATUS=$(curl -sS -o /tmp/body.html -w '%{http_code}' -L --max-time 30 https://www.personacast.ai/)
+          echo "status=$STATUS" >> "$GITHUB_OUTPUT"
+          if [ "$STATUS" != "200" ]; then
+            echo "Health check failed with HTTP $STATUS" >&2
+            head -c 500 /tmp/body.html >&2 || true
+            exit 1
+          fi
+          if ! grep -q "PersonaCast" /tmp/body.html; then
+            echo "Response body missing expected content" >&2
+            exit 1
+          fi
+          echo "OK - HTTP $STATUS"
+
+      - name: Open issue on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `[health-check] www.personacast.ai is down (HTTP ${{ steps.curl.outputs.status }})`;
+            const { data: existing } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'health-check',
+            });
+            if (existing.length > 0) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing[0].number,
+                body: `Still failing at ${new Date().toISOString()} (run: ${context.runId})`,
+              });
+              return;
+            }
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              labels: ['health-check'],
+              body: [
+                `Production check failed.`,
+                ``,
+                `- URL: https://www.personacast.ai/`,
+                `- HTTP status: ${{ steps.curl.outputs.status }}`,
+                `- Run: https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+                ``,
+                `Diagnose:`,
+                `1. Check GitHub Pages config: \`gh api repos/${context.repo.owner}/${context.repo.repo}/pages\``,
+                `2. Verify CNAME = www.personacast.ai`,
+                `3. Confirm latest Deploy workflow succeeded`,
+              ].join('\n'),
+            });

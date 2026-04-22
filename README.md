@@ -1,5 +1,10 @@
 # PersonaCast 官方網站
 
+**Production:** https://www.personacast.ai/
+**Repo:** `PointMediaTech/personacastweb` (public, main branch)
+**Deploy:** GitHub Actions → GitHub Pages（`build_type: workflow`）
+**Do NOT** confuse with `PointMediaTech/pointmediaweb`（那是 www.point.tv 的 repo）
+
 > 掌握變數，定義結局 — AI 驅動的社會模擬與輿論預演平台
 
 ## 技術棧
