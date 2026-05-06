@@ -2,15 +2,10 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { Menu, X, ChevronDown } from 'lucide-react';
-
+import { ChevronDown, Menu, X } from 'lucide-react';
 import { NAV_ITEMS } from './navbar/navData';
 import { DesktopDropdown } from './navbar/DesktopDropdown';
 import { MobileSidebar } from './navbar/MobileSidebar';
-
-/* ------------------------------------------------------------------ */
-/*  Component                                                          */
-/* ------------------------------------------------------------------ */
 
 export function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -20,9 +15,7 @@ export function Navbar() {
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -53,125 +46,128 @@ export function Navbar() {
 
   return (
     <>
-      {/* ── Top bar Wrapper ── */}
-      <div className={`fixed top-0 left-0 right-0 z-50 flex justify-center w-full pointer-events-none transition-all duration-300 ${scrolled ? 'pt-4 px-4' : 'pt-0 px-0'}`}>
-        <nav
-          className={`pointer-events-auto flex items-center justify-between w-full transition-all duration-300 ${scrolled ? 'max-w-6xl rounded-2xl px-6 h-16' : 'max-w-full rounded-none px-6 md:px-10 h-[72px]'}`}
-          style={{
-            backgroundColor: scrolled ? 'rgba(10,14,26,0.85)' : 'transparent',
-            backdropFilter: scrolled ? 'blur(16px)' : 'none',
-            WebkitBackdropFilter: scrolled ? 'blur(16px)' : 'none',
-            borderBottom: scrolled ? 'none' : '1px solid rgba(118,158,219,0.15)',
-            border: scrolled ? '1px solid rgba(255,255,255,0.15)' : undefined,
-            boxShadow: scrolled ? '0 10px 30px -10px rgba(0,0,0,0.6)' : 'none',
-          }}
-        >
-          {/* Logo */}
-          <Link href="/" aria-label="PersonaCast" className="flex items-center leading-none shrink-0 group">
-            <span className="text-[26px] font-semibold tracking-[-0.02em] text-white transition-colors" style={{ fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif" }}>
-              Persona
-            </span>
-            <span className="text-[26px] font-extrabold tracking-[-0.02em] text-[#00E0C2] group-hover:drop-shadow-[0_0_12px_rgba(0,224,194,0.8)] transition-all duration-300" style={{ fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif" }}>
-              Cast
-            </span>
-          </Link>
-
-          {/* ── Desktop nav items (centered in navbar) ── */}
-          <ul className="hidden lg:flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
-            {NAV_ITEMS.map((item) => {
-              const hasChildren = !!item.children;
-              const isOpen = activeDropdown === item.label;
-
-              return (
-                <li
-                  key={item.label}
-                  className="relative"
-                  onMouseEnter={hasChildren ? () => openDropdown(item.label) : undefined}
-                  onMouseLeave={hasChildren ? scheduleClose : undefined}
-                >
-                  {hasChildren ? (
-                    <button
-                      type="button"
-                      className="group flex items-center gap-2 px-4 py-2 text-[15px] font-bold transition-all duration-200 rounded-lg hover:bg-white/10"
-                      style={{ color: isOpen ? '#FFFFFF' : '#CBD5E1' }}
-                      aria-expanded={isOpen}
-                      onClick={() => setActiveDropdown(isOpen ? null : item.label)}
-                    >
-                      {item.label}
-                      <ChevronDown
-                        size={16}
-                        className="transition-transform duration-300 opacity-80 group-hover:opacity-100"
-                        style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
-                      />
-                    </button>
-                  ) : (
-                    <Link
-                      href={item.href ?? '/'}
-                      className="block px-4 py-2 text-[15px] font-bold transition-all duration-200 rounded-lg hover:bg-white/10 hover:text-white"
-                      style={{ color: '#CBD5E1' }}
-                    >
-                      {item.label}
-                    </Link>
-                  )}
-
-                  {/* ── Dropdown panel ── */}
-                  {hasChildren && (
-                    <DesktopDropdown
-                      item={item}
-                      isOpen={isOpen}
-                      onOpen={() => openDropdown(item.label)}
-                      onScheduleClose={scheduleClose}
-                      onClose={() => setActiveDropdown(null)}
-                    />
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-
-          {/* ── Desktop right actions ── */}
-          <div className="hidden lg:flex items-center gap-5 ml-auto">
-            <Link href="/login" className="text-[15px] font-bold transition-colors duration-200 hover:text-white" style={{ color: '#CBD5E1' }}>
-              登入
-            </Link>
-            <Link
-              href="/contact"
-              className="relative inline-flex h-9 items-center justify-center overflow-hidden rounded-md bg-[#00E0C2] px-5 font-bold text-[#050B14] text-[13px] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_24px_rgba(0,224,194,0.4)] active:scale-[0.97]"
-            >
-              <span className="flex items-center gap-1.5 z-10">預約 Demo</span>
-              <div className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full hover:animate-[shimmer_1.5s_infinite]" />
-            </Link>
-          </div>
-
-          {/* ── Mobile hamburger ── */}
-          <button
-            type="button"
-            className="lg:hidden flex items-center justify-center w-11 h-11 rounded-lg text-slate-300 hover:text-white transition-colors bg-white/5 border border-white/10"
-            onClick={() => setMobileOpen((v) => !v)}
-            aria-label={mobileOpen ? '關閉選單' : '開啟選單'}
-            aria-expanded={mobileOpen}
+      <nav
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between transition-all duration-300"
+        style={{
+          height: 56,
+          padding: '0 clamp(1.5rem, 4vw, 4rem)',
+          backgroundColor: scrolled
+            ? 'rgba(11,21,38,0.92)'
+            : 'rgba(11,21,38,0.60)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          borderBottom: scrolled
+            ? '1px solid rgba(255,255,255,0.08)'
+            : '1px solid rgba(255,255,255,0.04)',
+          boxShadow: scrolled ? '0 1px 24px rgba(0,0,0,0.4)' : 'none',
+        }}
+      >
+        {/* Logo */}
+        <Link href="/" aria-label="PersonaCast" className="flex items-center gap-2 shrink-0">
+          <svg width="20" height="20" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect width="32" height="32" rx="6" fill="#0A3D7A"/>
+            <path d="M8 22V10l8 6-8 6z" fill="#00A3E0"/>
+            <path d="M16 16l8-6v12l-8-6z" fill="#00E0C2"/>
+          </svg>
+          <span
+            className="font-heading font-bold tracking-tight"
+            style={{ fontSize: 14.5, color: '#FFFFFF', letterSpacing: '-0.02em' }}
           >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </nav>
-      </div>
+            Persona<span style={{ color: '#00A3E0' }}>Cast</span>
+          </span>
+        </Link>
 
-      {/* ── Mobile sidebar (with overlay) ── */}
+        {/* Desktop nav */}
+        <ul className="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+          {NAV_ITEMS.map((item) => {
+            const hasChildren = !!item.children;
+            const isOpen = activeDropdown === item.label;
+            return (
+              <li
+                key={item.label}
+                className="relative"
+                onMouseEnter={hasChildren ? () => openDropdown(item.label) : undefined}
+                onMouseLeave={hasChildren ? scheduleClose : undefined}
+              >
+                {hasChildren ? (
+                  <button
+                    type="button"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded text-[13px] font-medium transition-colors hover:bg-white/8"
+                    style={{ color: isOpen ? '#FFFFFF' : '#8898B8' }}
+                    aria-expanded={isOpen}
+                    onClick={() => setActiveDropdown(isOpen ? null : item.label)}
+                  >
+                    {item.label}
+                    <ChevronDown
+                      size={13}
+                      className="transition-transform duration-200"
+                      style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', opacity: 0.6 }}
+                    />
+                  </button>
+                ) : (
+                  <Link
+                    href={item.href ?? '/'}
+                    className="nav-link block px-3 py-1.5 text-[13px] font-medium transition-colors hover:text-white"
+                    style={{ color: '#8898B8' }}
+                  >
+                    {item.label}
+                  </Link>
+                )}
+                {hasChildren && (
+                  <DesktopDropdown
+                    item={item}
+                    isOpen={isOpen}
+                    onOpen={() => openDropdown(item.label)}
+                    onScheduleClose={scheduleClose}
+                    onClose={() => setActiveDropdown(null)}
+                  />
+                )}
+              </li>
+            );
+          })}
+        </ul>
+
+        {/* Desktop right */}
+        <div className="hidden lg:flex items-center gap-4">
+          <Link
+            href="/login"
+            className="text-[13px] font-medium transition-colors hover:text-white"
+            style={{ color: '#8898B8' }}
+          >
+            登入
+          </Link>
+          <Link
+            href="/contact"
+            className="inline-flex items-center justify-center px-4 py-1.5 text-[12.5px] font-bold rounded-sm transition-all duration-200 hover:shadow-[0_0_16px_rgba(0,224,194,0.35)] hover:scale-[1.02]"
+            style={{
+              background: '#00E0C2',
+              color: '#050B14',
+              letterSpacing: '0.01em',
+            }}
+          >
+            預約演示
+          </Link>
+        </div>
+
+        {/* Mobile hamburger */}
+        <button
+          type="button"
+          className="lg:hidden flex items-center justify-center w-9 h-9 rounded transition-colors hover:bg-white/10"
+          style={{ color: '#8898B8' }}
+          onClick={() => setMobileOpen((v) => !v)}
+          aria-label={mobileOpen ? '關閉選單' : '開啟選單'}
+          aria-expanded={mobileOpen}
+        >
+          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </nav>
+
       <MobileSidebar
         isOpen={mobileOpen}
         accordion={mobileAccordion}
         onClose={closeMobile}
         onToggleAccordion={toggleMobileAccordion}
       />
-
-      {/* ── Keyframes (injected once) ── */}
-      <style jsx global>{`
-        @keyframes shimmer {
-          100% {
-            transform: translateX(100%);
-          }
-        }
-      `}</style>
     </>
   );
 }
