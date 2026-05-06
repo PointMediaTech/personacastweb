@@ -233,8 +233,7 @@ export default function ContactPage() {
       <section
         aria-label="回覆承諾"
         style={{
-          background: '#152035',
-          borderTop: '1px solid rgba(255,255,255,.06)',
+          background: '#EEF3FB',
           padding: 'clamp(48px,6vh,72px) clamp(2rem,5vw,6rem)',
         }}
       >
@@ -245,7 +244,7 @@ export default function ContactPage() {
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
             gap: 1,
-            background: 'rgba(255,255,255,.06)',
+            background: '#D0DCF0',
           }}
         >
           {[
@@ -256,25 +255,25 @@ export default function ContactPage() {
             <div
               key={item.label}
               style={{
-                background: 'rgba(11,21,38,.6)',
+                background: '#fff',
                 padding: '2rem',
               }}
             >
               <div
                 className="font-heading"
-                style={{ fontSize: '2rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.03em', lineHeight: 1, marginBottom: '0.4rem' }}
+                style={{ fontSize: '2rem', fontWeight: 800, color: '#020617', letterSpacing: '-0.03em', lineHeight: 1, marginBottom: '0.4rem' }}
               >
                 {item.metric}
               </div>
               <div
                 className="font-mono uppercase"
-                style={{ fontSize: 10.5, letterSpacing: '0.18em', color: 'rgba(0,218,186,.88)', marginBottom: '0.6rem' }}
+                style={{ fontSize: 10.5, letterSpacing: '0.18em', color: '#00838A', marginBottom: '0.6rem' }}
               >
                 {item.label}
               </div>
               <p
                 className="font-body"
-                style={{ fontSize: 13, fontWeight: 300, color: 'rgba(255,255,255,.55)', lineHeight: 1.75 }}
+                style={{ fontSize: 13, fontWeight: 300, color: '#4A5A72', lineHeight: 1.75 }}
               >
                 {item.desc}
               </p>

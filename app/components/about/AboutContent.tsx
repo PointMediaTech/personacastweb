@@ -257,7 +257,7 @@ export function AboutStatsSection() {
       id="about-stats"
       aria-label="關鍵指標"
       style={{
-        background: '#152035',
+        background: '#EEF3FB',
         padding: 'clamp(70px,9vh,110px) clamp(2rem,5vw,6rem)',
       }}
     >
@@ -265,13 +265,13 @@ export function AboutStatsSection() {
         <div style={{ marginBottom: '2.5rem', ...reveal(0) }}>
           <span
             className="font-mono block uppercase"
-            style={{ fontSize: 11, letterSpacing: '0.22em', color: 'rgba(0,218,186,.82)', marginBottom: '0.75rem' }}
+            style={{ fontSize: 11, letterSpacing: '0.22em', color: '#00838A', marginBottom: '0.75rem' }}
           >
             規模與影響力
           </span>
           <h2
             className="font-heading"
-            style={{ fontSize: 'clamp(1.6rem,2.8vw,2.6rem)', fontWeight: 800, letterSpacing: '-0.03em', color: '#fff' }}
+            style={{ fontSize: 'clamp(1.6rem,2.8vw,2.6rem)', fontWeight: 800, letterSpacing: '-0.03em', color: '#020617' }}
           >
             重新定義決策的維度
           </h2>
@@ -280,7 +280,7 @@ export function AboutStatsSection() {
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
-            background: 'rgba(255,255,255,.06)',
+            background: '#D0DCF0',
             gap: 1,
           }}
         >
@@ -289,20 +289,20 @@ export function AboutStatsSection() {
               key={stat.num}
               style={{
                 ...reveal(i * 0.08),
-                background: 'rgba(11,21,38,.6)',
+                background: '#fff',
                 padding: '2rem clamp(1.5rem,2.5vw,2.5rem)',
               }}
             >
               <div
                 className="font-heading"
-                style={{ fontSize: '2.8rem', fontWeight: 800, color: '#fff', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '0.25rem' }}
+                style={{ fontSize: '2.8rem', fontWeight: 800, color: '#020617', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '0.25rem' }}
               >
                 {stat.num}
-                <sup style={{ fontSize: '1.1rem', fontWeight: 700, verticalAlign: 'super', marginLeft: 2, color: 'rgba(0,218,186,.85)' }}>
+                <sup style={{ fontSize: '1.1rem', fontWeight: 700, verticalAlign: 'super', marginLeft: 2, color: '#00838A' }}>
                   {stat.sup}
                 </sup>
               </div>
-              <div className="font-body" style={{ fontSize: 13, color: 'rgba(255,255,255,.6)', marginTop: '0.5rem', lineHeight: 1.55 }}>
+              <div className="font-body" style={{ fontSize: 13, color: '#4A5A72', marginTop: '0.5rem', lineHeight: 1.55 }}>
                 {stat.label1}<br />{stat.label2}
               </div>
             </div>

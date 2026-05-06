@@ -418,7 +418,7 @@ export function PricingTrustSection() {
       id="pricing-trust"
       aria-label="信任指標"
       style={{
-        background: '#152035',
+        background: '#EEF3FB',
         padding: 'clamp(60px,8vh,90px) clamp(2rem,5vw,6rem)',
       }}
     >
@@ -428,7 +428,7 @@ export function PricingTrustSection() {
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
             gap: 1,
-            background: 'rgba(255,255,255,.06)',
+            background: '#D0DCF0',
           }}
         >
           {TRUST_STATS.map((stat, i) => (
@@ -436,21 +436,21 @@ export function PricingTrustSection() {
               key={stat.num}
               style={{
                 ...reveal(i * 0.07),
-                background: 'rgba(11,21,38,.5)',
+                background: '#fff',
                 padding: '1.75rem clamp(1rem,2vw,2rem)',
                 textAlign: 'center',
               }}
             >
               <div
                 className="font-heading"
-                style={{ fontSize: '2.4rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.03em', lineHeight: 1 }}
+                style={{ fontSize: '2.4rem', fontWeight: 800, color: '#020617', letterSpacing: '-0.03em', lineHeight: 1 }}
               >
                 {stat.num}
-                <sup style={{ fontSize: '1rem', fontWeight: 700, verticalAlign: 'super', marginLeft: 2, color: 'rgba(0,218,186,.85)' }}>
+                <sup style={{ fontSize: '1rem', fontWeight: 700, verticalAlign: 'super', marginLeft: 2, color: '#00838A' }}>
                   {stat.sup}
                 </sup>
               </div>
-              <div className="font-body" style={{ fontSize: 12.5, color: 'rgba(255,255,255,.58)', marginTop: '0.5rem', fontWeight: 300, lineHeight: 1.5 }}>
+              <div className="font-body" style={{ fontSize: 12.5, color: '#4A5A72', marginTop: '0.5rem', fontWeight: 300, lineHeight: 1.5 }}>
                 {stat.label}
               </div>
             </div>
@@ -467,8 +467,8 @@ export function PricingTrustSection() {
                 fontSize: 10,
                 letterSpacing: '0.15em',
                 padding: '4px 10px',
-                border: '1px solid rgba(255,255,255,.12)',
-                color: 'rgba(255,255,255,.55)',
+                border: '1px solid rgba(0,60,120,.15)',
+                color: '#4A5A72',
                 borderRadius: 2,
               }}
             >

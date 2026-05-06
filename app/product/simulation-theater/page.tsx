@@ -178,26 +178,31 @@ export default function SimulationTheaterPage() {
       </ContentSection>
 
       {/* Section 3 — 三大核心能力 */}
-      <ContentSection>
-        <ScrollReveal>
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white">
-              精準預判的核心引擎
-            </h2>
-          </div>
-        </ScrollReveal>
+      <section style={{ background: '#EEF3FB' }}>
+        <ContentSection>
+          <ScrollReveal>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold" style={{ color: '#020617' }}>
+                精準預判的核心引擎
+              </h2>
+            </div>
+          </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
-          {capabilities.map((item, i) => (
-            <FeatureCard
-              key={item.title}
-              title={item.title}
-              description={item.description}
-              delay={i * 0.1}
-            />
-          ))}
-        </div>
-      </ContentSection>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto px-4">
+            {capabilities.map((item, i) => (
+              <FeatureCard
+                key={item.title}
+                title={item.title}
+                description={item.description}
+                delay={i * 0.1}
+                cardBackground="#ffffff"
+                titleColor="#020617"
+                descColor="#4A5A72"
+              />
+            ))}
+          </div>
+        </ContentSection>
+      </section>
 
       {/* Interactive Micro-demo / Highlight CTA */}
       <ContentSection>

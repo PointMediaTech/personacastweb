@@ -251,7 +251,7 @@ export function SolutionsValueSection() {
       id="solutions-values"
       aria-label="核心價值"
       style={{
-        background: '#152035',
+        background: '#EEF3FB',
         padding: 'clamp(70px,9vh,110px) clamp(2rem,5vw,6rem)',
       }}
     >
@@ -259,35 +259,35 @@ export function SolutionsValueSection() {
         <div style={{ marginBottom: '2.75rem', ...reveal(0) }}>
           <span
             className="font-mono block uppercase"
-            style={{ fontSize: 11, letterSpacing: '0.22em', color: 'rgba(0,218,186,.82)', marginBottom: '0.75rem' }}
+            style={{ fontSize: 11, letterSpacing: '0.22em', color: '#00838A', marginBottom: '0.75rem' }}
           >
             為什麼選擇 PersonaCast
           </span>
           <h2
             className="font-heading"
-            style={{ fontSize: 'clamp(1.6rem,2.6vw,2.4rem)', fontWeight: 800, letterSpacing: '-0.025em', color: '#fff' }}
+            style={{ fontSize: 'clamp(1.6rem,2.6vw,2.4rem)', fontWeight: 800, letterSpacing: '-0.025em', color: '#020617' }}
           >
-            不是工具，是<em style={{ fontStyle: 'italic', color: 'rgba(0,218,186,.85)' }}>思維的升級</em>
+            不是工具，是<em style={{ fontStyle: 'italic', color: '#00838A' }}>思維的升級</em>
           </h2>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1, background: 'rgba(255,255,255,.06)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1, background: '#D0DCF0' }}>
           {VALUES.map((v, i) => (
             <div
               key={v.label}
               style={{
                 ...reveal(0.1 + i * 0.08),
-                background: 'rgba(11,21,38,.5)',
+                background: '#fff',
                 padding: '2rem',
               }}
             >
               <div
                 className="font-heading font-bold"
-                style={{ fontSize: '1.15rem', color: '#fff', marginBottom: '0.6rem', letterSpacing: '-0.01em' }}
+                style={{ fontSize: '1.15rem', color: '#020617', marginBottom: '0.6rem', letterSpacing: '-0.01em' }}
               >
                 {v.label}
               </div>
-              <p className="font-body" style={{ fontSize: 13.5, fontWeight: 300, color: 'rgba(255,255,255,.76)', lineHeight: 1.75 }}>
+              <p className="font-body" style={{ fontSize: 13.5, fontWeight: 300, color: '#4A5A72', lineHeight: 1.75 }}>
                 {v.desc}
               </p>
             </div>

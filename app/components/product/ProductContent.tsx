@@ -351,7 +351,7 @@ export function SimulationFeatureSection() {
       id="simulation-feature"
       aria-label="推演劇場"
       style={{
-        background: '#152035',
+        background: '#EEF3FB',
         padding: 'clamp(80px,10vh,120px) clamp(2rem,5vw,6rem)',
       }}
     >
@@ -369,7 +369,7 @@ export function SimulationFeatureSection() {
         <div>
           <span
             className="font-mono block uppercase"
-            style={{ ...reveal(0), fontSize: 11, letterSpacing: '0.22em', color: 'rgba(0,218,186,.85)', marginBottom: '1.5rem' }}
+            style={{ ...reveal(0), fontSize: 11, letterSpacing: '0.22em', color: '#00838A', marginBottom: '1.5rem' }}
           >
             03 · 推演劇場
           </span>
@@ -381,12 +381,12 @@ export function SimulationFeatureSection() {
               fontWeight: 800,
               letterSpacing: '-0.025em',
               lineHeight: 1.18,
-              color: '#fff',
+              color: '#020617',
               marginBottom: '1rem',
             }}
           >
             340 萬路徑，<br />
-            <em style={{ fontStyle: 'italic', color: 'rgba(0,218,186,.85)' }}>同時計算</em>
+            <em style={{ fontStyle: 'italic', color: '#00838A' }}>同時計算</em>
           </h2>
           <p
             className="font-body"
@@ -394,7 +394,7 @@ export function SimulationFeatureSection() {
               ...reveal(0.2),
               fontSize: 14.5,
               fontWeight: 300,
-              color: 'rgba(255,255,255,.76)',
+              color: '#4A5A72',
               lineHeight: 1.85,
               marginBottom: '1.5rem',
             }}
@@ -405,7 +405,7 @@ export function SimulationFeatureSection() {
           <Link
             href="/product/simulation-theater"
             className="font-body font-semibold"
-            style={{ ...reveal(0.28), display: 'inline-block', fontSize: 13.5, color: 'rgba(0,218,186,.85)', textDecoration: 'none' }}
+            style={{ ...reveal(0.28), display: 'inline-block', fontSize: 13.5, color: '#00838A', textDecoration: 'none' }}
           >
             深入了解推演劇場 →
           </Link>

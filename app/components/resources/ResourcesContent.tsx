@@ -255,14 +255,14 @@ export function ResourcesNewsletterSection() {
       id="resources-newsletter"
       aria-label="電子報訂閱"
       style={{
-        background: '#152035',
+        background: '#EEF3FB',
         padding: 'clamp(70px,9vh,110px) clamp(2rem,5vw,6rem)',
       }}
     >
       <div style={{ maxWidth: 640, margin: '0 auto', textAlign: 'center' }}>
         <span
           className="font-mono block uppercase"
-          style={{ ...reveal(0), fontSize: 11, letterSpacing: '0.22em', color: 'rgba(0,218,186,.78)', marginBottom: '1.5rem' }}
+          style={{ ...reveal(0), fontSize: 11, letterSpacing: '0.22em', color: '#00838A', marginBottom: '1.5rem' }}
         >
           每週輿情洞察
         </span>
@@ -274,16 +274,16 @@ export function ResourcesNewsletterSection() {
             fontWeight: 800,
             letterSpacing: '-0.03em',
             lineHeight: 1.1,
-            color: '#fff',
+            color: '#020617',
             marginBottom: '1rem',
           }}
         >
           每週一份洞察，<br />
-          <em style={{ fontStyle: 'italic', color: 'rgba(0,218,186,.85)' }}>直達您的信箱</em>
+          <em style={{ fontStyle: 'italic', color: '#00838A' }}>直達您的信箱</em>
         </h2>
         <p
           className="font-body"
-          style={{ ...reveal(0.16), fontSize: 14, fontWeight: 300, color: 'rgba(255,255,255,.55)', lineHeight: 1.8, marginBottom: '2rem' }}
+          style={{ ...reveal(0.16), fontSize: 14, fontWeight: 300, color: '#4A5A72', lineHeight: 1.8, marginBottom: '2rem' }}
         >
           訂閱我們的電子報，獲取最新輿情分析趨勢與產業洞察。
         </p>
@@ -296,11 +296,11 @@ export function ResourcesNewsletterSection() {
             style={{
               flex: 1,
               padding: '12px 16px',
-              background: 'rgba(255,255,255,.07)',
-              border: '1px solid rgba(255,255,255,.12)',
+              background: '#fff',
+              border: '1px solid #D0DCF0',
               borderRadius: 2,
               fontSize: 13.5,
-              color: '#fff',
+              color: '#020617',
               outline: 'none',
               fontFamily: 'inherit',
             }}
@@ -310,9 +310,9 @@ export function ResourcesNewsletterSection() {
             className="font-heading font-bold rounded-[2px]"
             style={{
               padding: '12px 20px',
-              background: 'rgba(0,218,186,.15)',
-              border: '1px solid rgba(0,218,186,.35)',
-              color: 'rgba(0,218,186,.9)',
+              background: 'rgba(0,131,138,.12)',
+              border: '1px solid rgba(0,131,138,.35)',
+              color: '#00838A',
               fontSize: 13,
               letterSpacing: '0.01em',
               cursor: 'default',
@@ -324,7 +324,7 @@ export function ResourcesNewsletterSection() {
         </div>
         <p
           className="font-body"
-          style={{ ...reveal(0.28), fontSize: 11, color: 'rgba(255,255,255,.5)', marginTop: '1rem', fontWeight: 300 }}
+          style={{ ...reveal(0.28), fontSize: 11, color: '#4A5A72', marginTop: '1rem', fontWeight: 300 }}
         >
           不定期發送，可隨時取消訂閱。
         </p>

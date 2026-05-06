@@ -48,7 +48,7 @@ export function PillarsSection() {
       id="pillars"
       aria-label="四個核心系統"
       style={{
-        background: '#152035',
+        background: '#EEF3FB',
         padding: 'clamp(80px,10vh,120px) clamp(2rem,5vw,6rem)',
       }}
     >
@@ -60,9 +60,9 @@ export function PillarsSection() {
           display: 'flex',
           alignItems: 'flex-end',
           justifyContent: 'space-between',
-          paddingBottom: '2.75rem',
-          borderBottom: '1px solid rgba(255,255,255,.08)',
-          marginBottom: '2.75rem',
+          paddingBottom: '2rem',
+          borderBottom: '1px solid #D0DCF0',
+          marginBottom: '2rem',
         }}
       >
         <h2
@@ -73,14 +73,14 @@ export function PillarsSection() {
             fontWeight: 800,
             letterSpacing: '-0.03em',
             lineHeight: 1.15,
-            color: '#fff',
+            color: '#020617',
             maxWidth: 480,
           }}
         >
           四個核心系統，{' '}
-          <em style={{ fontStyle: 'italic', color: 'rgba(0,218,186,.82)' }}>完整</em>
+          <em style={{ fontStyle: 'italic', color: '#00838A' }}>完整</em>
           <br />
-          <em style={{ fontStyle: 'italic', color: 'rgba(0,218,186,.82)' }}>覆蓋</em>決策鏈
+          <em style={{ fontStyle: 'italic', color: '#00838A' }}>覆蓋</em>決策鏈
         </h2>
         <p
           className="font-body"
@@ -88,7 +88,7 @@ export function PillarsSection() {
             ...reveal(0.15),
             fontSize: 14,
             fontWeight: 300,
-            color: 'rgba(255,255,255,.76)',
+            color: '#4A5A72',
             maxWidth: 260,
             lineHeight: 1.75,
             textAlign: 'right',
@@ -106,7 +106,7 @@ export function PillarsSection() {
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
           gap: 1,
-          background: 'rgba(255,255,255,.06)',
+          background: '#D0DCF0',
         }}
       >
         {/* First 3 pillars */}
@@ -122,27 +122,27 @@ export function PillarsSection() {
           style={{
             ...reveal(0.38),
             gridColumn: '2 / 4',
-            background: 'rgba(0,218,186,.04)',
-            border: '1px solid rgba(0,218,186,.1)',
+            background: '#fff',
+            borderLeft: '3px solid #00838A',
             padding: '2.25rem 2rem',
           }}
         >
           <span
             className="font-mono block uppercase"
-            style={{ fontSize: 11, letterSpacing: '0.25em', color: 'rgba(0,218,186,.78)', marginBottom: '0.75rem' }}
+            style={{ fontSize: 11, letterSpacing: '0.25em', color: '#00838A', marginBottom: '0.75rem' }}
           >
             推演結果示例 ·
           </span>
           <div
             className="font-heading font-bold"
-            style={{ fontSize: '1.05rem', color: 'rgba(0,218,186,.85)', marginBottom: '1.25rem' }}
+            style={{ fontSize: '1.05rem', color: '#00838A', marginBottom: '1.25rem' }}
           >
             危機公關 · 漲價公告模擬
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
             {BAR_ROWS.map((row) => (
               <div key={row.label} className="flex items-center gap-3">
-                <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, ${row.color}99 ${row.pct}%, rgba(255,255,255,.06) ${row.pct}%)` }} />
+                <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, ${row.color}cc ${row.pct}%, #D0DCF0 ${row.pct}%)` }} />
                 <span
                   className="font-mono"
                   style={{ fontSize: 11, color: row.color, whiteSpace: 'nowrap', minWidth: 80, textAlign: 'right' }}
@@ -154,7 +154,7 @@ export function PillarsSection() {
           </div>
           <p
             className="font-body"
-            style={{ marginTop: '1.25rem', fontSize: 11.5, fontWeight: 300, color: 'rgba(255,255,255,.52)', lineHeight: 1.7 }}
+            style={{ marginTop: '1.25rem', fontSize: 11.5, fontWeight: 300, color: '#4A5A72', lineHeight: 1.7 }}
           >
             信任恢復 +78% · 訴訟風險 ×0.3 · 媒體輿論轉正 T+36h · 置信度 94%
           </p>
@@ -175,26 +175,26 @@ function PillarCard({
     <div
       style={{
         ...style,
-        background: 'rgba(11,21,38,.7)',
+        background: '#fff',
         padding: '2.25rem 2rem',
         position: 'relative',
       }}
     >
       <span
         className="font-mono block uppercase"
-        style={{ fontSize: 11, letterSpacing: '0.25em', color: 'rgba(255,255,255,.68)', marginBottom: '1.25rem' }}
+        style={{ fontSize: 11, letterSpacing: '0.25em', color: '#4A5A72', marginBottom: '1.25rem' }}
       >
         {pillar.num}
       </span>
       <div
         className="font-heading font-bold"
-        style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '0.65rem', letterSpacing: '-0.01em' }}
+        style={{ fontSize: '1.1rem', color: '#020617', marginBottom: '0.65rem', letterSpacing: '-0.01em' }}
       >
         {pillar.title}
       </div>
       <p
         className="font-body"
-        style={{ fontSize: 13.5, fontWeight: 300, color: 'rgba(255,255,255,.65)', lineHeight: 1.85 }}
+        style={{ fontSize: 13.5, fontWeight: 300, color: '#4A5A72', lineHeight: 1.85 }}
       >
         {pillar.body}
       </p>

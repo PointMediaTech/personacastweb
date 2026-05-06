@@ -26,10 +26,8 @@ export function StatsSection() {
       id="stats"
       aria-label="關鍵指標"
       style={{
-        background: '#152035',
+        background: '#EEF3FB',
         padding: 'clamp(60px,8vh,90px) clamp(2rem,5vw,6rem)',
-        borderTop: '1px solid rgba(255,255,255,.06)',
-        borderBottom: '1px solid rgba(255,255,255,.06)',
       }}
     >
       <div
@@ -46,16 +44,16 @@ export function StatsSection() {
             style={{
               ...reveal(i * 0.08),
               padding: '2rem 0',
-              borderRight: i < 3 ? '1px solid rgba(255,255,255,.08)' : 'none',
+              borderRight: i < 3 ? '1px solid #D0DCF0' : 'none',
               paddingLeft: i > 0 ? 'clamp(1.5rem,3vw,3rem)' : 0,
               paddingRight: i < 3 ? 'clamp(1.5rem,3vw,3rem)' : 0,
             }}
           >
-            <div className="font-heading" style={{ fontSize: '2.6rem', fontWeight: 800, color: '#fff', lineHeight: 1, marginBottom: '0.25rem', letterSpacing: '-0.03em' }}>
+            <div className="font-heading" style={{ fontSize: '2.6rem', fontWeight: 800, color: '#020617', lineHeight: 1, marginBottom: '0.25rem', letterSpacing: '-0.03em' }}>
               {stat.num}
-              <sup style={{ fontSize: '1rem', fontWeight: 700, verticalAlign: 'super', marginLeft: 2 }}>{stat.sup}</sup>
+              <sup style={{ fontSize: '1rem', fontWeight: 700, verticalAlign: 'super', marginLeft: 2, color: '#00838A' }}>{stat.sup}</sup>
             </div>
-            <div className="font-body" style={{ fontSize: 13, color: 'rgba(255,255,255,.55)', marginTop: '0.5rem', lineHeight: 1.55 }}>
+            <div className="font-body" style={{ fontSize: 13, color: '#4A5A72', marginTop: '0.5rem', lineHeight: 1.55 }}>
               {stat.label1}<br />{stat.label2}
             </div>
           </div>
