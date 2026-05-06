@@ -1,19 +1,18 @@
 import dynamic from 'next/dynamic';
-import { HeroSection } from './components/hero';
+import { HeroSection } from './components/hero/HeroSection';
 import { generateHomePageSchemas } from './lib/structured-data';
 
-/* Below-fold sections — dynamically imported to reduce First Load JS */
-const ParadigmSection = dynamic(
-  () => import('./components/paradigm/ParadigmSection').then(m => ({ default: m.ParadigmSection })),
+const StatementSection = dynamic(
+  () => import('./components/statement/StatementSection').then(m => ({ default: m.StatementSection })),
 );
 const PillarsSection = dynamic(
   () => import('./components/pillars/PillarsSection').then(m => ({ default: m.PillarsSection })),
 );
-const ScenariosSection = dynamic(
-  () => import('./components/scenarios/ScenariosSection').then(m => ({ default: m.ScenariosSection })),
+const ScenarioSection = dynamic(
+  () => import('./components/scenario/ScenarioSection').then(m => ({ default: m.ScenarioSection })),
 );
-const AuthoritySection = dynamic(
-  () => import('./components/authority/AuthoritySection').then(m => ({ default: m.AuthoritySection })),
+const StatsSection = dynamic(
+  () => import('./components/stats/StatsSection').then(m => ({ default: m.StatsSection })),
 );
 const CTASection = dynamic(
   () => import('./components/cta/CTASection').then(m => ({ default: m.CTASection })),
@@ -33,10 +32,10 @@ export default function HomePage() {
       ))}
       <main>
         <HeroSection />
-        <ParadigmSection />
+        <StatementSection />
         <PillarsSection />
-        <ScenariosSection />
-        <AuthoritySection />
+        <ScenarioSection />
+        <StatsSection />
         <CTASection />
       </main>
     </>

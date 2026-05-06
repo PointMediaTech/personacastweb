@@ -1,139 +1,149 @@
 'use client';
 
 import { useRef } from 'react';
-import { useInView, useReducedMotion } from '@/app/lib/animations';
+import Link from 'next/link';
+import { useInView } from '@/app/lib/animations';
 
-const CTA_HREF = 'https://calendly.com/personacast/demo';
-
-const EASE = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+const DEMO_HREF = 'https://calendly.com/personacast/demo';
 
 export function CTASection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-120px' });
-  const prefersReducedMotion = useReducedMotion();
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-80px' });
 
-  const fadeUpStyle = (delay: number) =>
-    prefersReducedMotion
-      ? { opacity: 1 as const }
-      : {
-          opacity: isInView ? 1 : 0,
-          transform: isInView ? 'translateY(0)' : 'translateY(24px)',
-          transition: `opacity 0.9s ${EASE} ${delay}s, transform 0.9s ${EASE} ${delay}s`,
-        };
+  const reveal = (delay = 0) => ({
+    opacity: inView ? 1 : 0,
+    transform: inView ? 'translateY(0)' : 'translateY(20px)',
+    transition: `opacity 0.65s cubic-bezier(0.4,0,0.2,1) ${delay}s, transform 0.65s cubic-bezier(0.4,0,0.2,1) ${delay}s`,
+  });
 
   return (
     <section
-      ref={sectionRef}
+      ref={ref}
       id="cta"
       aria-label="行動召喚"
-      className="relative w-full min-h-screen flex items-center justify-center overflow-hidden"
-      style={{ backgroundColor: '#000000' }}
+      style={{
+        background: '#0B1526',
+        padding: 'clamp(90px,12vh,140px) clamp(2rem,5vw,6rem)',
+      }}
     >
-      {/* Radial vignette mask */}
       <div
-        className="absolute inset-0 pointer-events-none"
         style={{
-          background:
-            'radial-gradient(ellipse 50% 50% at 50% 50%, transparent 0%, rgba(0,0,0,0.6) 60%, #000 100%)',
+          maxWidth: 1200,
+          margin: '0 auto',
+          display: 'grid',
+          gridTemplateColumns: '55% 45%',
+          gap: 'clamp(3rem,6vw,7rem)',
+          alignItems: 'center',
         }}
-      />
-
-      {/* Ambient glow — replaces the crosshair icon */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full pointer-events-none"
-        style={{
-          background: 'rgba(0,242,255,0.10)',
-          filter: 'blur(120px)',
-        }}
-      />
-
-      {/* Glass floor reflection */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-[40%] pointer-events-none"
-        style={{
-          background:
-            'linear-gradient(to top, rgba(0,242,255,0.015) 0%, transparent 60%)',
-        }}
-      />
-      <div
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[1px] pointer-events-none"
-        style={{
-          background:
-            'linear-gradient(90deg, transparent, rgba(0,242,255,0.08) 30%, rgba(0,242,255,0.12) 50%, rgba(0,242,255,0.08) 70%, transparent)',
-        }}
-      />
-
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center text-center px-6">
-        {/* Main headline */}
-        <h2
-          className="font-heading font-extrabold text-5xl sm:text-6xl md:text-7xl lg:text-[5rem] leading-[1.05] tracking-tighter text-white"
-          style={{
-            textShadow: '0 0 40px rgba(255,255,255,0.08), 0 0 80px rgba(255,255,255,0.03)',
-            ...fadeUpStyle(0.1),
-          }}
-        >
-          讓現實，成為排演好的勝局
-        </h2>
-
-        {/* Subtitle — tight to headline, forms a text cluster */}
-        <p
-          className="font-body text-base md:text-lg mt-6 md:mt-8 mb-20 md:mb-24 max-w-md leading-relaxed"
-          style={{
-            color: '#9ca3af',
-            letterSpacing: '0.06em',
-            ...fadeUpStyle(0.4),
-          }}
-        >
-          領先{' '}
-          <span className="font-bold" style={{ color: '#00FFC2' }}>
-            72
-          </span>{' '}
-          小時鎖定路徑。在這裡，沒有意外。
-        </p>
-
-        {/* CTA Button */}
-        <div style={fadeUpStyle(0.6)}>
-          <a
-            href={CTA_HREF}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cta-void-button group relative inline-flex items-center justify-center px-10 py-4 md:px-14 md:py-5 font-mono text-sm md:text-base font-semibold tracking-[0.25em] overflow-hidden transition-all duration-500"
+      >
+        {/* Left */}
+        <div>
+          <span
+            className="font-mono block uppercase"
+            style={{ ...reveal(0), fontSize: 11, letterSpacing: '0.22em', color: 'rgba(255,255,255,.72)', marginBottom: '1.5rem' }}
+          >
+            重要情報已就位
+          </span>
+          <h2
+            className="font-heading"
             style={{
-              color: '#00FFC2',
-              border: '2px solid #00FFC2',
-              background: 'transparent',
-              boxShadow:
-                '0 0 20px rgba(0,255,194,0.3), 0 0 60px rgba(0,255,194,0.08)',
+              ...reveal(0.1),
+              fontSize: 'clamp(2rem,3.8vw,3.8rem)',
+              fontWeight: 800,
+              letterSpacing: '-0.03em',
+              lineHeight: 1.08,
+              color: '#fff',
+              marginBottom: '1.25rem',
             }}
           >
-            {/* Shimmer sweep on hover */}
-            <span
-              className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out pointer-events-none"
+            下一個決策，<br />在行動前帶著{' '}
+            <em style={{ fontStyle: 'italic', color: 'rgba(0,218,186,.92)' }}>完整情報</em>
+          </h2>
+          <p
+            className="font-body"
+            style={{
+              ...reveal(0.2),
+              fontSize: 14.5,
+              fontWeight: 300,
+              color: 'rgba(255,255,255,.68)',
+              lineHeight: 1.85,
+              marginBottom: '2rem',
+              maxWidth: 440,
+            }}
+          >
+            PersonaCast 已協助超過 200 位企業領導者在關鍵時刻做出正確選擇。
+            立即預約 30 分鐘演示，見識 AI 如何為你的決策提供完整的情境地圖。
+          </p>
+          <div className="flex items-center gap-3" style={reveal(0.28)}>
+            <a
+              href={DEMO_HREF}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center font-heading font-bold rounded-[2px] transition-opacity hover:opacity-85"
               style={{
-                background:
-                  'linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)',
+                padding: '13px 28px',
+                background: '#fff',
+                color: '#0B1526',
+                fontSize: 13.5,
+                letterSpacing: '0.01em',
               }}
-            />
-            {/* Hover fill background */}
-            <span
-              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+            >
+              預約 30 分鐘演示 →
+            </a>
+            <Link
+              href="/product"
+              className="inline-flex items-center font-body rounded-[2px] transition-all hover:border-white/40 hover:text-white"
               style={{
-                background:
-                  'linear-gradient(135deg, #00FFC2 0%, #00D4AA 100%)',
+                padding: '12px 20px',
+                border: '1px solid rgba(255,255,255,.28)',
+                color: 'rgba(255,255,255,.68)',
+                fontSize: 13.5,
               }}
-            />
-            <span className="relative z-10 group-hover:text-black transition-colors duration-500">
-              [ 立即預約專屬展示 ]
-            </span>
-          </a>
+            >
+              了解產品
+            </Link>
+          </div>
+        </div>
+
+        {/* Right */}
+        <div style={reveal(0.15)}>
+          <div
+            style={{
+              background: 'rgba(255,255,255,.03)',
+              border: '1px solid rgba(255,255,255,.07)',
+              borderRadius: 4,
+              padding: 'clamp(1.5rem,3vw,2.5rem)',
+            }}
+          >
+            {[
+              { num: '72h', desc: '行動前的完整情報視窗' },
+              { num: '3.4M', desc: '每次推演的情境路徑數' },
+              { num: '94%', desc: '置信度閥值標準' },
+            ].map(({ num, desc }, i) => (
+              <div
+                key={num}
+                style={{
+                  padding: '1.1rem 0',
+                  borderBottom: i < 2 ? '1px solid rgba(255,255,255,.06)' : 'none',
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  gap: '1rem',
+                }}
+              >
+                <span
+                  className="font-heading font-bold"
+                  style={{ fontSize: '1.6rem', color: 'rgba(0,218,186,.85)', letterSpacing: '-0.02em', minWidth: 60 }}
+                >
+                  {num}
+                </span>
+                <span className="font-body" style={{ fontSize: 13.5, color: 'rgba(255,255,255,.76)', fontWeight: 300 }}>
+                  {desc}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-
-      {/* SEO hidden text */}
-      <p className="sr-only">
-        PersonaCast — 領先 72 小時的 AI 戰略預演。立即啟動真理系統，預約專屬演示。
-      </p>
     </section>
   );
 }

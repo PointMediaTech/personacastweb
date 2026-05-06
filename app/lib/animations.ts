@@ -45,9 +45,15 @@ export function useInView(
     const el = ref.current;
     if (!el) return;
 
+    // Safety fallback: reveal after 1.2s regardless of scroll state.
+    // Ensures content is visible for screenshot tools, prerender paths,
+    // and users on reduced-motion or IntersectionObserver-less environments.
+    const fallback = once ? setTimeout(() => setInView(true), 1200) : undefined;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
+          clearTimeout(fallback);
           setInView(true);
           if (once) observer.disconnect();
         } else if (!once) {
@@ -58,7 +64,10 @@ export function useInView(
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      clearTimeout(fallback);
+    };
   }, [ref, once, margin, threshold]);
 
   return inView;

@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+  /* ── Legacy tokens (kept for backward compat) ── */
   --color-deep-space: #020617;
   --color-strategic-blue: #769EDB;
   --color-dried-rose: #B57D7D;
@@ -13,6 +14,17 @@
   --color-amber-warn: #FFAD00;
   --color-alert-red: #FF4D4D;
 
+  /* ── New design tokens ── */
+  --color-ink:      #0B1526;
+  --color-ink-lt:   #152035;
+  --color-ink-2:    #4A5872;
+  --color-ink-3:    #8898B8;
+  --color-paper:    #F2EFE9;
+  --color-paper-2:  #E8E5DF;
+  --color-line:     rgba(11,21,38,.1);
+  --color-accent:   #005FA3;
+  --color-teal:     #007A72;
+
   --font-heading: var(--font-gf-heading, "Plus Jakarta Sans"), system-ui, sans-serif;
   --font-body: var(--font-gf-body, "Inter"), system-ui, sans-serif;
   --font-mono: var(--font-gf-mono, "JetBrains Mono"), ui-monospace, monospace;
@@ -21,311 +33,89 @@
 body {
   font-family: var(--font-body);
   background-color: var(--color-deep-space);
-  color: white;
+  color: #fff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-@keyframes hudTypewriter {
-  from { clip-path: inset(0 100% 0 0); }
-  to { clip-path: inset(0 0 0 0); }
+/* ── Scroll reveal ─────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
 }
 
-@keyframes cardPulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.6); opacity: 0.3; }
+/* ── Hero entrance animations ──────────────────────────────────────── */
+@keyframes heroSlideUp {
+  from { transform: translateY(28px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+@keyframes heroFadeUp {
+  from { transform: translateY(14px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
 }
 
-@keyframes riskBreathing {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
+.hero-anim-0 { animation: heroSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.15s both; }
+.hero-anim-1 { animation: heroSlideUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.28s both; }
+.hero-anim-2 { animation: heroFadeUp  0.6s cubic-bezier(0.22,1,0.36,1) 0.45s both; }
+.hero-anim-3 { animation: heroFadeUp  0.6s cubic-bezier(0.22,1,0.36,1) 0.55s both; }
+.hero-anim-4 { animation: heroFadeUp  0.7s cubic-bezier(0.22,1,0.36,1) 0.38s both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-anim-0, .hero-anim-1, .hero-anim-2,
+  .hero-anim-3, .hero-anim-4 { animation: none; }
 }
 
-@keyframes dash {
-  to { stroke-dashoffset: -24; }
-}
-
-.animate-dash {
-  animation: dash 3s linear infinite;
-}
-
+/* ── Navbar ────────────────────────────────────────────────────────── */
 .nav-link {
   position: relative;
 }
-
 .nav-link::after {
   content: '';
   position: absolute;
-  bottom: -4px;
+  bottom: -3px;
   left: 0;
   width: 100%;
-  height: 2px;
+  height: 1.5px;
   background-color: var(--color-aurora-cyan);
   transform: scaleX(0);
   transform-origin: center;
-  transition: transform 300ms ease-out;
+  transition: transform 250ms ease-out;
 }
-
 .nav-link:hover::after,
 .nav-link:focus-visible::after {
   transform: scaleX(1);
 }
-
-.nav-link:hover,
-.nav-link:focus-visible {
-  color: white;
-  text-shadow: 0 0 8px rgba(0, 242, 255, 0.8);
+.nav-link:hover {
+  color: #ffffff !important;
 }
-
 .nav-link:focus-visible {
   outline: 2px solid var(--color-aurora-cyan);
   outline-offset: 4px;
 }
 
-.nav-bar {
-  padding: 1rem 2.5rem;
-}
-
-.nav-bar::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(0, 242, 255, 0.3),
-    transparent
-  );
-}
-
+/* ── Legacy nav classes (kept for any remaining usages) ── */
+.nav-bar { padding: 1rem 2.5rem; }
 .cta-ghost {
   padding: 0.4rem 1.5rem;
-  background: rgba(0, 242, 255, 0.05);
-  border: 2px solid rgba(0, 242, 255, 1);
+  background: rgba(0,242,255,0.05);
+  border: 2px solid rgba(0,242,255,1);
   transition: all 300ms ease-out;
 }
-
-.cta-ghost:hover,
-.cta-ghost:focus-visible {
-  background: rgba(0, 242, 255, 0.15);
-  border-color: rgba(0, 242, 255, 0.9);
-  box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
-}
-
-.cta-ghost:focus-visible {
-  outline: 2px solid var(--color-aurora-cyan);
-  outline-offset: 4px;
-}
-
-/* Scanline overlay for strategic records section */
 .scanline-overlay {
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(255, 255, 255, 0.015) 2px,
-    rgba(255, 255, 255, 0.015) 4px
-  );
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 4px);
   pointer-events: none;
-}
-
-/* CTA void section — breathing glow button */
-@keyframes ctaVoidBreathing {
-  0%, 100% {
-    box-shadow: 0 0 12px rgba(0,255,194,0.2), 0 0 40px rgba(0,255,194,0.08), inset 0 0 12px rgba(0,255,194,0.04);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(0,255,194,0.35), 0 0 60px rgba(0,255,194,0.14), inset 0 0 20px rgba(0,255,194,0.06);
-  }
-}
-
-.cta-void-button {
-  animation: ctaVoidBreathing 3.5s ease-in-out infinite;
-}
-
-.cta-void-button:hover,
-.cta-void-button:focus-visible {
-  box-shadow: 0 0 30px rgba(0,255,194,0.5), 0 0 80px rgba(0,255,194,0.2), inset 0 0 24px rgba(0,255,194,0.08) !important;
-  animation: none;
-}
-
-.cta-void-button:focus-visible {
-  outline: 2px solid #00FFC2;
-  outline-offset: 4px;
-}
-
-@keyframes ctaGlow {
-  0%, 100% { box-shadow: 0 4px 20px rgba(118,158,219,0.3), 0 0 40px rgba(118,158,219,0.1); }
-  50% { box-shadow: 0 4px 28px rgba(118,158,219,0.45), 0 0 50px rgba(118,158,219,0.15); }
-}
-
-/* ── Animation utilities (framer-motion replacement) ─────────────── */
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Hero H1 entrance — CSS-driven so it fires at first paint instead of post-hydration. */
-@keyframes heroIntroSlide {
-  from { opacity: 0; transform: translateX(-30px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-.hero-intro-h1 {
-  animation: heroIntroSlide 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s backwards;
-  will-change: opacity, transform;
-}
-
-@keyframes pulse-dot {
-  0%, 100% { transform: scale(1); opacity: 0.8; }
-  50% { transform: scale(2); opacity: 0; }
-}
-
-@keyframes pulse-opacity {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-
-@keyframes float-y {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
-
-@keyframes breathe-scale {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.03); }
-}
-
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes spin-slow-reverse {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(-360deg); }
-}
-
-@keyframes breathe-glow {
-  0%, 100% { opacity: 0.4; box-shadow: 0 0 12px currentColor; }
-  50% { opacity: 0.7; box-shadow: 0 0 20px currentColor; }
-}
-
-/* ── SeedSimulationGraphic animations ───────────────────────────── */
-
-@keyframes ripple {
-  0% { transform: scale(0.8); opacity: 0.8; }
-  100% { transform: scale(1.5); opacity: 0; }
-}
-
-@keyframes seedFadeUp {
-  from { opacity: 0; transform: translateY(5px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.seed-fade-in {
-  animation: seedFadeUp 0.5s ease-out forwards;
-}
-
-.seed-fade-in-delayed {
-  animation: seedFadeUp 0.5s ease-out 0.8s forwards;
-  opacity: 0;
-}
-
-/* ── Case study card scroll reveal (CSS-only) ──────────────────── */
-
-@keyframes caseCardReveal {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.case-study-card {
-  animation: caseCardReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: var(--delay, 0s);
-}
-
-@supports (animation-timeline: view()) {
-  .case-study-card {
-    animation-timeline: view();
-    animation-range: entry 0% entry 30%;
-  }
-}
-
-/* ── Pricing card glow pulse ────────────────────────────────────── */
-
-@keyframes glowPulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
-}
-
-/* ── Policy Simulation page animations ─────────────────────────── */
-
-@keyframes policyNodePulse {
-  0%, 100% { opacity: 0.2; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.4); }
-}
-
-@keyframes policySlideNetwork {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(200%); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-intro-h1 {
-    animation: fadeIn 0.5s ease-out 0.2s backwards;
-  }
-
-  .nav-link::after {
-    transition: none;
-  }
-
-  .nav-link:hover,
-  .nav-link:focus-visible {
-    text-shadow: none;
-  }
-
-  .cta-ghost {
-    transition: background 300ms ease-out, border-color 300ms ease-out;
-  }
-
-  .cta-ghost:hover,
-  .cta-ghost:focus-visible {
-    box-shadow: none;
-  }
-
-  /* Disable CTA glow */
-  [style*="ctaGlow"] {
-    animation: none !important;
-  }
-
-  .cta-void-button {
-    animation: none;
-  }
-
-  /* Disable radar chart rotation */
-  .animate-spin, [style*="spin"] {
-    animation: none !important;
-  }
-
-  /* Disable all custom motion keyframes */
-  .anim-float, .anim-pulse-dot, .anim-pulse-opacity,
-  .anim-breathe, .anim-spin-slow {
-    animation: none !important;
-  }
-
-  /* Disable case study card reveal */
-  .case-study-card {
-    animation: none;
-  }
-
-  /* Disable seed simulation animations */
-  .seed-fade-in,
-  .seed-fade-in-delayed {
-    animation: none;
-    opacity: 1;
-  }
 }

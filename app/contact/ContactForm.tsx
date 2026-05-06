@@ -45,6 +45,27 @@ const initialState: FormState = {
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
+const fieldStyle: React.CSSProperties = {
+  width: '100%',
+  padding: '10px 14px',
+  background: 'rgba(255,255,255,.07)',
+  border: '1px solid rgba(255,255,255,.15)',
+  borderRadius: 2,
+  fontSize: 13.5,
+  color: 'rgba(255,255,255,.88)',
+  outline: 'none',
+  fontFamily: 'inherit',
+};
+
+const labelStyle: React.CSSProperties = {
+  display: 'block',
+  fontSize: 11,
+  fontWeight: 500,
+  color: 'rgba(255,255,255,.68)',
+  marginBottom: '0.4rem',
+  letterSpacing: '0.01em',
+};
+
 export function ContactForm() {
   const [form, setForm] = useState<FormState>(initialState);
   const [status, setStatus] = useState<Status>('idle');
@@ -67,10 +88,7 @@ export function ContactForm() {
     try {
       const res = await fetch(WEB3FORMS_ENDPOINT, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({
           access_key: WEB3FORMS_KEY,
           subject: `[PersonaCast Demo 預約] ${form.company || form.name}`,
@@ -100,239 +118,180 @@ export function ContactForm() {
     }
   };
 
-  const inputClass =
-    'w-full px-4 py-3 rounded-lg text-sm text-white placeholder-[#94A3B8]/60 outline-none focus:border-[color:var(--color-aurora-cyan)] transition-colors disabled:opacity-60';
-  const inputStyle = {
-    backgroundColor: 'rgba(10,14,26,0.6)',
-    border: '1px solid rgba(118,158,219,0.15)',
-  } as const;
   const submitting = status === 'submitting';
 
   if (status === 'success') {
     return (
       <div
-        className="rounded-xl overflow-hidden p-8 lg:p-10 text-center"
         style={{
-          backgroundColor: 'rgba(17,24,39,0.65)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          border: '1px solid rgba(0,242,255,0.25)',
+          background: 'rgba(0,218,186,.06)',
+          border: '1px solid rgba(0,218,186,.25)',
+          borderRadius: 2,
+          padding: '3rem 2rem',
+          textAlign: 'center',
         }}
       >
         <div
-          className="h-[2px] w-full mb-8"
-          style={{
-            background:
-              'linear-gradient(90deg, transparent, #00F2FF, transparent)',
-          }}
-        />
-        <h3 className="text-xl font-bold text-white mb-3">已收到您的預約申請</h3>
-        <p className="text-sm text-[#94A3B8] leading-relaxed">
-          感謝您的來信。我們的團隊將在 1 個工作天內與您聯繫，
-          <br />
-          安排一對一 Demo 時間。
+          className="font-mono uppercase"
+          style={{ fontSize: 11, letterSpacing: '0.25em', color: 'rgba(0,218,186,.8)', marginBottom: '1rem' }}
+        >
+          已收到您的申請
+        </div>
+        <h3 className="font-heading" style={{ fontSize: '1.4rem', fontWeight: 800, color: '#fff', marginBottom: '0.75rem', letterSpacing: '-0.02em' }}>
+          感謝您的預約
+        </h3>
+        <p className="font-body" style={{ fontSize: 13.5, fontWeight: 300, color: 'rgba(255,255,255,.76)', lineHeight: 1.85 }}>
+          我們的團隊將在 1 個工作天內與您聯繫，<br />
+          安排一對一演示時間。
         </p>
       </div>
     );
   }
 
   return (
-    <div
-      className="rounded-xl overflow-hidden"
-      style={{
-        backgroundColor: 'rgba(17,24,39,0.65)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(118,158,219,0.1)',
-      }}
-    >
-      <div
-        className="h-[2px] w-full"
-        style={{
-          background:
-            'linear-gradient(90deg, transparent, #769EDB, transparent)',
-        }}
-      />
-      <form onSubmit={handleSubmit} className="p-6 lg:p-8">
-        <div className="space-y-4">
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs text-[#94A3B8] mb-1.5">
-                姓名 <span className="text-[#B57D7D]">*</span>
-              </label>
-              <input
-                type="text"
-                required
-                disabled={submitting}
-                value={form.name}
-                onChange={(e) => update('name', e.target.value)}
-                placeholder="您的姓名"
-                className={inputClass}
-                style={inputStyle}
-                aria-label="姓名"
-              />
-            </div>
-            <div>
-              <label className="block text-xs text-[#94A3B8] mb-1.5">
-                公司名稱 <span className="text-[#B57D7D]">*</span>
-              </label>
-              <input
-                type="text"
-                required
-                disabled={submitting}
-                value={form.company}
-                onChange={(e) => update('company', e.target.value)}
-                placeholder="公司名稱"
-                className={inputClass}
-                style={inputStyle}
-                aria-label="公司名稱"
-              />
-            </div>
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs text-[#94A3B8] mb-1.5">
-                職稱
-              </label>
-              <input
-                type="text"
-                disabled={submitting}
-                value={form.title}
-                onChange={(e) => update('title', e.target.value)}
-                placeholder="您的職稱"
-                className={inputClass}
-                style={inputStyle}
-                aria-label="職稱"
-              />
-            </div>
-            <div>
-              <label className="block text-xs text-[#94A3B8] mb-1.5">
-                公司信箱 <span className="text-[#B57D7D]">*</span>
-              </label>
-              <input
-                type="email"
-                required
-                disabled={submitting}
-                value={form.email}
-                onChange={(e) => update('email', e.target.value)}
-                placeholder="name@company.com"
-                className={inputClass}
-                style={inputStyle}
-                aria-label="公司信箱"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs text-[#94A3B8] mb-1.5">
-              電話（選填）
-            </label>
-            <input
-              type="tel"
-              disabled={submitting}
-              value={form.phone}
-              onChange={(e) => update('phone', e.target.value)}
-              placeholder="聯絡電話"
-              className={inputClass}
-              style={inputStyle}
-              aria-label="電話"
-            />
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs text-[#94A3B8] mb-1.5">
-                您的角色
-              </label>
-              <select
-                className={inputClass}
-                style={inputStyle}
-                aria-label="您的角色"
-                disabled={submitting}
-                value={form.role}
-                onChange={(e) => update('role', e.target.value)}
-              >
-                <option value="" disabled>
-                  請選擇
-                </option>
-                {roleOptions.map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-xs text-[#94A3B8] mb-1.5">
-                最感興趣的場景
-              </label>
-              <select
-                className={inputClass}
-                style={inputStyle}
-                aria-label="最感興趣的場景"
-                disabled={submitting}
-                value={form.scenario}
-                onChange={(e) => update('scenario', e.target.value)}
-              >
-                <option value="" disabled>
-                  請選擇
-                </option>
-                {scenarioOptions.map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs text-[#94A3B8] mb-1.5">
-              備註（選填）
-            </label>
-            <textarea
-              rows={4}
-              disabled={submitting}
-              value={form.notes}
-              onChange={(e) => update('notes', e.target.value)}
-              placeholder="請描述您的需求或想了解的內容..."
-              className={`${inputClass} resize-none`}
-              style={inputStyle}
-              aria-label="備註"
-            />
-          </div>
-
-          {status === 'error' && (
-            <p
-              className="text-xs text-center px-3 py-2 rounded-lg"
-              style={{
-                color: '#FF8A8A',
-                backgroundColor: 'rgba(255,77,77,0.08)',
-                border: '1px solid rgba(255,77,77,0.25)',
-              }}
-            >
-              {errorMsg}
-            </p>
-          )}
-
-          <button
-            type="submit"
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+        <div>
+          <label style={labelStyle}>姓名 <span style={{ color: '#C0392B' }}>*</span></label>
+          <input
+            type="text"
+            required
             disabled={submitting}
-            className="w-full py-3.5 rounded-lg font-semibold text-white text-sm transition-all duration-300 hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed"
-            style={{
-              backgroundColor: '#769EDB',
-              boxShadow: '0 0 20px rgba(118,158,219,0.25)',
-            }}
-          >
-            {submitting ? '送出中...' : '送出預約申請 →'}
-          </button>
-
-          <p className="text-xs text-[#94A3B8]/70 text-center">
-            我們通常在 1 個工作天內回覆。您的資料將受到嚴格的隱私保護。
-          </p>
+            value={form.name}
+            onChange={(e) => update('name', e.target.value)}
+            placeholder="您的姓名"
+            style={fieldStyle}
+            aria-label="姓名"
+          />
         </div>
-      </form>
-    </div>
+        <div>
+          <label style={labelStyle}>公司名稱 <span style={{ color: '#C0392B' }}>*</span></label>
+          <input
+            type="text"
+            required
+            disabled={submitting}
+            value={form.company}
+            onChange={(e) => update('company', e.target.value)}
+            placeholder="公司名稱"
+            style={fieldStyle}
+            aria-label="公司名稱"
+          />
+        </div>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+        <div>
+          <label style={labelStyle}>職稱</label>
+          <input
+            type="text"
+            disabled={submitting}
+            value={form.title}
+            onChange={(e) => update('title', e.target.value)}
+            placeholder="您的職稱"
+            style={fieldStyle}
+            aria-label="職稱"
+          />
+        </div>
+        <div>
+          <label style={labelStyle}>公司信箱 <span style={{ color: '#C0392B' }}>*</span></label>
+          <input
+            type="email"
+            required
+            disabled={submitting}
+            value={form.email}
+            onChange={(e) => update('email', e.target.value)}
+            placeholder="name@company.com"
+            style={fieldStyle}
+            aria-label="公司信箱"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label style={labelStyle}>電話（選填）</label>
+        <input
+          type="tel"
+          disabled={submitting}
+          value={form.phone}
+          onChange={(e) => update('phone', e.target.value)}
+          placeholder="聯絡電話"
+          style={fieldStyle}
+          aria-label="電話"
+        />
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+        <div>
+          <label style={labelStyle}>您的角色</label>
+          <select
+            disabled={submitting}
+            value={form.role}
+            onChange={(e) => update('role', e.target.value)}
+            style={{ ...fieldStyle, cursor: 'pointer' }}
+            aria-label="您的角色"
+          >
+            <option value="" disabled>請選擇</option>
+            {roleOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
+          </select>
+        </div>
+        <div>
+          <label style={labelStyle}>最感興趣的場景</label>
+          <select
+            disabled={submitting}
+            value={form.scenario}
+            onChange={(e) => update('scenario', e.target.value)}
+            style={{ ...fieldStyle, cursor: 'pointer' }}
+            aria-label="最感興趣的場景"
+          >
+            <option value="" disabled>請選擇</option>
+            {scenarioOptions.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label style={labelStyle}>備註（選填）</label>
+        <textarea
+          rows={4}
+          disabled={submitting}
+          value={form.notes}
+          onChange={(e) => update('notes', e.target.value)}
+          placeholder="請描述您的需求或想了解的內容..."
+          style={{ ...fieldStyle, resize: 'none' }}
+          aria-label="備註"
+        />
+      </div>
+
+      {status === 'error' && (
+        <p
+          className="font-body"
+          style={{ fontSize: 12.5, color: '#C0392B', background: 'rgba(192,57,43,.06)', border: '1px solid rgba(192,57,43,.2)', borderRadius: 2, padding: '8px 12px' }}
+        >
+          {errorMsg}
+        </p>
+      )}
+
+      <button
+        type="submit"
+        disabled={submitting}
+        className="font-heading font-bold rounded-[2px] transition-opacity hover:opacity-85 disabled:opacity-60 disabled:cursor-not-allowed"
+        style={{
+          padding: '13px 28px',
+          background: 'rgba(0,218,186,.85)',
+          color: '#0B1526',
+          fontSize: 13.5,
+          letterSpacing: '0.01em',
+          border: 'none',
+          cursor: 'pointer',
+          width: '100%',
+        }}
+      >
+        {submitting ? '送出中...' : '送出預約申請 →'}
+      </button>
+
+      <p className="font-body" style={{ fontSize: 11.5, color: 'rgba(255,255,255,.58)', textAlign: 'center', fontWeight: 300 }}>
+        我們通常在 1 個工作天內回覆。您的資料將受到嚴格的隱私保護。
+      </p>
+    </form>
   );
 }
